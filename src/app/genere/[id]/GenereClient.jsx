@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import './GenrePage.css';
 import ProduseSideBar from '@/components/ProduseSideBar';
 
-// ── date mock — înlocuiești cu fetch real ──
 
 
 // const genuriParams = ["rock", "folk-rock", "jazz-blues", "soul-funk", "hip-hop", "muzica-clasica", "muzica-electronica", "world-music"];
