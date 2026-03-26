@@ -1,0 +1,297 @@
+.navBarContainer {
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* ── banda de sus ── */
+.navBarBand {
+  background: #c44804;
+  text-align: center;
+  padding: 6px 1rem;
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 13px;
+  color: #fff;
+  letter-spacing: 0.05em;
+  overflow: hidden;
+}
+
+.navBarBandTrack {
+  display: inline-flex;
+  gap: 60px;
+  animation: marquee 22s linear infinite;
+  white-space: nowrap;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── bara principala ── */
+.navBarContent {
+  padding: 0 2rem;
+  background: #1f1f1f;
+  border-bottom: #eec99d 2px solid;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 60px;
+}
+
+.nume_logo {
+  font-family: "Lacheyard Script", cursive;
+  color: #fff;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* ── navigatie ── */
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navLinks li {
+  position: relative;
+}
+
+.navLinks li a,
+.navLinks li button {
+  background: none;
+  border: none;
+  color: #c8b99a;
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  padding: 8px 12px;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
+.navLinks li a:hover,
+.navLinks li button:hover {
+  color: #eec99d;
+}
+
+.navLinks li a::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 12px;
+  right: 12px;
+  height: 1px;
+  background: #c44804;
+  transform: scaleX(0);
+  transition: transform 0.2s;
+}
+
+.navLinks li a:hover::after {
+  transform: scaleX(1);
+}
+
+.dropArrow {
+  font-size: 10px;
+  opacity: 0.6;
+  transition: transform 0.2s;
+}
+
+.navLinks li:hover .dropArrow {
+  transform: rotate(180deg);
+}
+
+/* ── dropdown genuri ── */
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  background: #1f1f1f;
+  border: 1px solid #3a3028;
+  border-top: 2px solid #c44804;
+  min-width: 200px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition: opacity 0.18s, transform 0.18s;
+  z-index: 200;
+}
+
+.navLinks li:hover .dropdown {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  color: #c8b99a;
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 15px;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.dropdownItem:hover {
+  background: #2a2018;
+  color: #eec99d;
+}
+
+.dropdownIcon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+/* ── actiuni dreapta ── */
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.navActionBtn {
+  background: none;
+  border: none;
+  color: #c8b99a;
+  cursor: pointer;
+  padding: 8px;
+  position: relative;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navActionBtn:hover {
+  color: #eec99d;
+}
+
+.navActionBtn svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.navBadge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: #c44804;
+  color: #fff;
+  font-size: 10px;
+  font-family: 'Crimson Text', Georgia, serif;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* ── search expand ── */
+.navSearch {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  width: 32px;
+  transition: width 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.navSearch.open {
+  width: 180px;
+  border-bottom-color: #eec99d;
+}
+
+.navSearch input {
+  background: none;
+  border: none;
+  outline: none;
+  color: #eec99d;
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 14px;
+  width: 100%;
+  padding: 4px 6px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.navSearch.open input {
+  opacity: 1;
+}
+
+/* ── linia portocalie de jos ── */
+
+
+/* ── mobil ── */
+.navHamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: #c8b99a;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.navHamburger svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.navDrawer {
+  display: none;
+  flex-direction: column;
+  background: #1a1a18;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #3a3028;
+  gap: 4px;
+}
+
+.navDrawer.open {
+  display: flex;
+}
+
+.navDrawerLink {
+  color: #c8b99a;
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 17px;
+  text-decoration: none;
+  padding: 10px 0;
+  border-bottom: 1px solid #2a2018;
+  transition: color 0.15s;
+}
+
+.navDrawerLink:hover {
+  color: #eec99d;
+}
+
+@media (max-width: 768px) {
+  .navLinks { display: none; }
+  .navHamburger { display: flex; }
+  .navSearch { display: none; }
+}

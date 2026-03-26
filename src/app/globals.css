@@ -1,14 +1,17 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --text-color: #0a0a0a;
+  --accent1: #eec99d;
+  --accent2: #b5510f;
+  --max-width: 1400px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@font-face {
+  font-family: "Lacheyard Script";
+  src: url("../fonts/LacheyardScript.otf") format("opentype");
 }
+
+
+
 
 html {
   height: 100%;
@@ -25,10 +28,20 @@ body {
   display: flex;
   flex-direction: column;
   color: var(--foreground);
-  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --_noise-texture: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><defs><filter id='n' x='0' y='0' width='100%' height='100%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.3' numOctaves='3' stitchTiles='stitch' result='t'/><feColorMatrix type='saturate' values='0' in='t' result='g'/><feComponentTransfer in='g' result='a'><feFuncA type='linear' slope='0.5'/></feComponentTransfer></filter></defs><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+
+  --_noise-size: 10%;
+  --_gradient: --_noise-size: 1.3%;
+  --_gradient: linear-gradient(90deg, #eec99d, #fdebd1, #eec99d);
+  ;
+
+  background-image: var(--_noise-texture), var(--_gradient);
+  background-size: var(--_noise-size), auto;
+  background-position: center, center;
+  background-repeat: repeat, repeat;
 }
 
 * {
@@ -37,13 +50,28 @@ body {
   margin: 0;
 }
 
+
+
 a {
   color: inherit;
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+
+
+.stripe {
+  background: #c44804;
+  width: 100%;
+  height: 4px;
+}
+
+.reveal-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+}
+
+.reveal-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
