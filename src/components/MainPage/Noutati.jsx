@@ -8,7 +8,7 @@ const Noutati = async () => {
     const snapshot = await adminDb.collection("releases").orderBy('date_added', 'desc')
       .limit(4).get();
       const nouStuff = snapshot.docs.map(doc => doc.data())
-      console.log(nouStuff)
+    //   console.log(nouStuff)
     return (
         <div style={{
             display: 'flex',
