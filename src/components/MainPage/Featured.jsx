@@ -52,7 +52,7 @@ const Featured = () => {
                     <div className='feat_header'>
                         <h2>COLECȚII RECOMANDATE</h2>
                         <div className='linie' />
-                        <a href='/#'>Vezi mai multe <FaChevronRight /></a>
+                        <a href='/genere'>Vezi mai multe <FaChevronRight /></a>
                     </div>
                 </Reveal>
                 <div

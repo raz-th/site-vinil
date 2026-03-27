@@ -29,7 +29,7 @@ const Hero = () => {
                             <h3>Explorează colecția noastră de discuri clasice și lansări noi.</h3>
                         </Reveal>
                         <Reveal delay={400}>
-                             <button>CUMPĂRĂ ACUM</button>
+                             <a className='button' href='/discuri-vinil'>CUMPĂRĂ ACUM</a>
                         </Reveal>
                     </div>
                     <div className='img'>

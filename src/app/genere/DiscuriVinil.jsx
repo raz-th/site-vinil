@@ -127,11 +127,17 @@ export default function DiscuriVinil({ produse, currentPage }) {
       <div className="genrePageInner">
 
         <nav className="breadcrumb">
+          <a href="/">Home</a>
+          <span>/</span>
+          <a href="/discuri-vinil">Genuri</a>
+        </nav>
+
+        <nav className="breadcrumb">
 
         </nav>
 
         {/* ── SIDEBAR ── */}
-        <ProduseSideBar/>
+        <ProduseSideBar />
 
         {/* ── MAIN ── */}
         <main className="genreMain">

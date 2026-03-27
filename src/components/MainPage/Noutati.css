@@ -79,6 +79,7 @@
 
 .noutati_card img {
     width: 100%;
+    background: #fff;
     height: 300px;
     object-fit: cover;
     border-radius: 2px;

@@ -26,8 +26,7 @@ export const Card = ({ i, data }) => {
         const img = imgRef.current;
 
         if (!img) return;
-
-        // If already loaded (cache case)
+        
         if (img.complete) {
             extractColor(img);
         }

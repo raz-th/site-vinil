@@ -26,8 +26,13 @@
 }
 
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 /* ── bara principala ── */
@@ -117,9 +122,6 @@
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
-  background: #1f1f1f;
-  border: 1px solid #3a3028;
-  border-top: 2px solid #c44804;
   min-width: 200px;
   opacity: 0;
   pointer-events: none;
@@ -128,10 +130,17 @@
   z-index: 200;
 }
 
+.dropdown_content {
+  background: #1f1f1f;
+  border: 1px solid #3a3028;
+  border-top: 2px solid #c44804;
+  transform: translateY(10px);
+}
+
 .navLinks li:hover .dropdown {
   opacity: 1;
   pointer-events: all;
-  transform: translateY(0);
+  transform: translateY(-10px);
 }
 
 .dropdownItem {
@@ -291,7 +300,15 @@
 }
 
 @media (max-width: 768px) {
-  .navLinks { display: none; }
-  .navHamburger { display: flex; }
-  .navSearch { display: none; }
+  .navLinks {
+    display: none;
+  }
+
+  .navHamburger {
+    display: flex;
+  }
+
+  .navSearch {
+    display: none;
+  }
 }
