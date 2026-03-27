@@ -110,7 +110,7 @@ const ProductCard = ({ produs }) => {
   );
 };
 
-export default function DiscuriVinil({ produse, currentPage }) {
+export default function DiscuriVinil({ produse, infoPagina }) {
   const titlu = "Viniluri";
 
   const [sortare, setSortare] = useState(optiuniSortare[0]);
@@ -120,6 +120,8 @@ export default function DiscuriVinil({ produse, currentPage }) {
   const toggleArr = (arr, setArr, val) =>
     setArr(arr.includes(val) ? arr.filter((v) => v !== val) : [...arr, val]);
 
+  const totalPagini = Math.ceil(infoPagina.total / infoPagina.perPage);
+  const currentPage = infoPagina.currentPage;
 
 
   return (
@@ -146,7 +148,7 @@ export default function DiscuriVinil({ produse, currentPage }) {
             <div>
               <h1 className="genreTitle">{titlu}</h1>
               <p className="genreCount">
-                Afișează: <strong>1–24</strong> din <strong>361</strong> produse
+                Afișează: <strong>{infoPagina.deLa}–{infoPagina.panaLa}</strong> din <strong>{infoPagina.total}</strong> produse
               </p>
             </div>
             <div className="sortRow">

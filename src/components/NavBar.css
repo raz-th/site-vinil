@@ -69,7 +69,7 @@
 }
 
 .navLinks li a,
-.navLinks li button {
+.navLinks li .button {
   background: none;
   border: none;
   color: #c8b99a;

@@ -47,9 +47,9 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0 }) => {
         <h1 className="nume_logo"><a href='/'>{nume}</a></h1>
         <ul className="navLinks">
           <li>
-            <button>
+            <a href='/genere' className='button'>
               Genuri <span className="dropArrow">▾</span>
-            </button>
+            </a>
             <div className="dropdown">
               <div className='dropdown_content'>
                 {Object.keys(genuri_muzicale).map((g, i) => (
@@ -111,9 +111,9 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0 }) => {
       </div>
 
       <div className={`navDrawer ${drawerOpen ? 'open' : ''}`}>
-        <a href="#" className="navDrawerLink">Genuri</a>
+        <a href="/genere" className="navDrawerLink">Genuri</a>
         {Object.keys(genuri_muzicale).map((g, i) => (
-          <a key={i} href="#" className="dropdownItem">
+          <a key={i} href={`/genere/${g}`} className="dropdownItem">
             {/* <span className="dropdownIcon">{g.icon}</span> */}
             {genuri_muzicale[g].label}
           </a>

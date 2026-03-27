@@ -32,12 +32,28 @@ const Page = async ({ searchParams }) => {
       .limit(perPage);
   }
 
+  const countSnapshot = await adminDb.collection('releases')
+    .count()
+    .get();
+  const totalProduse = countSnapshot.data().count;
+
   const snapshot = await q.get();
   const produse = snapshot.docs.map(doc => doc.data());
 
+  const deLa = (currentPage - 1) * perPage + 1;
+  const panaLa = Math.min(currentPage * perPage, totalProduse);
+
+  const infoPagina = {
+    total: totalProduse,
+    deLa,
+    panaLa,
+    currentPage,
+    perPage
+  };
+
   return (
     <>
-      <DiscuriVinil produse={produse} currentPage={currentPage} />
+      <DiscuriVinil produse={produse} infoPagina={infoPagina} currentPage={currentPage} />
       <Footer />
     </>
   );
