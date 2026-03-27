@@ -4,7 +4,7 @@ import { Reveal } from '../Reveal';
 import VinylDisk from '../VinylDisk';
 import { getColor } from "colorthief";
 
-export const Card = ({ imgNum, i, data }) => {
+export const Card = ({ i, data }) => {
     const [color, setColor] = useState(null);
     const [rotate, setRotate] = useState(false);
     const imgRef = useRef(null);
