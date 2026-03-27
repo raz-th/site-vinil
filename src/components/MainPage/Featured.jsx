@@ -4,6 +4,10 @@ import { FaChevronRight } from "react-icons/fa";
 import { TextBanner } from '../Icons';
 import { Reveal } from '../Reveal';
 
+
+
+
+
 const Card = ({ color = "#2d241ae7", label, imgNum = 0, i }) => {
 
 
@@ -34,6 +38,7 @@ const Card = ({ color = "#2d241ae7", label, imgNum = 0, i }) => {
 }
 
 const Featured = () => {
+
     return (
         <div style={{
             display: 'flex',
