@@ -1,5 +1,14 @@
-export const nume = "Vinil Nume";
+export const nume = "vinil1.ro";
+export const formatari = ['toate', 'vinil', 'cd', 'caseta', 'dvd', 'bluray'];
 
+export const formatMap = {
+  'toate': null,
+  'vinil': 'Vinyl',
+  'cd': 'CD',
+  'caseta': 'Cassette',
+  'dvd': 'DVD',
+  'bluray': 'Blu-ray',
+};
 export const genuri_muzicale = {
   "rock": {
     id: "Rock",
@@ -52,3 +61,4 @@ export const genuri_muzicale = {
     styles: ["Educational", "Nursery Rhymes", "Story", "Cartoon"]
   }
 };
+

@@ -63,7 +63,7 @@ const cleanArtistName = (name) => name.replace(/\s*\(\d+\)$/, '').trim();
 
 const ProductCard = ({ produs }) => {
 
-  const artisti = produs.artists?.map(a => cleanArtistName(a.name)).join(', ');
+  const artisti = produs.artist;
   const an = produs.year > 0 ? produs.year : null;
   const label = produs.labels?.[0]?.name;
   const format = produs.formats?.[0]?.name;
@@ -92,9 +92,9 @@ const ProductCard = ({ produs }) => {
           {formatDesc && <span className="productMetaItem">{formatDesc}</span>}
         </div>
 
-        {produs.styles?.length > 0 && (
+        {produs.genres?.length > 0 && (
           <div className="productGenres">
-            {produs.styles.map(s => (
+            {produs.genres.map(s => (
               <span key={s} className="productGenreTag">{s}</span>
             ))}
           </div>
@@ -110,8 +110,8 @@ const ProductCard = ({ produs }) => {
   );
 };
 
-export default function DiscuriVinil({ produse, infoPagina }) {
-  const titlu = "Viniluri";
+export default function DiscuriVinil({ format, produse, infoPagina }) {
+  const titlu = format;
 
   const [sortare, setSortare] = useState(optiuniSortare[0]);
   const [inStoc, setInStoc] = useState(false);
@@ -120,7 +120,6 @@ export default function DiscuriVinil({ produse, infoPagina }) {
   const toggleArr = (arr, setArr, val) =>
     setArr(arr.includes(val) ? arr.filter((v) => v !== val) : [...arr, val]);
 
-  const totalPagini = Math.ceil(infoPagina.total / infoPagina.perPage);
   const currentPage = infoPagina.currentPage;
 
 
@@ -129,9 +128,11 @@ export default function DiscuriVinil({ produse, infoPagina }) {
       <div className="genrePageInner">
 
         <nav className="breadcrumb">
-          <a href="/">Home</a>
+          <a href="/">Acasă</a>
           <span>/</span>
-          <a href="/discuri-vinil">Genuri</a>
+          <a href="/" style={{textTransform: "capitalize"}}>{format}</a>
+          <span>/</span>
+          <a href={`/${format}/genere`}>Genuri</a>
         </nav>
 
         <nav className="breadcrumb">
@@ -139,7 +140,7 @@ export default function DiscuriVinil({ produse, infoPagina }) {
         </nav>
 
         {/* ── SIDEBAR ── */}
-        <ProduseSideBar />
+        <ProduseSideBar format={format} />
 
         {/* ── MAIN ── */}
         <main className="genreMain">

@@ -79,14 +79,13 @@ const ProductCard = ({ produs }) => {
 };
 
 // ── componenta principala ──
-export default function GenereClient({ id, produse, infoPagina }) {
+export default function GenereClient({ id, format, produse, infoPagina }) {
   const titlu = id.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 
   const [sortare, setSortare] = useState(optiuniSortare[0]);
 
   const totalPagini = Math.ceil(infoPagina.total / infoPagina.perPage);
   const currentPage = infoPagina.currentPage;
-
   const paginatie = () => {
     const pages = [];
 
@@ -126,14 +125,16 @@ export default function GenereClient({ id, produse, infoPagina }) {
 
         {/* breadcrumb */}
         <nav className="breadcrumb">
-          <a href="/">Home</a>
+          <a href="/">Acasă</a>
           <span>/</span>
-          <a href="/genere">Genuri</a>
+          <a href="/" style={{textTransform: "capitalize"}}>{format}</a>
+          <span>/</span>
+          <a href={`/${format}/genere`}>Genuri</a>
           <span>/</span>
           <a>{titlu}</a>
         </nav>
 
-        <ProduseSideBar id={id} />
+        <ProduseSideBar id={id} format={format} />
 
         {/* ── MAIN ── */}
         <main className="genreMain">

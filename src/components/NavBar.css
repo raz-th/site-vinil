@@ -1,9 +1,20 @@
 .navBarContainer {
   display: flex;
   flex-direction: column;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
+  transition: transform 0.3s ease-in-out;
+}
+
+.navBarContainer:not(.vrajala) {
   z-index: 100;
+}
+
+.navBarContainer.vrajala{
+  opacity: 0;
+  position: sticky;
 }
 
 /* ── banda de sus ── */
@@ -45,6 +56,11 @@
   justify-content: space-between;
   gap: 1rem;
   height: 60px;
+
+}
+
+.nav-hidden {
+  transform: translateY(-100%);
 }
 
 .nume_logo {
@@ -272,17 +288,22 @@
   stroke-linecap: round;
 }
 
+
 .navDrawer {
-  display: none;
+  display: flex;
   flex-direction: column;
-  background: #1a1a18;
-  padding: 1rem 1.5rem;
-  border-top: 1px solid #3a3028;
   gap: 4px;
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 1.5rem;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+  background: #1a1a18;
+  border-top: 1px solid #3a3028;
 }
 
 .navDrawer.open {
-  display: flex;
+  max-height: 100vh;
+  padding: 1rem 1.5rem;
 }
 
 .navDrawerLink {
@@ -297,6 +318,53 @@
 
 .navDrawerLink:hover {
   color: #eec99d;
+}
+
+.navDrawerSection {
+  border-bottom: 1px solid #2a2018;
+}
+
+.navDrawerToggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.navDrawerSub {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.navDrawerSub.open {
+  max-height: 600px;
+}
+
+.navDrawerSubLink {
+  color: #b8ad90;
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 14px;
+  text-decoration: none;
+  padding: 8px 0 8px 20px;
+  border-bottom: 1px solid #1a1208;
+  transition: color 0.15s;
+}
+
+.navDrawerSubLink:hover {
+  color: #eec99d;
+}
+
+.navDrawerSubAll {
+  color: #c44804;
+  font-weight: 600;
+  padding-left: 20px;
 }
 
 @media (max-width: 768px) {

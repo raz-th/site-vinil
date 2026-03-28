@@ -64,7 +64,7 @@ const Featured = () => {
                     }}
                 >
                     <div className='feat_content'>
-                        <Card label={'Classic Rock'} i={0} imgNum={0} color='rgba(45, 36, 26, 0.91)' />
+                        <Card label={'Rock'} i={0} imgNum={0} color='rgba(45, 36, 26, 0.91)' />
                         <Card label={'Jazz & Blues'} i={1} imgNum={1} color='rgba(49, 89, 109, 0.91)' />
                         <Card label={'Soul & Funk'} i={2} imgNum={2} color='rgba(134, 49, 25, 0.91)' />
                     </div>

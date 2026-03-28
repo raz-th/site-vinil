@@ -1,19 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { genuri_muzicale, nume } from '../config/site';
 import './NavBar.css';
-
-
-// const genuri = [
-//   { icon: '🎸', label: 'Rock' },
-//   { icon: '🎷', label: 'Jazz & Blues' },
-//   { icon: '🎵', label: 'Soul & Funk' },
-//   { icon: '🎹', label: 'Clasic' },
-//   { icon: '🎤', label: 'Hip-Hop' },
-//   { icon: '🌍', label: 'World Music' },
-// ];
-
-
 
 const IconSearch = () => (
   <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><line x1="16.5" y1="16.5" x2="22" y2="22" /></svg>
@@ -33,46 +21,83 @@ const IconMenu = () => (
 const IconX = () => (
   <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
 );
+const IconChevron = ({ open }) => (
+  <svg viewBox="0 0 24 24" style={{ width: 14, height: 14, transition: 'transform 0.2s', transform: open ? 'rotate(180deg)' : 'rotate(0deg)', stroke: 'currentColor', fill: 'none', strokeWidth: 2, strokeLinecap: 'round' }}>
+    <polyline points="6 9 12 15 18 9" />
+  </svg>
+);
 
-const NavBar = ({ cartCount = 0, wishlistCount = 0 }) => {
+const formatari = [
+  { label: "Viniluri", href: "vinil" },
+  { label: "CD-uri", href: "cd" },
+  { label: "Casete audio", href: "casete" },
+  { label: "DVD", href: "dvd" },
+  { label: "Blu-ray", href: "bluray" },
+];
+
+const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [searchVal, setSearchVal] = useState('');
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [scrollWidth, setScrollWidth] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
+  const [openDrawerItem, setOpenDrawerItem] = useState(null); // index deschis in drawer
 
+  const controlNavbar = useCallback(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        if (window.scrollY > lastScrollY) { setIsVisible(false); setDrawerOpen(false); }
+        else setIsVisible(true);
+        setLastScrollY(window.scrollY);
+        const winScroll = document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        setScrollWidth((winScroll / height) * 100);
+      }
+    } catch (err) { }
+  }, [lastScrollY]);
 
+  useEffect(() => {
+    window.addEventListener('scroll', controlNavbar);
+    return () => window.removeEventListener('scroll', controlNavbar);
+  }, [controlNavbar]);
+
+  const toggleDrawerItem = (i) => {
+    setOpenDrawerItem(prev => prev === i ? null : i);
+  };
 
   return (
-    <div className="navBarContainer">
+    <header className={`navBarContainer ${isVisible ? '' : 'nav-hidden'} ${hiden?"vrajala":""}`}>
       <div className="navBarContent">
-        <h1 className="nume_logo"><a href='/'>{nume}</a></h1>
+        <h1 className="nume_logo"><a href='/'>Vinil.ro</a></h1>
+
+        {/* ── navigatie desktop ── */}
         <ul className="navLinks">
-          <li>
-            <a href='/genere' className='button'>
-              Genuri <span className="dropArrow">▾</span>
-            </a>
-            <div className="dropdown">
-              <div className='dropdown_content'>
-                {Object.keys(genuri_muzicale).map((g, i) => (
-                  <a key={i} href={`/genere/${g}`} className="dropdownItem">
-                    {/* <span className="dropdownIcon">{g.icon}</span> */}
-                    {genuri_muzicale[g].label}
-                  </a>
-                ))}
+          {formatari.map((v, i) => (
+            <li key={i}>
+              <a href={`/${v.href}/genere`} className='button'>
+                {v.label} <span className="dropArrow">▾</span>
+              </a>
+              <div className="dropdown">
+                <div className='dropdown_content'>
+                  {Object.keys(genuri_muzicale).map((g, j) => (
+                    <a key={j} href={`/${v.href}/genere/${g}`} className="dropdownItem">
+                      {genuri_muzicale[g].label}
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
-          </li>
-          <li><a href="#">Noutăți</a></li>
+            </li>
+          ))}
+          {/* <li><a href="#">Noutăți</a></li>
           <li><a href="#">Oferte</a></li>
-          <li><a href="#">Artiști</a></li>
+          <li><a href="#">Artiști</a></li> */}
         </ul>
 
+        {/* ── actiuni dreapta ── */}
         <div className="navActions">
           <div className={`navSearch ${searchOpen ? 'open' : ''}`}>
-            <button
-              className="navActionBtn"
-              onClick={() => setSearchOpen((v) => !v)}
-              aria-label="Caută"
-            >
+            <button className="navActionBtn" onClick={() => setSearchOpen(v => !v)} aria-label="Caută">
               <IconSearch />
             </button>
             <input
@@ -90,7 +115,6 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0 }) => {
             {wishlistCount > 0 && <span className="navBadge">{wishlistCount}</span>}
           </button>
 
-
           <button className="navActionBtn" aria-label="Coș">
             <IconCart />
             {cartCount > 0 && <span className="navBadge">{cartCount}</span>}
@@ -100,32 +124,48 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0 }) => {
             <IconUser />
           </button>
 
-          <button
-            className="navHamburger navActionBtn"
-            onClick={() => setDrawerOpen((v) => !v)}
-            aria-label="Meniu"
-          >
+          <button className="navHamburger navActionBtn" onClick={() => setDrawerOpen(v => !v)} aria-label="Meniu">
             {drawerOpen ? <IconX /> : <IconMenu />}
           </button>
         </div>
       </div>
 
+      {/* ── drawer mobil ── */}
       <div className={`navDrawer ${drawerOpen ? 'open' : ''}`}>
-        <a href="/genere" className="navDrawerLink">Genuri</a>
-        {Object.keys(genuri_muzicale).map((g, i) => (
-          <a key={i} href={`/genere/${g}`} className="dropdownItem">
-            {/* <span className="dropdownIcon">{g.icon}</span> */}
-            {genuri_muzicale[g].label}
-          </a>
+
+        {formatari.map((v, i) => (
+          <div key={i} className="navDrawerSection">
+
+            <button
+              className="navDrawerLink navDrawerToggle"
+              onClick={() => toggleDrawerItem(i)}
+            >
+              {v.label}
+              <IconChevron open={openDrawerItem === i} />
+            </button>
+
+            {/* subgenuri */}
+            <div className={`navDrawerSub ${openDrawerItem === i ? 'open' : ''}`}>
+              <a href={`/${v.href}/genere`} className="navDrawerSubLink">
+                Toate {v.label}
+              </a>
+              {Object.keys(genuri_muzicale).map((g, j) => (
+                <a key={j} href={`/${v.href}/genere/${g}`} className="navDrawerSubLink">
+                  {genuri_muzicale[g].label}
+                </a>
+              ))}
+            </div>
+
+          </div>
         ))}
+
         <a href="#" className="navDrawerLink">Noutăți</a>
         <a href="#" className="navDrawerLink">Oferte</a>
         <a href="#" className="navDrawerLink">Artiști</a>
       </div>
 
       <div className="stripe" />
-
-    </div>
+    </header>
   );
 };
 

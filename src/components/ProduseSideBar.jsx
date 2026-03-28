@@ -22,7 +22,7 @@ const producatori = [
     { label: 'Blue Note', count: 7 },
 ];
 
-const ProduseSideBar = ({ id }) => {
+const ProduseSideBar = ({ id, format }) => {
     const searchParams = useSearchParams();
     const router = useRouter();
     const [inStoc, setInStoc] = useState(false);
@@ -75,7 +75,7 @@ const ProduseSideBar = ({ id }) => {
                     {toateGenurile.map((g, i) => (
                         <li key={i}>
                             <a
-                                href={`/genere/${g.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace('&', '').replace(/\s+/g, '-')}`}
+                                href={`/${format}/genere/${g.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace('&', '').replace(/\s+/g, '-')}`}
                                 className={g.toLowerCase() === id ? 'active' : ''}
                             >
                                 {genuri_muzicale[g].label}
