@@ -162,7 +162,7 @@ export default function DiscuriVinil({ format, produse, infoPagina }) {
         <nav className="breadcrumb">
           <a href="/">Acasă</a>
           <span>/</span>
-          <a href="/" style={{ textTransform: "capitalize" }}>{format}</a>
+          <a href={`/${format}`} style={{ textTransform: "capitalize" }}>{format}</a>
           <span>/</span>
           <a href={`/${format}/genere`}>Genuri</a>
         </nav>
