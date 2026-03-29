@@ -120,7 +120,39 @@ export default function DiscuriVinil({ format, produse, infoPagina }) {
   const toggleArr = (arr, setArr, val) =>
     setArr(arr.includes(val) ? arr.filter((v) => v !== val) : [...arr, val]);
 
+  const totalPagini = Math.ceil(infoPagina.total / infoPagina.perPage);
   const currentPage = infoPagina.currentPage;
+  const paginatie = () => {
+    const pages = [];
+
+    // Always show first page
+    pages.push(1);
+
+    // Left dots
+    if (currentPage > 4) {
+      pages.push("...");
+    }
+
+    // Middle pages (window around current page)
+    const start = Math.max(2, currentPage - 2);
+    const end = Math.min(totalPagini - 1, currentPage + 2);
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    // Right dots
+    if (currentPage < totalPagini - 3) {
+      pages.push("...");
+    }
+
+    // Always show last page (if > 1)
+    if (totalPagini > 1) {
+      pages.push(totalPagini);
+    }
+
+    return pages;
+  };
 
 
   return (
@@ -130,7 +162,7 @@ export default function DiscuriVinil({ format, produse, infoPagina }) {
         <nav className="breadcrumb">
           <a href="/">Acasă</a>
           <span>/</span>
-          <a href="/" style={{textTransform: "capitalize"}}>{format}</a>
+          <a href="/" style={{ textTransform: "capitalize" }}>{format}</a>
           <span>/</span>
           <a href={`/${format}/genere`}>Genuri</a>
         </nav>
@@ -174,11 +206,20 @@ export default function DiscuriVinil({ format, produse, infoPagina }) {
 
           {/* paginare */}
           <div className="pagination">
-            <span className="pageBtn disabled">‹</span>
-            {[1, 2, 3, 4, 5].map((n) => (
-              <a key={n} href={`?page=${n}`} className={`pageBtn ${n === currentPage ? 'active' : ''}`}>{n}</a>
+            {
+              currentPage > 1 ?
+                <a className={"pageBtn"} href={`?page=${currentPage - 1}`}>‹</a> :
+                <p className={"pageBtn disabled"}>‹</p>
+            }
+            {paginatie().map((n, i) => (
+              n !== "..." ? <a key={i} href={`?page=${n}`} className={`pageBtn ${n === currentPage ? 'active' : ''}`}>{n}</a> :
+                <p key={i} className={`pageBtn`} style={{ cursor: "unset" }}>...</p>
             ))}
-            <span className="pageBtn">›</span>
+            {
+              currentPage < totalPagini ?
+                <a className={"pageBtn"} href={`?page=${currentPage + 1}`}>›</a> :
+                <p className={"pageBtn disabled"}>›</p>
+            }
           </div>
 
         </main>

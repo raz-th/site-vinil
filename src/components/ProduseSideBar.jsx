@@ -22,6 +22,14 @@ const producatori = [
     { label: 'Blue Note', count: 7 },
 ];
 
+const formatari = [
+    { label: 'Vinil', value: 'vinil' },
+    { label: 'CD', value: 'cd' },
+    { label: 'Casetă', value: 'caseta' },
+    { label: 'DVD', value: 'dvd' },
+    { label: 'Blu-ray', value: 'bluray' },
+];
+
 const ProduseSideBar = ({ id, format }) => {
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -62,7 +70,7 @@ const ProduseSideBar = ({ id, format }) => {
             // Object.keys(genuri_muzicale).map((v) =>genuri_muzicale[v].styles.map((v)=>t = [...t, v]))
             setGenuri(["Classic Rock", "Hip Hop", "Pop", "Electronic, Rock", "Electronic"])
         }
-        
+
         // console.log(genuri_muzicale[id].styles)
     }, [id])
 
@@ -72,6 +80,14 @@ const ProduseSideBar = ({ id, format }) => {
             <div className="sideSection">
                 <h2 className="sideSectionTitle">Genuri</h2>
                 <ul className="sideLinks">
+                    <li>
+                            <a
+                                href={`/${format}/genere`}
+                                className={id?"":"active"}
+                            >
+                                Toate
+                            </a>
+                        </li>
                     {toateGenurile.map((g, i) => (
                         <li key={i}>
                             <a
@@ -98,6 +114,26 @@ const ProduseSideBar = ({ id, format }) => {
                         <span className="filterCount">(361)</span>
                     </label>
                 </div>
+            </div>
+
+            <div className="sideSection">
+                <h2 className="sideSectionTitle">Format</h2>
+                <ul className="sideLinks">
+                    <li >
+                        <a href={`/toate/genere${id ? `/${id}` : ''}`} className={format === 'toate' ? 'active' : ''}>
+                            Toate
+                        </a>
+                    </li>
+                    {formatari.map((f) => (
+                        <li key={f.value}
+
+                            >
+                            <a className={format === f.value ? 'active' : ''} href={`/${f.value}/genere${id ? `/${id}` : ''}`}>
+                                {f.label}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
             </div>
 
             <div className="sideSection">

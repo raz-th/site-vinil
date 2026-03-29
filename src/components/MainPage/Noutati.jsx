@@ -5,7 +5,7 @@ import { Reveal } from '../Reveal';
 import { Card } from './NoutatiCard';
 
 const Noutati = async () => {
-    const snapshot = await adminDb.collection("releases").orderBy('date_added', 'desc')
+    const snapshot = await adminDb.collection("releases").orderBy('date_added', 'desc').where('format', '==', "Vinyl")
       .limit(4).get();
       const nouStuff = snapshot.docs.map(doc => doc.data())
     //   console.log(nouStuff)

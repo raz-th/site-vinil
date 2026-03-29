@@ -84,11 +84,111 @@
     align-items: center;
 }
 .feat_card_banner_txt{
-    font-size: 3rem;
+    font-size: clamp(1.7rem, 2vw, 3rem);
     position: absolute;
     color: #fff;
     font-weight: 500;
     font-family: "Lacheyard Script", cursive;
+}
+
+.carousel_wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.carousel_track {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+  /* overflow-x: hidden; */
+  cursor: grab;
+  user-select: none;
+}
+
+.carousel_card {
+  flex: 1;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  min-width: 0;
+}
+
+.carousel_card_side {
+  opacity: 0.6;
+  transform: scale(0.92);
+}
+
+.carousel_card_center {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.carousel_btn {
+  background: #2c1f0e;
+  border: 1px solid #5c4430;
+  color: #eec99d;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s;
+  z-index: 2;
+}
+
+.carousel_btn:hover {
+  background: #c44804;
+  border-color: #c44804;
+}
+
+.carousel_dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.carousel_dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #5c4430;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  padding: 0;
+}
+
+.carousel_dot.active {
+  background: #c44804;
+  transform: scale(1.3);
+}
+
+@media (max-width: 768px) {
+  .carousel_wrap {
+    gap: 6px;
+  }
+
+  /* pe mobil arata doar 1 card */
+  .carousel_card_side {
+    display: none;
+  }
+
+  .carousel_card_center {
+    opacity: 1;
+    transform: scale(1);
+    flex: 1;
+  }
+
+  .carousel_btn {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
 }
 
 @media (max-width: 768px) {

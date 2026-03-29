@@ -44,23 +44,23 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [openDrawerItem, setOpenDrawerItem] = useState(null); // index deschis in drawer
 
-  const controlNavbar = useCallback(() => {
-    try {
-      if (typeof window !== 'undefined') {
-        if (window.scrollY > lastScrollY) { setIsVisible(false); setDrawerOpen(false); }
-        else setIsVisible(true);
-        setLastScrollY(window.scrollY);
-        const winScroll = document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        setScrollWidth((winScroll / height) * 100);
-      }
-    } catch (err) { }
-  }, [lastScrollY]);
+  // const controlNavbar = useCallback(() => {
+  //   try {
+  //     if (typeof window !== 'undefined') {
+  //       if (window.scrollY > lastScrollY) { setIsVisible(false); setDrawerOpen(false); }
+  //       else setIsVisible(true);
+  //       setLastScrollY(window.scrollY);
+  //       const winScroll = document.documentElement.scrollTop;
+  //       const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  //       setScrollWidth((winScroll / height) * 100);
+  //     }
+  //   } catch (err) { }
+  // }, [lastScrollY]);
 
-  useEffect(() => {
-    window.addEventListener('scroll', controlNavbar);
-    return () => window.removeEventListener('scroll', controlNavbar);
-  }, [controlNavbar]);
+  // useEffect(() => {
+  //   window.addEventListener('scroll', controlNavbar);
+  //   return () => window.removeEventListener('scroll', controlNavbar);
+  // }, [controlNavbar]);
 
   const toggleDrawerItem = (i) => {
     setOpenDrawerItem(prev => prev === i ? null : i);
@@ -80,6 +80,7 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
               </a>
               <div className="dropdown">
                 <div className='dropdown_content'>
+                  <a href={`/${v.href}/genere`}>Toate</a>
                   {Object.keys(genuri_muzicale).map((g, j) => (
                     <a key={j} href={`/${v.href}/genere/${g}`} className="dropdownItem">
                       {genuri_muzicale[g].label}
@@ -147,7 +148,7 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
             {/* subgenuri */}
             <div className={`navDrawerSub ${openDrawerItem === i ? 'open' : ''}`}>
               <a href={`/${v.href}/genere`} className="navDrawerSubLink">
-                Toate {v.label}
+                Toate
               </a>
               {Object.keys(genuri_muzicale).map((g, j) => (
                 <a key={j} href={`/${v.href}/genere/${g}`} className="navDrawerSubLink">

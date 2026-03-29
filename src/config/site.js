@@ -42,7 +42,7 @@ export const genuri_muzicale = {
   },
   "soundtracks": {
     id: "Stage & Screen",
-    label: "Coloane Sonore",
+    label: "Soundtracks",
     styles: ["Soundtrack", "Score", "Musical", "Theme", "Film Score"]
   },
   "muzica-romaneasca": {

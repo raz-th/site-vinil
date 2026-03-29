@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Crimson+Text:wght@400;600&display=swap');
+
+.formatPage {
+  background: #d4b896;
+  min-height: 100vh;
+  font-family: 'Crimson Text', Georgia, serif;
+}
+
+.formatPageInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
+}
+
+/* ── breadcrumb ── */
+.formatBreadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 1.2rem 0 0.4rem;
+  font-size: 13px;
+  color: #7a6248;
+}
+
+.formatBreadcrumb a {
+  color: #7a6248;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.formatBreadcrumb a:hover { color: #c44804; }
+.formatBreadcrumb span { opacity: 0.5; }
+
+/* ── hero ── */
+.formatHero {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  height: 260px;
+  margin-bottom: 2.5rem;
+  background: #1f1f1d;
+}
+
+.formatHero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.formatHeroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(20, 10, 5, 0.88) 45%, transparent);
+  display: flex;
+  align-items: center;
+  padding: 0 2.5rem;
+}
+
+.formatHeroContent {}
+
+.formatHeroTitle {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: #eec99d;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 8px;
+}
+
+.formatHeroDesc {
+  color: #b8ad90;
+  font-size: 16px;
+  margin: 0 0 20px;
+  font-family: 'Crimson Text', Georgia, serif;
+}
+
+.formatHeroBtn {
+  background: #c44804;
+  color: #fff;
+  padding: 10px 24px;
+  text-decoration: none;
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+
+.formatHeroBtn:hover { background: #a33a03; }
+
+/* ── section header ── */
+.formatSectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 1rem;
+}
+
+.formatSectionTitle {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #2c1f0e;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.formatSectionLine {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #c44804, transparent);
+}
+
+/* ── grid genuri ── */
+.formatGenreGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.formatGenreCard {
+  background: #1f1f1d;
+  border: 1px solid #3a2e20;
+  border-radius: 3px;
+  padding: 14px 18px;
+  color: #c8b99a;
+  text-decoration: none;
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.formatGenreCard:hover {
+  border-color: #c44804;
+  color: #eec99d;
+  background: #2a1e10;
+}
+
+.formatGenreCard svg {
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* ── responsive ── */
+@media (max-width: 600px) {
+  .formatHero { height: 200px; }
+  .formatHeroTitle { font-size: 28px; }
+  .formatGenreGrid { grid-template-columns: repeat(2, 1fr); }
+  .formatPageInner { padding: 0 1rem 3rem; }
+}
