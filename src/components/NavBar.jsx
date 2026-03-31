@@ -121,9 +121,9 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
             {cartCount > 0 && <span className="navBadge">{cartCount}</span>}
           </button>
 
-          <button className="navActionBtn" aria-label="Cont">
+          <a href='/profil' className="navActionBtn" aria-label="Cont">
             <IconUser />
-          </button>
+          </a>
 
           <button className="navHamburger navActionBtn" onClick={() => setDrawerOpen(v => !v)} aria-label="Meniu">
             {drawerOpen ? <IconX /> : <IconMenu />}

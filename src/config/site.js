@@ -10,6 +10,7 @@ export const formatMap = {
   'bluray': 'Blu-ray',
 };
 export const genuri_muzicale = {
+  
   "rock": {
     id: "Rock",
     label: "Rock",
