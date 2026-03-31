@@ -1,7 +1,9 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './GenrePage.css';
 import ProduseSideBar from '@/components/ProduseSideBar';
+import { useRouter } from 'next/navigation';
+
 
 
 
@@ -30,7 +32,7 @@ const IconDisc = () => (
 const cleanArtistName = (name) => name.replace(/\s*\(\d+\)$/, '').trim();
 
 const ProductCard = ({ produs }) => {
-
+  const nav = useRouter();
   const artisti = produs.artist;
   const an = produs.year > 0 ? produs.year : null;
   const label = produs.labels?.[0]?.name;
@@ -38,7 +40,7 @@ const ProductCard = ({ produs }) => {
   const formatDesc = produs.formats?.[0]?.descriptions?.[0]; // "Album", "Single", etc.
 
   return (
-    <div className="productCard">
+    <div className="productCard" onClick={()=>nav.push(`/produs/${produs.id}`)}>
       <div className="productImageWrap">
         <img
           src={produs.cover_image || produs.thumb || "/assets/image.png"}
