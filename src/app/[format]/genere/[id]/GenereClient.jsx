@@ -143,7 +143,7 @@ export default function GenereClient({ id, format, produse, infoPagina }) {
 
           <div className="genreHeader">
             <div>
-              <h1 className="genreTitle">{titlu}</h1>
+              <h1 className="genreTitle">{format} - {titlu}</h1>
               <p className="genreCount">
                 Afișează: <strong>{infoPagina.deLa}–{infoPagina.panaLa}</strong> din <strong>{infoPagina.total}</strong> produse
               </p>
