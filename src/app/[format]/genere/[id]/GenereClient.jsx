@@ -40,7 +40,7 @@ const ProductCard = ({ produs }) => {
   const formatDesc = produs.formats?.[0]?.descriptions?.[0]; // "Album", "Single", etc.
 
   return (
-    <div className="productCard" onClick={()=>nav.push(`/produs/${produs.id}`)}>
+    <div className="productCard" onClick={() => nav.push(`/produs/${produs.id}`)}>
       <div className="productImageWrap">
         <img
           src={produs.cover_image || produs.thumb || "/assets/image.png"}
@@ -88,31 +88,33 @@ export default function GenereClient({ id, format, produse, infoPagina }) {
 
   const totalPagini = Math.ceil(infoPagina.total / infoPagina.perPage);
   const currentPage = infoPagina.currentPage;
+
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
+
+
   const paginatie = () => {
     const pages = [];
 
-    // Always show first page
+    const maxVisible = isMobile ? 3 : 5; 
+
     pages.push(1);
 
-    // Left dots
-    if (currentPage > 4) {
+    if (currentPage > 2) {
       pages.push("...");
     }
 
-    // Middle pages (window around current page)
-    const start = Math.max(2, currentPage - 2);
-    const end = Math.min(totalPagini - 1, currentPage + 2);
+    const offset = Math.floor(maxVisible / 2);
+    const start = Math.max(2, currentPage - offset);
+    const end = Math.min(totalPagini - 1, currentPage + offset);
 
     for (let i = start; i <= end; i++) {
       pages.push(i);
     }
 
-    // Right dots
-    if (currentPage < totalPagini - 3) {
+    if (currentPage < totalPagini - 1) {
       pages.push("...");
     }
 
-    // Always show last page (if > 1)
     if (totalPagini > 1) {
       pages.push(totalPagini);
     }
@@ -129,7 +131,7 @@ export default function GenereClient({ id, format, produse, infoPagina }) {
         <nav className="breadcrumb">
           <a href="/">Acasă</a>
           <span>/</span>
-          <a href={`/${format}`} style={{textTransform: "capitalize"}}>{format}</a>
+          <a href={`/${format}`} style={{ textTransform: "capitalize" }}>{format}</a>
           <span>/</span>
           <a href={`/${format}/genere`}>Genuri</a>
           <span>/</span>
