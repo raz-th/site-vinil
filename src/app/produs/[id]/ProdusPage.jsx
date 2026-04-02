@@ -246,19 +246,24 @@ const ProdusPage = ({ produs }) => {
                         <p>{produs.notes}</p>
                     </section>
                 </div>
-                <div className="videosContainer">
-                    <section className="videosContent">
-                        <div className="secondInfoHeader">
-                            <h2>Videoclipuri</h2>
-                            <div className="line" />
+                {
+                    produs.videos.length > 0 && (
+                        <div className="videosContainer">
+                            <section className="videosContent">
+                                <div className="secondInfoHeader">
+                                    <h2>Videoclipuri</h2>
+                                    <div className="line" />
+                                </div>
+                                <div className="videosGrid">
+                                    {
+                                        produs.videos.map((v, i) => <VideoCard key={i} name={v.title} time={v.duration} />)
+                                    }
+                                </div>
+                            </section>
                         </div>
-                        <div className="videosGrid">
-                            {
-                                produs.videos.map((v, i) => <VideoCard key={i} name={v.title} time={v.duration} />)
-                            }
-                        </div>
-                    </section>
-                </div>
+                    )
+                }
+
             </div>
 
         </div>
