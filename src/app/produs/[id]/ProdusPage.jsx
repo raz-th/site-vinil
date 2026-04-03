@@ -18,12 +18,12 @@ const formatTime = (seconds) => {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
 };
 
-const VideoCard = ({ name, time }) => {
+const VideoCard = ({ name, time, uri }) => {
     return (
         <div className="videoCardCont">
-            <button className="playBtn">
+            <a className="playBtn" href={uri} target="_">
                 <FaPlay />
-            </button>
+            </a>
             <div>
                 <h3>{name}</h3>
                 <span>{formatTime(time)}</span>
@@ -256,7 +256,7 @@ const ProdusPage = ({ produs }) => {
                                 </div>
                                 <div className="videosGrid">
                                     {
-                                        produs.videos.map((v, i) => <VideoCard key={i} name={v.title} time={v.duration} />)
+                                        produs.videos.map((v, i) => <VideoCard uri={v.uri} key={i} name={v.title} time={v.duration} />)
                                     }
                                 </div>
                             </section>

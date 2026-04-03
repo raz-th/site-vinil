@@ -37,7 +37,7 @@
   overflow: hidden;
   height: 260px;
   margin-bottom: 2.5rem;
-  background: #1f1f1d;
+  background: var(--foreground);
 }
 
 .formatHero img {
@@ -127,7 +127,7 @@
 }
 
 .formatGenreCard {
-  background: #1f1f1d;
+  background: var(--foreground);
   border: 1px solid #3a2e20;
   border-radius: 3px;
   padding: 14px 18px;

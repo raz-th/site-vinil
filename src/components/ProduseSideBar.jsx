@@ -1,18 +1,10 @@
 'use client';
+
 import { genuri_muzicale } from '@/config/site';
-import { useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 
-const toateGenurile = Object.keys(genuri_muzicale)
-// console.log(toateGenurile)
-// const genuri = [
-//     { label: 'Rock', count: 6 },
-//     { label: 'Folk Rock', count: 3 },
-//     { label: 'Jazz, Rock, Blues', count: 3 },
-//     { label: 'Hard Rock', count: 2 },
-//     { label: 'Electronic, Rock, Pop', count: 1 },
-// ];
+const toateGenurile = Object.keys(genuri_muzicale);
 
 const producatori = [
     { label: '143 Records', count: 1 },
@@ -30,9 +22,10 @@ const formatari = [
     { label: 'Blu-ray', value: 'bluray' },
 ];
 
-const ProduseSideBar = ({ id, format }) => {
+const ProduseSideBar = ({ search = false, id, format }) => {
     const searchParams = useSearchParams();
     const router = useRouter();
+
     const [inStoc, setInStoc] = useState(false);
     const [genSelect, setGenSelect] = useState(
         () => searchParams.get('styles')?.split(',').filter(Boolean) || []
@@ -40,16 +33,33 @@ const ProduseSideBar = ({ id, format }) => {
     const [prodSelect, setProdSelect] = useState([]);
     const [genuri, setGenuri] = useState([]);
 
+    const isFirstRender = useRef(true);
+
+    const currentGenre = searchParams.get('genres') || '';
+    const currentFormat = searchParams.get('format') || '';
+
+    // 🔥 helper pentru update params
+    const updateParam = (key, value) => {
+        const params = new URLSearchParams(searchParams.toString());
+
+        if (value && value !== 'toate') {
+            params.set(key, value);
+        } else {
+            params.delete(key);
+        }
+
+        params.delete('page'); // reset pagination
+        router.push(`?${params.toString()}`);
+    };
 
     const toggleArr = (arr, setArr, val) =>
         setArr(arr.includes(val) ? arr.filter((v) => v !== val) : [...arr, val]);
 
-    const isFirstRender = useRef(true);
-
+    // 🔁 styles (checkboxuri)
     useEffect(() => {
         if (isFirstRender.current) {
             isFirstRender.current = false;
-            return; // skip la mount
+            return;
         }
 
         const params = new URLSearchParams(searchParams.toString());
@@ -59,48 +69,80 @@ const ProduseSideBar = ({ id, format }) => {
         } else {
             params.delete('styles');
         }
-        router.push(`?${params.toString()}`);
 
+        params.delete('page');
+        router.push(`?${params.toString()}`);
     }, [genSelect]);
 
+    // 🔁 genuri list
     useEffect(() => {
-        if (id) setGenuri(genuri_muzicale[id].styles)
-        else {
-            // let t = []
-            // Object.keys(genuri_muzicale).map((v) =>genuri_muzicale[v].styles.map((v)=>t = [...t, v]))
-            setGenuri(["Classic Rock", "Hip Hop", "Pop", "Electronic, Rock", "Electronic"])
+        if (id && genuri_muzicale[id]) {
+            setGenuri(genuri_muzicale[id].styles);
+        } else {
+            setGenuri(["Classic Rock", "Hip Hop", "Pop", "Electronic"]);
         }
-
-        // console.log(genuri_muzicale[id].styles)
-    }, [id])
+    }, [id]);
 
     return (
-        <aside className="sidebar" >
+        <aside className="sidebar">
 
+            {/* ── GENURI ── */}
             <div className="sideSection">
                 <h2 className="sideSectionTitle">Genuri</h2>
                 <ul className="sideLinks">
+
+                    {/* Toate */}
                     <li>
+                        {search ? (
                             <a
-                                href={`/${format}/genere`}
-                                className={id?"":"active"}
+                                onClick={() => updateParam('genres', null)}
+                                className={!currentGenre ? 'active' : ''}
                             >
                                 Toate
                             </a>
-                        </li>
-                    {toateGenurile.map((g, i) => (
-                        <li key={i}>
+                        ) : (
                             <a
-                                href={`/${format}/genere/${g.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace('&', '').replace(/\s+/g, '-')}`}
-                                className={g.toLowerCase() === id ? 'active' : ''}
+                                href={`/${format}/genere`}
+                                className={!id ? 'active' : ''}
                             >
-                                {genuri_muzicale[g].label}
+                                Toate
                             </a>
-                        </li>
-                    ))}
+                        )}
+                    </li>
+
+                    {/* Lista genuri */}
+                    {toateGenurile.map((g, i) => {
+                        const genreId = genuri_muzicale[g].id;
+
+                        return (
+                            <li key={i}>
+                                {search ? (
+                                    <a
+                                        onClick={() => updateParam('genres', genreId)}
+                                        className={currentGenre === genreId ? 'active' : ''}
+                                    >
+                                        {genuri_muzicale[g].label}
+                                    </a>
+                                ) : (
+                                    <a
+                                        href={`/${format}/genere/${g
+                                            .toLowerCase()
+                                            .normalize("NFD")
+                                            .replace(/[\u0300-\u036f]/g, "")
+                                            .replace('&', '')
+                                            .replace(/\s+/g, '-')}`}
+                                        className={g.toLowerCase() === id ? 'active' : ''}
+                                    >
+                                        {genuri_muzicale[g].label}
+                                    </a>
+                                )}
+                            </li>
+                        );
+                    })}
                 </ul>
             </div>
 
+            {/* ── STATUS STOC ── */}
             <div className="sideSection">
                 <h2 className="sideSectionTitle">Status stoc</h2>
                 <div className="filterGroup">
@@ -108,7 +150,7 @@ const ProduseSideBar = ({ id, format }) => {
                         <input
                             type="checkbox"
                             checked={inStoc}
-                            onChange={() => setInStoc((v) => !v)}
+                            onChange={() => setInStoc(v => !v)}
                         />
                         În stoc
                         <span className="filterCount">(361)</span>
@@ -116,26 +158,54 @@ const ProduseSideBar = ({ id, format }) => {
                 </div>
             </div>
 
+            {/* ── FORMAT ── */}
             <div className="sideSection">
                 <h2 className="sideSectionTitle">Format</h2>
                 <ul className="sideLinks">
-                    <li >
-                        <a href={`/toate/genere${id ? `/${id}` : ''}`} className={format === 'toate' ? 'active' : ''}>
-                            Toate
-                        </a>
-                    </li>
-                    {formatari.map((f) => (
-                        <li key={f.value}
 
+                    {/* Toate */}
+                    <li>
+                        {search ? (
+                            <a
+                                onClick={() => updateParam('format', null)}
+                                className={!currentFormat ? 'active' : ''}
                             >
-                            <a className={format === f.value ? 'active' : ''} href={`/${f.value}/genere${id ? `/${id}` : ''}`}>
-                                {f.label}
+                                Toate
                             </a>
+                        ) : (
+                            <a
+                                href={`/toate/genere${id ? `/${id}` : ''}`}
+                                className={format === 'toate' ? 'active' : ''}
+                            >
+                                Toate
+                            </a>
+                        )}
+                    </li>
+
+                    {/* Lista formate */}
+                    {formatari.map((f) => (
+                        <li key={f.value}>
+                            {search ? (
+                                <a
+                                    onClick={() => updateParam('format', f.value)}
+                                    className={currentFormat === f.value ? 'active' : ''}
+                                >
+                                    {f.label}
+                                </a>
+                            ) : (
+                                <a
+                                    href={`/${f.value}/genere${id ? `/${id}` : ''}`}
+                                    className={format === f.value ? 'active' : ''}
+                                >
+                                    {f.label}
+                                </a>
+                            )}
                         </li>
                     ))}
                 </ul>
             </div>
 
+            {/* ── STYLES ── */}
             <div className="sideSection">
                 <h2 className="sideSectionTitle">Gen</h2>
                 <div className="filterGroup">
@@ -147,12 +217,12 @@ const ProduseSideBar = ({ id, format }) => {
                                 onChange={() => toggleArr(genSelect, setGenSelect, g)}
                             />
                             {g}
-                            {/* <span className="filterCount">({g.count})</span> */}
                         </label>
                     ))}
                 </div>
             </div>
 
+            {/* ── PRODUCATORI ── */}
             <div className="sideSection">
                 <h2 className="sideSectionTitle">Producători</h2>
                 <div className="filterGroup">
@@ -172,6 +242,6 @@ const ProduseSideBar = ({ id, format }) => {
 
         </aside>
     );
-}
+};
 
 export default ProduseSideBar;

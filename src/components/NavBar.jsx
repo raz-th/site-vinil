@@ -2,6 +2,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { genuri_muzicale, nume } from '../config/site';
 import './NavBar.css';
+import { useRouter } from 'next/navigation';
+import { FaRegUser } from "react-icons/fa";
 
 const IconSearch = () => (
   <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><line x1="16.5" y1="16.5" x2="22" y2="22" /></svg>
@@ -35,6 +37,21 @@ const formatari = [
   { label: "Blu-ray", href: "bluray" },
 ];
 
+
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+
+    check(); // initial
+    window.addEventListener("resize", check);
+
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  return isMobile;
+};
 const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -42,7 +59,9 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [scrollWidth, setScrollWidth] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
-  const [openDrawerItem, setOpenDrawerItem] = useState(null); // index deschis in drawer
+  const [openDrawerItem, setOpenDrawerItem] = useState(null);
+  const nav = useRouter()
+  const isMobile = useIsMobile();
 
   // const controlNavbar = useCallback(() => {
   //   try {
@@ -66,8 +85,12 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
     setOpenDrawerItem(prev => prev === i ? null : i);
   };
 
+  useEffect(() => {
+
+  }, [searchVal])
+
   return (
-    <header className={`navBarContainer ${isVisible ? '' : 'nav-hidden'} ${hiden?"vrajala":""}`}>
+    <header className={`navBarContainer ${isVisible ? '' : 'nav-hidden'} ${hiden ? "vrajala" : ""}`}>
       <div className="navBarContent">
         <h1 className="nume_logo"><a href='/'>Vinil.ro</a></h1>
 
@@ -98,7 +121,7 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
         {/* ── actiuni dreapta ── */}
         <div className="navActions">
           <div className={`navSearch ${searchOpen ? 'open' : ''}`}>
-            <button className="navActionBtn" onClick={() => setSearchOpen(v => !v)} aria-label="Caută">
+            <button className="navActionBtn" onClick={() => !isMobile ? setSearchOpen(v => !v) : nav.push("/search")} aria-label="Caută">
               <IconSearch />
             </button>
             <input
@@ -106,7 +129,12 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
               placeholder="Artist, titlu, an..."
               value={searchVal}
               onChange={(e) => setSearchVal(e.target.value)}
-              onKeyDown={(e) => e.key === 'Escape' && setSearchOpen(false)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && searchVal.trim()) {
+                  nav.push(`/search?q=${encodeURIComponent(searchVal)}`);
+                }
+                if (e.key === 'Escape') setSearchOpen(false);
+              }}
               autoFocus={searchOpen}
             />
           </div>
@@ -133,36 +161,57 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
 
       {/* ── drawer mobil ── */}
       <div className={`navDrawer ${drawerOpen ? 'open' : ''}`}>
-
-        {formatari.map((v, i) => (
-          <div key={i} className="navDrawerSection">
-
-            <button
-              className="navDrawerLink navDrawerToggle"
-              onClick={() => toggleDrawerItem(i)}
-            >
-              {v.label}
-              <IconChevron open={openDrawerItem === i} />
-            </button>
-
-            {/* subgenuri */}
-            <div className={`navDrawerSub ${openDrawerItem === i ? 'open' : ''}`}>
-              <a href={`/${v.href}/genere`} className="navDrawerSubLink">
-                Toate
-              </a>
-              {Object.keys(genuri_muzicale).map((g, j) => (
-                <a key={j} href={`/${v.href}/genere/${g}`} className="navDrawerSubLink">
-                  {genuri_muzicale[g].label}
-                </a>
-              ))}
+        {/* profil în drawer */}
+        {/* <a href='/profil' className="navDrawerLink navDrawerProfile">
+          <svg viewBox="0 0 24 24" style={{ width: 18, height: 18, stroke: 'currentColor', fill: 'none', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round', flexShrink: 0 }}>
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
+          </svg>
+          Contul meu
+        </a> */}
+        <div className='navDrawerHero'>
+          <div style={{ display: 'flex', gap: 10, position: 'relative', width: '100%' }}>
+            <div className='ic'>
+              <FaRegUser />
             </div>
-
+            <div>
+              <p>Intră în universul tău muzical. </p>
+              <span>Autentifică-te sau creează un cont</span>
+            </div>
           </div>
-        ))}
 
-        <a href="#" className="navDrawerLink">Noutăți</a>
+          <button>Intră</button>
+        </div>
+        <div className="navDrawerContent">
+          {formatari.map((v, i) => (
+            <div key={i} className="navDrawerSection">
+
+              <button
+                className="navDrawerLink navDrawerToggle"
+                onClick={() => toggleDrawerItem(i)}
+              >
+                {v.label}
+                <IconChevron open={openDrawerItem === i} />
+              </button>
+
+              {/* subgenuri */}
+              <div className={`navDrawerSub ${openDrawerItem === i ? 'open' : ''}`}>
+                <a href={`/${v.href}/genere`} className="navDrawerSubLink">
+                  Toate
+                </a>
+                {Object.keys(genuri_muzicale).map((g, j) => (
+                  <a key={j} href={`/${v.href}/genere/${g}`} className="navDrawerSubLink">
+                    {genuri_muzicale[g].label}
+                  </a>
+                ))}
+              </div>
+
+            </div>
+          ))}
+        </div>
+
+        {/* <a href="#" className="navDrawerLink">Noutăți</a>
         <a href="#" className="navDrawerLink">Oferte</a>
-        <a href="#" className="navDrawerLink">Artiști</a>
+        <a href="#" className="navDrawerLink">Artiști</a> */}
       </div>
 
       <div className="stripe" />
