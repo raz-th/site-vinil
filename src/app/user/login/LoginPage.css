@@ -1,10 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Crimson+Text:wght@400;600&display=swap');
 
+/* ─── Base ────────────────────────────────────────────────────── */
 .loginClientPage {
   flex: 1;
-
   font-family: 'Crimson Text', Georgia, serif;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,11 +17,11 @@
   width: 100%;
   background-color: #fff;
   display: flex;
-
-  gap: 20px;
+  gap: 0;
   border-radius: 25px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  transition: all 0.3s ease;
 }
 
 .loginClientContainer a {
@@ -31,54 +30,153 @@
   text-decoration: none;
 }
 
+/* ─── Side image panel ───────────────────────────────────────── */
 .loginClientContainer section {
   width: 50%;
   overflow: hidden;
-}
-
-.loginClientContainer form {
-  width: 50%;
-  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .loginClientContainer .imageContent {
   background-image: linear-gradient(135deg, #000000a1), url('/assets/login.png');
   background-size: cover;
   background-position: center;
-  /* aspect-ratio: 1/1; */
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   flex-direction: column;
-  /* display: none; */
+  gap: 0;
+  padding: 2rem;
+  text-align: center;
+  transition: none;
 }
 
-.loginClientContainer .imageContent p {
-  font-size: 16px;
+.loginClientContainer .imageContent h3 {
+  font-size: 1.1rem;
   color: #e0e0e0;
-  max-width: 300px;
-  text-align: center;
+  max-width: 260px;
+  margin-top: 8px;
+
+  /* smooth text swap */
+  animation: fadeSlideUp 0.45s ease both;
 }
 
 .loginClientContainer .imageContent h1 {
   font-size: 2.5rem;
   font-weight: 900;
-  margin-bottom: 10px;
+  margin-bottom: 4px;
 }
 
-.loginClientContainer form {
+/* ─── Mode dots ──────────────────────────────────────────────── */
+.mode-dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.mode-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.6);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.3s, border-color 0.3s, transform 0.2s;
+}
+
+.mode-dot.active {
+  background: #fff;
+  border-color: #fff;
+  transform: scale(1.25);
+}
+
+.mode-dot:hover:not(.active) {
+  border-color: #fff;
+}
+
+/* ─── Form viewport (clips the sliding panels) ───────────────── */
+.form-viewport {
+  width: 50%;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* ─── Animated panel ─────────────────────────────────────────── */
+.auth-panel {
+  animation: slideInRight 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Exiting: slide out to left (going to sign-up) */
+.auth-panel.slide-out-left {
+  animation: slideOutLeft 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+  pointer-events: none;
+}
+
+/* Exiting: slide out to right (going to sign-in) */
+.auth-panel.slide-out-right {
+  animation: slideOutRight 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+  pointer-events: none;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(48px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-48px);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(48px);
+  }
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Form inner ─────────────────────────────────────────────── */
+.auth-panel form {
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   padding: 2rem;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .loginClientContainer form .authHeader {
-  /* font-size: 24px; */
   font-weight: 700;
-  /* color: #334155;  */
   margin-bottom: 20px;
   text-align: center;
 }
@@ -89,7 +187,6 @@
 }
 
 .loginClientContainer form .authHeader p {
-  /* font-size: 20px; */
   color: #4b5563;
   margin-top: 8px;
 }
@@ -97,10 +194,9 @@
 .loginClientContainer form .input-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
 
 .loginClientContainer form .input-label {
   font-size: 14px;
@@ -110,13 +206,11 @@
   margin-left: 4px;
 }
 
-
 .loginClientContainer form .input-wrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
-
 
 .loginClientContainer .input-icon {
   position: absolute;
@@ -127,7 +221,6 @@
   pointer-events: none;
 }
 
-
 .loginClientContainer .custom-input {
   width: 100%;
   padding: 12px 12px 12px 40px;
@@ -137,25 +230,25 @@
   outline: none;
   transition: all 0.2s ease-in-out;
   color: #1e293b;
+  box-sizing: border-box;
 }
-
 
 .loginClientContainer .custom-input:focus {
   border-color: var(--accent2);
   box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
 
-
 .loginClientContainer .custom-input::placeholder {
   color: #9ca3af;
 }
 
+/* ─── Auth options row ───────────────────────────────────────── */
 .auth-options {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin: 15px 0 25px 0;
+  margin: 10px 0 20px 0;
   font-family: sans-serif;
 }
 
@@ -185,10 +278,10 @@
 }
 
 .forgot-link:hover {
-  color: var(--accent2);
   text-decoration: underline;
 }
 
+/* ─── Buttons ────────────────────────────────────────────────── */
 .login-btn {
   background-color: var(--accent2);
   color: #fff;
@@ -198,7 +291,12 @@
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out, transform 0.15s ease;
+}
+
+.login-btn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
 }
 
 .continue-with {
@@ -206,12 +304,13 @@
   align-items: center;
   gap: 12px;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 16px;
 }
 
 .continue-with p {
   font-size: 14px;
   color: #6b7280;
+  white-space: nowrap;
 }
 
 .continue-with .line {
@@ -230,7 +329,7 @@
   display: flex;
   gap: 12px;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 16px;
 }
 
 .continueGoogle-btn {
@@ -242,25 +341,46 @@
   border: 1px solid #d1d5db;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  background: #fff;
+  transition: background-color 0.2s ease-in-out, box-shadow 0.2s;
+  font-size: 15px;
 }
 
+.continueGoogle-btn:hover {
+  background: #f9fafb;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+/* Switch link — looks like a link, acts as a button */
+.switch-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font-weight: 600;
+  color: var(--accent2);
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.switch-link:hover {
+  text-decoration: underline;
+}
+
+/* ─── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .loginClientContainer {
     flex-direction: column;
   }
 
-  .loginClientContainer section:first-child{
+  .loginClientContainer section:first-child {
     display: none;
   }
 
   .loginClientContainer section,
-  .loginClientContainer form {
+  .form-viewport {
     width: 100%;
   }
-
-  .loginClientContainer .imageContent {
-    display: none;
-  }
-
 }

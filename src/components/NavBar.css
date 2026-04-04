@@ -104,7 +104,7 @@
 }
 
 .navLinks li a:hover,
-.navLinks li button:hover {
+.navLinks li button:hover:not(.logout-btn) {
   color: #eec99d;
 }
 
@@ -120,7 +120,7 @@
   transition: transform 0.2s;
 }
 
-.navLinks li a:hover::after {
+.navLinks li:not(.noHover) a:hover::after {
   transform: scaleX(1);
 }
 
@@ -267,7 +267,52 @@
   opacity: 1;
 }
 
-/* ── linia portocalie de jos ── */
+.user-info-header {
+  padding: 10px 15px;
+  /* background: #f9f9f9; */
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+
+.user-name {
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin: 0;
+  color: #fff;
+}
+
+.user-email {
+  font-size: 0.75rem;
+  color: #777;
+  margin: 0;
+}
+
+.nav-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--accent1);
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: none;
+  border: none;
+  color: #e74c3c;
+  /* Roșu pentru logout */
+  padding: 10px 15px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.logout-btn:hover {
+  color: red;
+}
 
 
 /* ── mobil ── */
@@ -492,6 +537,8 @@
   font-size: 16px;
   font-family: 'Crimson Text', Georgia, serif;
 }
+
+
 
 @media (max-width: 768px) {
   .navLinks {

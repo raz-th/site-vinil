@@ -3,7 +3,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { genuri_muzicale, nume } from '../config/site';
 import './NavBar.css';
 import { useRouter } from 'next/navigation';
-import { FaRegUser } from "react-icons/fa";
+import { FaRegUser, FaSignOutAlt, FaBoxOpen, FaHeart } from "react-icons/fa";
+import { useAuth } from '@/context/AuthContext';
 
 const IconSearch = () => (
   <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><line x1="16.5" y1="16.5" x2="22" y2="22" /></svg>
@@ -62,7 +63,9 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
   const [openDrawerItem, setOpenDrawerItem] = useState(null);
   const nav = useRouter()
   const isMobile = useIsMobile();
+  const { user, logout } = useAuth();
 
+  useEffect(()=>{console.log(user)}, [user])
   // const controlNavbar = useCallback(() => {
   //   try {
   //     if (typeof window !== 'undefined') {
@@ -85,9 +88,7 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
     setOpenDrawerItem(prev => prev === i ? null : i);
   };
 
-  useEffect(() => {
 
-  }, [searchVal])
 
   return (
     <header className={`navBarContainer ${isVisible ? '' : 'nav-hidden'} ${hiden ? "vrajala" : ""}`}>
@@ -150,14 +151,40 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
           </button>
 
           <ul className="navLinks">
-            <li >
-              <a href={`/user`} className='button'>
-                <FaRegUser size={20}/> 
+            <li className='noHover'>
+              <a href={user ? "/user/profile" : "/user/login"} className='button'>
+                {user?.photoURL ? (
+                  <img src={user.photoURL} alt="Profile" className="nav-avatar" />
+                ) : (
+                  <FaRegUser size={20} />
+                )}
               </a>
-              <div className="dropdown" style={{left: '-300%', top: "calc(100% + 8px)"}}>
+
+              <div className="dropdown" style={{ right: '0%', left:'unset', top: "calc(100% + 8px)" }}>
                 <div className='dropdown_content'>
-                  <a href={`/user/login`}>Intră in cont</a>
-                  <a href={`/user/login`}>Cont nou</a>
+                  {user ? (
+                    // --- VARIANTĂ LOGAT ---
+                    <>
+                      <div className="user-info-header">
+                        <p className="user-name">{user.displayName || 'Utilizator'}</p>
+                        <p className="user-email">{user.email}</p>
+                      </div>
+                      <hr />
+                      <a href="/user/orders"><FaBoxOpen /> Comenzile mele</a>
+                      <a href="/user/wishlist"><FaHeart /> Favorite</a>
+                      <a href="/user/settings">Setări cont</a>
+                      <hr />
+                      <button onClick={()=>logout()} className="logout-btn">
+                        <FaSignOutAlt /> Ieșire
+                      </button>
+                    </>
+                  ) : (
+                    // --- VARIANTĂ NELOGAT (Originală) ---
+                    <>
+                      <a href="/user/login">Intră in cont</a>
+                      <a href="/user/login?type=sign up">Cont nou</a>
+                    </>
+                  )}
                 </div>
               </div>
             </li>
@@ -194,7 +221,7 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
             </div>
           </div>
 
-          <button>Intră</button>
+          <button onClick={() => { nav.push("/user/login"); setDrawerOpen(false) }}>Intră</button>
         </div>
         <div className="navDrawerContent">
           {formatari.map((v, i) => (
