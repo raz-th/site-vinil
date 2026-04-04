@@ -100,6 +100,7 @@
   gap: 4px;
   transition: color 0.2s;
   white-space: nowrap;
+  position: relative;
 }
 
 .navLinks li a:hover,
@@ -149,7 +150,7 @@
 .dropdown_content {
   background: #1f1f1f;
   border: 1px solid #3a3028;
-  border-top: 2px solid #c44804;
+  border-top: 2px solid var(--accent2);
   transform: translateY(10px);
 }
 
@@ -221,7 +222,7 @@
   position: absolute;
   top: 2px;
   right: 2px;
-  background: #c44804;
+  background: var(--accent2);
   color: #fff;
   font-size: 10px;
   font-family: 'Crimson Text', Georgia, serif;

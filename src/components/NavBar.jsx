@@ -149,9 +149,24 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
             {cartCount > 0 && <span className="navBadge">{cartCount}</span>}
           </button>
 
-          <a href='/profil' className="navActionBtn" aria-label="Cont">
+          <ul className="navLinks">
+            <li >
+              <a href={`/user`} className='button'>
+                <FaRegUser size={20}/> 
+              </a>
+              <div className="dropdown" style={{left: '-300%', top: "calc(100% + 8px)"}}>
+                <div className='dropdown_content'>
+                  <a href={`/user/login`}>Intră in cont</a>
+                  <a href={`/user/login`}>Cont nou</a>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+          {/* <a href='/user/profil' className="navActionBtn" aria-label="Cont">
             <IconUser />
-          </a>
+          </a> */}
+
 
           <button className="navHamburger navActionBtn" onClick={() => setDrawerOpen(v => !v)} aria-label="Meniu">
             {drawerOpen ? <IconX /> : <IconMenu />}

@@ -96,7 +96,7 @@ export default function SearchClient({ id, format, produse, infoPagina, q }) {
 
     useEffect(()=>{setSearchVal(q||'')}, [q])
 
-console.log(produse)
+// console.log(produse)
     const paginatie = () => {
         const pages = [];
 
