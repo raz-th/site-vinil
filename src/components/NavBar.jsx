@@ -223,7 +223,7 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10, position: 'relative', width: '100%' }}>
                 <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                   {
-                    user.photoURL ? <img className='ic' src={user.photoURL} /> : <div className='ic'><FaRegUser /></div>
+                    user.photoURL ? <img className='ic' style={{padding: 0}}  src={user.photoURL} /> : <div className='ic'><FaRegUser /></div>
                   }
                   <div>
                     <h3>{user.displayName}</h3>
