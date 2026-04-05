@@ -1,0 +1,278 @@
+.userProfilePage {
+  min-height: 100vh;
+  font-family: 'Crimson Text', Georgia, serif;
+}
+
+.userProfilePageInner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 2rem 4rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.userProfilePageInner aside {
+  padding: 2rem;
+  border-radius: 8px;
+  grid-area: 1 / 1 / 2 / 2;
+  background-color: var(--accent1);
+  border: #1f1f1d83 1px solid;
+}
+
+.userProfilePageInner main {
+  padding: 2rem;
+  border-radius: 8px;
+  grid-area: 1 / 2 / 2 / 4;
+  /* background-color: var(--accent1); */
+}
+
+.userProfilePageInner aside .leftSection_header {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userProfilePageInner aside .leftSection_header img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.3);
+  border: var(--accent1) 2px solid;
+}
+
+.userProfilePageInner aside .leftSection_header .imgMochup {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.3);
+  border: var(--accent1) 2px solid;
+  font-size: 90px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userProfilePageInner aside .leftSection_header .leftSection_header_name {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.userProfilePageInner aside .leftSection_header .leftSection_header_email {
+  font-size: 0.9rem;
+  color: var(--foreground);
+}
+
+.userProfilePageInner aside ol {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+  margin-top: 2rem;
+}
+
+.userProfilePageInner aside ol li {
+  padding: .7rem;
+  border-radius: 17px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 1.2rem;
+  color: #737373;
+
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+
+}
+
+.userProfilePageInner aside ol li:hover {
+  background-color: #b5510f52;
+}
+
+.userProfilePageInner aside ol li.selected {
+  background-color: var(--accent2);
+  color: #fff;
+}
+
+.userProfilePageInner aside .logout_btn {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: .7rem;
+  border-radius: 17px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  color: #ff0000b5;
+  font-weight: bold;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.userProfilePageInner aside hr {
+  margin: 1rem 0;
+  border: none;
+  border-top: 1px solid rgba(31, 31, 29, 0.069)
+}
+
+.userProfilePageInner aside .logout_btn:hover {
+  background-color: #ff000024;
+}
+
+.userProfilePageInner main .mainHeader h3 {
+  font-size: 1.5rem;
+  /* margin-bottom: 1rem; */
+}
+
+.userProfilePageInner main .mainHeader p {
+  font-size: 0.9rem;
+  color: var(--foreground);
+}
+
+.userProfilePageInner main .mainHeader {
+  margin-bottom: 2rem;
+}
+
+.userProfilePageInner main .accountSetGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem
+}
+
+.userProfilePageInner main .mainCard {
+  padding: 2rem;
+  border-radius: 8px;
+  background-color: var(--accent1);
+  border: #1f1f1d83 1px solid;
+  flex: 1;
+  height: 100%;
+}
+
+.userProfilePageInner main .mainCard .mainCard_header {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.userProfilePageInner main .mainCard .mainCard_header p {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.userProfilePageInner main .mainCard .input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.userProfilePageInner main .mainCard .input-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f1f1d83;
+  /* margin-bottom: 6px; */
+  /* margin-left: 4px; */
+}
+
+.userProfilePageInner main .mainCard .input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: .5rem 0;
+  border-bottom: 1px solid rgba(31, 31, 29, 0.3)
+}
+
+.userProfilePageInner main .mainCard .input-icon {
+  position: absolute;
+  left: 12px;
+  color: #1f1f1d83;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.userProfilePageInner main .mainCard .custom-input {
+  width: 100%;
+
+  font-size: 16px;
+  border: none;
+
+  background: none;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+  color: #1e293b;
+  box-sizing: border-box;
+}
+
+/* .userProfilePageInner main .mainCard .custom-input:focus {
+  border-color: var(--accent2);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+} */
+
+.userProfilePageInner main .mainCard .custom-input::placeholder {
+  color: #9ca3af;
+}
+
+.userProfilePageInner main .mainCard .statisticsContent {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 20px;
+}
+
+.userProfilePageInner main .mainCard .statisticsContent div {
+  background-color: #c5a781;
+  padding: 1rem;
+  border-radius: 8px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  gap: 10px;
+}
+
+.userProfilePageInner main .mainCard .statisticsContent div h2 {
+  font-size: 1.5rem;
+  margin: 0;
+  width: 100%;
+}
+
+.userProfilePageInner main .mainCard .statisticsContent div p {
+  font-size: .8rem;
+  font-weight: bold;
+  margin: 0;
+  width: 100%;
+  color: #6a6a6a;
+}
+
+@media (max-width: 768px) {
+  .userProfilePageInner {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .userProfilePageInner aside {
+    grid-area: auto;
+  }
+
+  .userProfilePageInner main {
+    grid-area: auto;
+    margin-top: 2rem;
+  }
+
+  .userProfilePageInner main .accountSetGrid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

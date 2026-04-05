@@ -1,10 +1,9 @@
 import React from 'react';
+import ClientProfile from './ClientProfile';
 
 const Page = () => {
     return (
-        <div className=''>
-            
-        </div>
+        <ClientProfile/>
     );
 }
 

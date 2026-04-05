@@ -4,6 +4,8 @@ import { genuri_muzicale, nume } from '../config/site';
 import './NavBar.css';
 import { useRouter } from 'next/navigation';
 import { FaRegUser, FaSignOutAlt, FaBoxOpen, FaHeart } from "react-icons/fa";
+
+import { CgBox } from "react-icons/cg";
 import { useAuth } from '@/context/AuthContext';
 
 const IconSearch = () => (
@@ -65,7 +67,7 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
   const isMobile = useIsMobile();
   const { user, logout } = useAuth();
 
-  useEffect(()=>{console.log(user)}, [user])
+  useEffect(() => { console.log(user) }, [user])
   // const controlNavbar = useCallback(() => {
   //   try {
   //     if (typeof window !== 'undefined') {
@@ -87,6 +89,11 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
   const toggleDrawerItem = (i) => {
     setOpenDrawerItem(prev => prev === i ? null : i);
   };
+
+  const navigateMobil = (to) =>{
+    nav.push(to);
+    setDrawerOpen(false)
+  }
 
 
 
@@ -152,7 +159,7 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
 
           <ul className="navLinks">
             <li className='noHover'>
-              <a href={user ? "/user/profile" : "/user/login"} className='button'>
+              <a href={user ? "/user/myaccount" : "/user/login"} className='button'>
                 {user?.photoURL ? (
                   <img src={user.photoURL} alt="Profile" className="nav-avatar" />
                 ) : (
@@ -160,7 +167,7 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
                 )}
               </a>
 
-              <div className="dropdown" style={{ right: '0%', left:'unset', top: "calc(100% + 8px)" }}>
+              <div className="dropdown" style={{ right: '0%', left: 'unset', top: "calc(100% + 8px)" }}>
                 <div className='dropdown_content'>
                   {user ? (
                     // --- VARIANTĂ LOGAT ---
@@ -174,7 +181,7 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
                       <a href="/user/wishlist"><FaHeart /> Favorite</a>
                       <a href="/user/settings">Setări cont</a>
                       <hr />
-                      <button onClick={()=>logout()} className="logout-btn">
+                      <button onClick={() => logout()} className="logout-btn">
                         <FaSignOutAlt /> Ieșire
                       </button>
                     </>
@@ -211,17 +218,75 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
           Contul meu
         </a> */}
         <div className='navDrawerHero'>
-          <div style={{ display: 'flex', gap: 10, position: 'relative', width: '100%' }}>
-            <div className='ic'>
-              <FaRegUser />
-            </div>
-            <div>
-              <p>Intră în universul tău muzical. </p>
-              <span>Autentifică-te sau creează un cont</span>
-            </div>
-          </div>
+          {
+            user ?
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, position: 'relative', width: '100%' }}>
+                <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+                  {
+                    user.photoURL ? <img className='ic' src={user.photoURL} /> : <div className='ic'><FaRegUser /></div>
+                  }
+                  <div>
+                    <h3>{user.displayName}</h3>
+                    <span>{user.email}</span>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', width: '100%', gap: 20, justifyContent: 'space-between' }}>
+                  <button onClick={()=>{navigateMobil("/user/myaccount")}} style={
+                    {
+                      width: "100%",
+                      padding: '1rem',
+                      fontSize: 15,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      gap: 10,
+                      background: '#292524',
+                      border: '#44403c solid 1px'
+                    }
+                  }><FaRegUser color='var(--accent2)' size={20} /> Profil</button>
+                  <button style={{
+                    width: "100%",
+                    padding: '1rem',
+                    fontSize: 15,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: 10,
+                    background: '#292524',
+                    border: '#44403c solid 1px'
+                  }}><CgBox color='var(--accent2)' size={20} />Comenzi</button>
+                  <button style={{
+                    width: "100%",
+                    padding: '1rem',
+                    fontSize: 15,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: 10,
+                    background: '#292524',
+                    border: '#44403c solid 1px'
+                  }}><FaSignOutAlt color='var(--accent2)' size={20} />Iesire</button>
+                </div>
+              </div>
+              :
+              <>
+                <div style={{ display: 'flex', gap: 10, position: 'relative', width: '100%' }}>
+                  <div className='ic'>
+                    <FaRegUser />
+                  </div>
+                  <div>
+                    <p>Intră în universul tău muzical. </p>
+                    <span>Autentifică-te sau creează un cont</span>
+                  </div>
+                </div>
+                <button onClick={() => { nav.push("/user/login"); setDrawerOpen(false) }}>Intră</button>
+              </>
+          }
 
-          <button onClick={() => { nav.push("/user/login"); setDrawerOpen(false) }}>Intră</button>
+
         </div>
         <div className="navDrawerContent">
           {formatari.map((v, i) => (
