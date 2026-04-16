@@ -4,7 +4,7 @@ import { genuri_muzicale, nume } from '../config/site';
 import './NavBar.css';
 import { useRouter } from 'next/navigation';
 import { FaRegUser, FaSignOutAlt, FaBoxOpen, FaHeart } from "react-icons/fa";
-
+import { IoMdSettings } from "react-icons/io";
 import { CgBox } from "react-icons/cg";
 import { useAuth } from '@/context/AuthContext';
 
@@ -179,7 +179,7 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
                       <hr />
                       <a href="/user/orders"><FaBoxOpen /> Comenzile mele</a>
                       <a href="/user/wishlist"><FaHeart /> Favorite</a>
-                      <a href="/user/settings">Setări cont</a>
+                      <a href="/user/settings"><IoMdSettings/> Setări cont</a>
                       <hr />
                       <button onClick={() => logout()} className="logout-btn">
                         <FaSignOutAlt /> Ieșire

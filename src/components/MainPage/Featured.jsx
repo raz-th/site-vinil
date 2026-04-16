@@ -93,6 +93,7 @@ const Featured = () => {
                                 key={`${item.label}-${i}`}
                                 className={`feat_card carousel_card ${visible === 1 || i === 1 ? 'carousel_card_center' : 'carousel_card_side'
                                     }`}
+                                
                             >
                                 <Reveal>
                                     <a href={item.href}>

@@ -1,7 +1,7 @@
 import React from 'react';
 import './Hero.css'
 // import Image from 'next/image';
-import { WaveDivider } from '../Icons';
+import { WaveDivider, WaveDividerMobile } from '../Icons';
 import { Reveal } from '../Reveal';
 
 

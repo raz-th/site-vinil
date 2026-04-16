@@ -9,7 +9,6 @@ export default function Home() {
       <Hero/>
       <Featured/>
       <Noutati/>
-      <div className="stripe" style={{marginBottom: 3}}/>
       <Footer/>
     </div>
   );

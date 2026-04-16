@@ -47,6 +47,14 @@
     position: relative;
 }
 
+/* .produsPage .mainInfo section .moreImagesContainer:not(.nu)::after{
+    height: 100%;
+    width: 20px;
+    background: linear-gradient(90deg, transparent 0%, #d8cab5 80%);
+    content: "";
+    position: absolute;
+    right: 20px;
+} */
 .produsPage .mainInfo section .moreImagesContainer .moreImages {
     display: flex;
     flex-direction: row;
@@ -395,7 +403,6 @@
     position: absolute;
     bottom: 15px;
     width: 100%;
-
 }
 
 .mobileMoreImagesIndicator .dotsContainer {

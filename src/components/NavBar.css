@@ -49,7 +49,7 @@
 /* ── bara principala ── */
 .navBarContent {
   padding: 0 2rem;
-  background: #1f1f1f;
+  background: var(--foreground);
   border-bottom: #eec99d 2px solid;
   display: flex;
   align-items: center;
@@ -148,7 +148,7 @@
 }
 
 .dropdown_content {
-  background: #1f1f1f;
+  background: var(--foreground);
   border: 1px solid #3a3028;
   border-top: 2px solid var(--accent2);
   transform: translateY(10px);
@@ -514,7 +514,7 @@
 .mobileSearchBox {
   width: 90%;
   max-width: 500px;
-  background: #1f1f1f;
+  background: var(--foreground);
   border: 1px solid #3a3028;
   border-top: 2px solid #c44804;
   display: flex;

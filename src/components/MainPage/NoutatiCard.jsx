@@ -3,11 +3,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Reveal } from '../Reveal';
 import VinylDisk from '../VinylDisk';
 import { getColor } from "colorthief";
+import { useRouter } from 'next/navigation';
 
 export const Card = ({ i, data }) => {
     const [color, setColor] = useState(null);
     const [rotate, setRotate] = useState(false);
     const imgRef = useRef(null);
+    const router = useRouter();
 
     if (!data) return null;
 
@@ -37,6 +39,7 @@ export const Card = ({ i, data }) => {
             className="noutati_card"
             onMouseEnter={() => setRotate(true)}
             onMouseLeave={() => setRotate(false)}
+            onClick={()=>router.push(`/produs/${data.id}`)}
         >
             <Reveal delay={i * 100 + 200}>
                 <img
@@ -48,7 +51,7 @@ export const Card = ({ i, data }) => {
                 />
 
                 <div className="disk">
-                    <VinylDisk className='diskVi' color={color} spin={rotate} />
+                    <VinylDisk className='diskVi' img={`/api/image-proxy?url=${encodeURIComponent(data.cover_image)}`} color={color} spin={rotate} />
                 </div>
             </Reveal>
         </div>

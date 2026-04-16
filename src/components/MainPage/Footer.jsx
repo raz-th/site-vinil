@@ -1,4 +1,4 @@
-import { genuri_muzicale, nume } from "../../config/site";
+import { an_curent, genuri_muzicale, nume } from "../../config/site";
 import "./Footer.css";
 
 const IconFacebook = () => (
@@ -22,79 +22,83 @@ const IconInstagram = () => (
 );
 
 const footerData = [
-  {
-    title: "Magazin",
-    links: [
-      { label: "Noutăți", href: "#" },
-      { label: "Cele mai vândute", href: "#" },
-      { label: "Oferte vinil", href: "#" },
-      { label: "Pre-comenzi", href: "#" },
-    ],
-  },
-  {
-    title: "Servicii clienți",
-    links: [
-      { label: "Întrebări frecvente", href: "#" },
-      { label: "Informații livrare", href: "#" },
-      { label: "Returnări", href: "#" },
-      { label: "Contact", href: "#" },
-    ],
-  },
-  {
-    title: "Genuri",
-    links: Object.keys(genuri_muzicale).map((v)=>({label: genuri_muzicale[v].label, href: `/genere/${v}`})),
-  },
-  {
-    title: "Despre noi",
-    links: [
-      { label: "Povestea noastră", href: "#" },
-      { label: "Artiști parteneri", href: "#" },
-      { label: "Blog", href: "#" },
-      { label: "Termeni și condiții", href: "#" },
-    ],
-  },
+    {
+        title: "Magazin",
+        links: [
+            { label: "Noutăți", href: "#" },
+            { label: "Cele mai vândute", href: "#" },
+            { label: "Oferte vinil", href: "#" },
+            { label: "Pre-comenzi", href: "#" },
+        ],
+    },
+    {
+        title: "Servicii clienți",
+        links: [
+            { label: "Întrebări frecvente", href: "#" },
+            { label: "Informații livrare", href: "#" },
+            { label: "Returnări", href: "#" },
+            { label: "Contact", href: "#" },
+        ],
+    },
+    {
+        title: "Genuri",
+        links: Object.keys(genuri_muzicale).map((v) => ({ label: genuri_muzicale[v].label, href: `/toate/genere/${v}` })),
+    },
+    {
+        title: "Despre noi",
+        links: [
+            { label: "Povestea noastră", href: "#" },
+            { label: "Artiști parteneri", href: "#" },
+            { label: "Blog", href: "#" },
+            { label: "Termeni și condiții", href: "#" },
+        ],
+    },
 ];
 
 const Footer = () => (
-    <footer className="footer">
-        <div className="footer__noise" aria-hidden="true" />
-        
-        <div className="footer__grid">
-            {footerData.map((col, i) => (
-                <div key={i}>
-                    <h3 className="footer__col-title">{col.title}</h3>
-                    <ul className="footer__links">
-                        {col.links.map((link, i) => (
-                            <li key={i}>
-                                <a href={link.href}>{link.label}</a>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            ))}
+    <>
+        <div className="stripe" style={{ marginBottom: 3 }} />
+        <footer className="footer">
 
-            <div>
-                <h3 className="footer__col-title">Follow Us</h3>
-                <div className="footer__social">
-                    <a href="#" className="footer__social-btn" aria-label="Facebook">
-                        <IconFacebook />
-                    </a>
-                    <a href="#" className="footer__social-btn" aria-label="Twitter">
-                        <IconTwitter />
-                    </a>
-                    <a href="#" className="footer__social-btn" aria-label="Instagram">
-                        <IconInstagram />
-                    </a>
+            <div className="footer__noise" aria-hidden="true" />
+
+            <div className="footer__grid">
+                {footerData.map((col, i) => (
+                    <div key={i}>
+                        <h3 className="footer__col-title">{col.title}</h3>
+                        <ul className="footer__links">
+                            {col.links.map((link, i) => (
+                                <li key={i}>
+                                    <a href={link.href}>{link.label}</a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
+
+                <div>
+                    <h3 className="footer__col-title">Follow Us</h3>
+                    <div className="footer__social">
+                        <a href="#" className="footer__social-btn" aria-label="Facebook">
+                            <IconFacebook />
+                        </a>
+                        <a href="#" className="footer__social-btn" aria-label="Twitter">
+                            <IconTwitter />
+                        </a>
+                        <a href="#" className="footer__social-btn" aria-label="Instagram">
+                            <IconInstagram />
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <hr className="footer__divider" />
+            <hr className="footer__divider" />
 
-        <p className="footer__bottom">
-            © 2023 {nume}, All Rights Reserved.
-        </p>
-    </footer>
+            <p className="footer__bottom">
+                © {an_curent} {nume}, All Rights Reserved.
+            </p>
+        </footer>
+    </>
 );
 
 export default Footer;

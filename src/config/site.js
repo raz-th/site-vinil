@@ -1,6 +1,6 @@
 export const nume = "vinil1.ro";
 export const formatari = ['toate', 'vinil', 'cd', 'caseta', 'dvd', 'bluray'];
-
+export const an_curent = new Date().getFullYear();
 export const formatMap = {
   'toate': null,
   'vinil': 'Vinyl',

@@ -18,6 +18,7 @@ import {
 } from 'firebase/auth';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import { createUserProfile } from './userFunctions';
 
 const AuthInput = ({
   label,
@@ -66,14 +67,19 @@ const ClientLogin = ({ type: initialType }) => {
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
+
+
   const handleGoogleLogin = async () => {
     try {
       setError('');
       const result = await signInWithPopup(auth, googleProvider);
+
+      await createUserProfile(result.user);
+
       console.log("Google login success:", result.user);
     } catch (error) {
       console.error("Google login error:", error.code, error.message);
-      setError("Autentificarea cu Google a eșuat. Încearcă din nou.");
+      setError("Autentificarea cu Google a eșuat.");
     }
   };
 
@@ -105,6 +111,8 @@ const ClientLogin = ({ type: initialType }) => {
       await updateProfile(userCredential.user, {
         displayName: fullName,
       });
+
+      await createUserProfile(userCredential.user, { fullName });
 
       console.log("Cont creat:", userCredential.user);
     } catch (error) {

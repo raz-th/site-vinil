@@ -26,7 +26,7 @@ const VideoCard = ({ name, time, uri }) => {
             </a>
             <div>
                 <h3>{name}</h3>
-                <span>{formatTime(time)}</span>
+                <span>{time === 0 ? "Album" : formatTime(time)}</span>
             </div>
         </div>
     )
@@ -159,7 +159,7 @@ const ProdusPage = ({ produs }) => {
                                 )
                             }
 
-                            <div className='moreImages' ref={scrollRef} style={{ width: !hasOverflow ? "100%" : '90%' }}>
+                            <div className={`moreImages ${hasOverflow?"":"nu"}`} ref={scrollRef} style={{ width: !hasOverflow ? "100%" : '90%' }}>
                                 {
                                     produs.images.map((v, i) => (
                                         <img
@@ -183,7 +183,7 @@ const ProdusPage = ({ produs }) => {
                         </div>
                     </section>
                     <section>
-                        <p className='productType'>{produs.formats[0].name} · {produs.formats[0].descriptions[0]}</p>
+                        <p className='productType'>{produs.format} · {produs.format_desc}</p>
                         <p className='productArtistName'>{produs.artists.map((v) => v.name).join(", ")}</p>
                         <h1 className='productName'>{produs.title}</h1>
                         <div className='generesTags'>
@@ -238,13 +238,15 @@ const ProdusPage = ({ produs }) => {
                             }
                         </ul>
                     </section>
-                    <section>
-                        <div className="secondInfoHeader">
-                            <h2>Note</h2>
-                            <div className="line" />
-                        </div>
-                        <p>{produs.notes}</p>
-                    </section>
+                    {
+                        (produs.note && <section>
+                            <div className="secondInfoHeader">
+                                <h2>Note</h2>
+                                <div className="line" />
+                            </div>
+                            <p>{produs.notes}</p>
+                        </section>)
+                    }
                 </div>
                 {
                     produs.videos.length > 0 && (
