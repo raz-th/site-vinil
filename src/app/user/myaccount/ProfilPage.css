@@ -19,6 +19,7 @@
   background-color: var(--accent1);
   border: #1f1f1d83 1px solid;
   overflow: hidden;
+    position: relative;
 }
 
 .userProfilePageInner main {
@@ -41,6 +42,7 @@
   background-color: var(--foreground);
   color: #fff;
   padding: 2rem 1rem;
+
 }
 
 .userProfilePageInner aside .leftSection_header img {
@@ -166,6 +168,7 @@
   border: #1f1f1d83 1px solid;
   flex: 1;
   height: 100%;
+  position: relative;
 }
 
 .userProfilePageInner main .mainCard2 {
@@ -280,7 +283,7 @@
   /* margin-top: 20px; */
 }
 
-.userProfilePageInner main .mainCard2 .statisticsContent div {
+.userProfilePageInner main .mainCard2 .statisticsContent div:not(.img-skeleton) {
   background-color: #eec99d;
   border: #1f1f1d83 1px solid;
   padding: 1rem;
@@ -292,6 +295,7 @@
   justify-content: center;
   text-align: left;
   gap: 10px;
+  position: relative;
 }
 
 .userProfilePageInner main .mainCard2 .statisticsContent div h2 {

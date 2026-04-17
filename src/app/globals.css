@@ -77,3 +77,24 @@ a {
   opacity: 1;
   transform: translateY(0);
 }
+
+
+.img-skeleton {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        #eec99d 25%,
+        #d2b28b 50%,
+        #eec99d 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    border-radius: inherit;
+    z-index: 10;
+}
+
+@keyframes shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}

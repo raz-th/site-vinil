@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './GenrePage.css';
 import ProduseSideBar from '@/components/ProduseSideBar';
 import { useRouter } from 'next/navigation';
@@ -32,6 +32,16 @@ const IconDisc = () => (
 const cleanArtistName = (name) => name.replace(/\s*\(\d+\)$/, '').trim();
 
 const ProductCard = ({ produs }) => {
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    setImgLoaded(false);
+    if (imgRef.current?.complete && imgRef.current?.naturalWidth > 0) {
+      setImgLoaded(true);
+    }
+  }, [produs.cover_image, produs.thumb]);
+
   const nav = useRouter();
   const artisti = produs.artist;
   const an = produs.year > 0 ? produs.year : null;
@@ -42,11 +52,19 @@ const ProductCard = ({ produs }) => {
   return (
     <div className="productCard" onClick={() => nav.push(`/produs/${produs.id}`)}>
       <div className="productImageWrap">
-        <img
-          src={produs.cover_image || produs.thumb || "/assets/image.png"}
-          alt={`${artisti} - ${produs.title}`}
-          loading="lazy"
-        />
+        <div style={{ position: 'relative' }}>
+          {!imgLoaded && <div className="img-skeleton" />}
+          <img
+            ref={imgRef}
+            src={produs.cover_image || produs.thumb || "/assets/image.png"}
+            alt={`${artisti} - ${produs.title}`}
+            loading="lazy"
+            onLoad={() => setImgLoaded(true)}
+            onError={() => setImgLoaded(true)}
+            style={{ opacity: imgLoaded ? 1 : 0, transition: 'opacity 0.3s ease' }}
+          />
+        </div>
+
         {/* <div className="vinylDecor" /> */}
 
         {format && <span className="productBadge">{format}</span>}
@@ -95,7 +113,7 @@ export default function GenereClient({ id, format, produse, infoPagina }) {
   const paginatie = () => {
     const pages = [];
 
-    const maxVisible = isMobile ? 3 : 5; 
+    const maxVisible = isMobile ? 3 : 5;
 
     pages.push(1);
 

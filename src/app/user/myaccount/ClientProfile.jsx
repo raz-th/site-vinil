@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import LoadingPage from "@/components/Loading/LoadingPage";
 import { doc, updateDoc } from "firebase/firestore";
-import { db } from "@/lib/firebaseClient";
-import { updateProfile } from "firebase/auth";
+import { auth, db } from "@/lib/firebaseClient";
+import { onAuthStateChanged, updateProfile } from "firebase/auth";
 import { useRouter } from "next/navigation";
 
 const CustomInput = ({
@@ -43,17 +43,24 @@ const ClientProfile = () => {
     const [se_editeaza, setSe_editeaza] = useState(false);
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
-    const { user, userData, loading } = useAuth();
+    const { user, userData } = useAuth();
     const router = useRouter()
 
     useEffect(() => {
-        if (user && userData && !loading) {
+        if (user && userData) {
             setName(user.displayName);
             setPhone(userData.phone || "");
-        }else{
-            console.log("nu e logat")
         }
     }, [user, userData])
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            if (!currentUser) {
+                router.push('/');
+            }
+        });
+        return () => unsubscribe();
+    }, []);
 
     const salveaza = async () => {
         console.log(user, name, phone)
@@ -82,7 +89,7 @@ const ClientProfile = () => {
         }
     }
     // return <LoadingPage/>
-    if (!user || !userData) return null;
+    // if (!user || !userData) return null;
 
     return (
         <>
@@ -93,19 +100,21 @@ const ClientProfile = () => {
             <div className="accountSetGrid">
                 <div className="mainCard_header">
                     <p>Statistica Colecționarului</p>
-                    <div className="fadedLine"/>
+                    <div className="fadedLine" />
                 </div>
                 <div className='mainCard2'>
-                     <div className="statisticsContent">
-                            <div>
-                                <h2>{userData.comenzi?.length || 0}</h2>
-                                <p>Comenzi Totale</p>
-                            </div>
-                            <div>
-                                <h2>{userData.wishlist?.length || 0}</h2>
-                                <p>Viniluri Salvate</p>
-                            </div>
-                            {/* <div>
+                    <div className="statisticsContent">
+                        <div>
+                            <h2>{userData?.comenzi?.length || 0}</h2>
+                            <p>Comenzi Totale</p>
+                            {!user && !userData&&(<div className="img-skeleton"/>)}
+                        </div>
+                        <div>
+                            <h2>{userData?.wishlist?.length || 0}</h2>
+                            <p>Viniluri Salvate</p>
+                            {!user && !userData&&(<div className="img-skeleton" style={{backgroundColor: '#eec99d'}}/>)}
+                        </div>
+                        {/* <div>
                                 <h2>3</h2>
                                 <p>Comenzi Totale</p>
                             </div>
@@ -113,18 +122,19 @@ const ClientProfile = () => {
                                 <h2>5</h2>
                                 <p>Comenzi Totale</p>
                             </div> */}
-                        </div>
+                    </div>
                 </div>
-                 <div className="mainCard_header">
+                <div className="mainCard_header">
                     <p>Date personale</p>
-                    <div className="fadedLine"/>
+                    <div className="fadedLine" />
                 </div>
                 <div className='mainCard'>
                     {/* <div className="mainCard_header">
                         <p><FaRegUser /> Date personale</p>
                     </div> */}
+                    {!user && !userData&&(<div className="img-skeleton" style={{backgroundColor: '#eec99d'}}/>)}
                     <CustomInput onChange={(e) => setName(e)} placeholder={"ex: Ion Popescu"} readOnly={!se_editeaza} label={"NUME COMPLET"} type={'text'} value={name} />
-                    <CustomInput placeholder={"ex: popescu@gmail.com"} readOnly={true} label={"ADRESĂ EMAIL"} type={'text'} value={user.email} />
+                    <CustomInput placeholder={"ex: popescu@gmail.com"} readOnly={true} label={"ADRESĂ EMAIL"} type={'text'} value={user?.email || ''} />
                     <CustomInput onChange={(e) => setPhone(e)} placeholder={"ex: 0712345678"} readOnly={!se_editeaza} label={"TELEFON"} type={'phone'} value={phone} />
                     <div style={{ display: 'flex', gap: 10 }}>
                         {se_editeaza && (<button className="edit_btn" style={{ background: "#780000" }} onClick={() => { anulare() }}>Anulează</button>)}
