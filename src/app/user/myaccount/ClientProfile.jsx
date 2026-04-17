@@ -43,13 +43,15 @@ const ClientProfile = () => {
     const [se_editeaza, setSe_editeaza] = useState(false);
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
-    const { user, userData } = useAuth();
+    const { user, userData, loading } = useAuth();
     const router = useRouter()
 
     useEffect(() => {
-        if (user && userData) {
+        if (user && userData && !loading) {
             setName(user.displayName);
-            setPhone(userData.phone || "")
+            setPhone(userData.phone || "");
+        }else{
+            console.log("nu e logat")
         }
     }, [user, userData])
 
