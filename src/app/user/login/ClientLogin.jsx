@@ -110,8 +110,8 @@ const ClientLogin = ({ type: initialType }) => {
 
       await updateProfile(userCredential.user, {
         displayName: fullName,
+        logged_with: userCredential.user.providerId
       });
-
       await createUserProfile(userCredential.user, { fullName });
 
       console.log("Cont creat:", userCredential.user);

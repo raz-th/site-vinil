@@ -24,6 +24,7 @@ export const createUserProfile = async (user, additionalData = {}) => {
                     newsletter: false,
                     favoriteGenres: []
                 },
+                logged_with: user.providerId,
                 wishlist: [],
                 cart: [],
                 ...additionalData

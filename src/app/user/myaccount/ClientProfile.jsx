@@ -7,6 +7,7 @@ import LoadingPage from "@/components/Loading/LoadingPage";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebaseClient";
 import { updateProfile } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 const CustomInput = ({
     label,
@@ -43,6 +44,7 @@ const ClientProfile = () => {
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
     const { user, userData } = useAuth();
+    const router = useRouter()
 
     useEffect(() => {
         if (user && userData) {
