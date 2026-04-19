@@ -1,0 +1,347 @@
+.page {
+  font-family: 'Crimson Text', Georgia, serif;
+
+}
+
+/* ── Loading & Empty State ── */
+.loadingWrap, .emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: #8a5a2a;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(192, 92, 26, 0.2);
+  border-top-color: var(--accent2);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── List Header ── */
+.listHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding: 0 0.5rem;
+}
+
+.listHeader h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1a1208;
+}
+
+.count {
+  font-size: 0.8rem;
+  color: #8a5a2a;
+  background: rgba(192, 92, 26, 0.1);
+  border: 1px solid rgba(192, 92, 26, 0.25);
+  padding: 2px 10px;
+  border-radius: 20px;
+  min-width: max-content;
+}
+
+/* ── Order Cards (Optimized for Mobile) ── */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card {
+  background: #eec99d;
+  border: 1px solid rgba(100, 60, 10, 0.2);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column; /* Stack on very small devices if needed */
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.card:active {
+  transform: scale(0.98);
+}
+
+.cardLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.cardThumb {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  background: #1a1208;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.cardThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardInfo {
+  flex: 1;
+  min-width: 0; /* Prevents text overflow */
+}
+
+.cardId {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1a1208;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardDate {
+  font-size: 0.8rem;
+  color: #8a5a2a;
+}
+
+.cardRight {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(100, 60, 10, 0.1);
+}
+
+.cardTotal {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1208;
+}
+
+/* ── Status Badges ── */
+.statusBadge {
+  font-size: 0.75rem;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.amber { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+.blue  { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+.green { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+.gray  { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+
+/* ── Detail View ── */
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  color: var(--accent2, #c05c1a);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.5rem 0;
+}
+
+.detailHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ── Progress Tracker (Horizontal on Mobile) ── */
+.progressWrap {
+  display: flex;
+  justify-content: space-between;
+  background: #eec99d;
+  border: 1px solid rgba(100, 60, 10, 0.2);
+  border-radius: 12px;
+  padding: 1.25rem 0.5rem;
+}
+
+.progressStep {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.progressDot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #d4b896;
+  border: 2px solid #c9a97a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  z-index: 1;
+}
+
+.progressDotActive {
+  background: var(--accent2, #c05c1a);
+  border-color: var(--accent2, #c05c1a);
+  color: white;
+}
+
+.progressLabel {
+  font-size: 0.65rem;
+  margin-top: 6px;
+  text-align: center;
+  color: #9a7050;
+  font-weight: 600;
+}
+
+.progressLabelActive {
+  color: #1a1208;
+}
+
+.progressLine {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: #c9a97a;
+  z-index: 0;
+}
+
+.progressLineActive {
+  background: var(--accent2, #c05c1a);
+}
+
+/* ── Detail Cards ── */
+.detailCard {
+  background: #eec99d;
+  border: 1px solid rgba(100, 60, 10, 0.2);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.detailCardTitle {
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #8a5a2a;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.itemRow {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(100, 60, 10, 0.1);
+}
+
+.itemThumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  background: #1a1208;
+}
+
+.itemInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.itemTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.itemSub {
+  font-size: 0.75rem;
+  color: #8a5a2a;
+}
+
+.itemPriceWrap {
+  text-align: right;
+}
+
+/* ── Grid & Summary ── */
+.detailGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  padding: 3px 0;
+}
+
+.summaryTotal {
+  border-top: 1px solid rgba(100, 60, 10, 0.2);
+  margin-top: 8px;
+  padding-top: 8px;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* ── Desktop Overrides ── */
+@media (min-width: 768px) {
+  .card {
+    flex-direction: row;
+    padding: 1rem 1.5rem;
+  }
+
+  .cardRight {
+    width: auto;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+    gap: 1.5rem;
+  }
+
+  .detailHeader {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .detailGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .progressWrap {
+    padding: 1.5rem 2.5rem;
+  }
+
+  .progressLabel {
+    font-size: 0.8rem;
+  }
+}

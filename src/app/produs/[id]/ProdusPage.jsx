@@ -1,10 +1,12 @@
 'use client';
 import { GrCart } from "react-icons/gr";
-import { IoMdHeartEmpty } from "react-icons/io";
+import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from "next/navigation";
 import { FaPlay } from "react-icons/fa";
+import { useCart } from "@/context/CartContext";
+import { useFavorites } from "@/context/FavoriteContext";
 
 const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600);
@@ -36,6 +38,8 @@ const VideoCard = ({ name, time, uri }) => {
 
 const ProdusPage = ({ produs }) => {
     const { id } = useParams();
+    const { addToCart} = useCart();
+    const { toggleFavorite, isFavorite } = useFavorites();
     const [selectedImage, setSelectedImage] = useState(0);
 
     const [hasOverflow, setHasOverflow] = useState(false);
@@ -102,6 +106,18 @@ const ProdusPage = ({ produs }) => {
             );
         }
     };
+
+    const handleAddToCart = () => {
+        addToCart({
+            productId: produs.id,
+            title: produs.title,
+            artist: produs.artists.map((v) => v.name).join(", "),
+            format: produs.format,
+            imageUrl: produs.images[0].uri,
+            price: produs.price || 0,
+            quantity: 1
+        })
+    }
 
     const maxDots = 5;
     const total = produs.images.length;
@@ -221,8 +237,8 @@ const ProdusPage = ({ produs }) => {
                             În stoc · 3 disponibile
                         </div>
                         <div className="cont-btns">
-                            <button className="btn-add-cart"><GrCart />Adaugă in coș</button>
-                            <button className="btn-add-wish"><IoMdHeartEmpty /></button>
+                            <button className="btn-add-cart" onClick={()=>handleAddToCart()}><GrCart />Adaugă in coș</button>
+                            <button className="btn-add-wish" onClick={()=>toggleFavorite(produs)}>{isFavorite(id)?<IoMdHeart/>:<IoMdHeartEmpty />}</button>
                         </div>
                     </section>
                 </div>

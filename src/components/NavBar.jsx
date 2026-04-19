@@ -147,12 +147,12 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
             />
           </div>
 
-          <button className="navActionBtn" aria-label="Wishlist">
+          <button className="navActionBtn" aria-label="Favorite" onClick={()=>nav.push("/user/myaccount/favorite")}>
             <IconHeart />
             {wishlistCount > 0 && <span className="navBadge">{wishlistCount}</span>}
           </button>
 
-          <button className="navActionBtn" aria-label="Coș">
+          <button className="navActionBtn" aria-label="Coș" onClick={()=>nav.push("/user/myaccount/mycart")}>
             <IconCart />
             {cartCount > 0 && <span className="navBadge">{cartCount}</span>}
           </button>
@@ -177,9 +177,9 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
                         <p className="user-email">{user.email}</p>
                       </div>
                       <hr />
-                      <a href="/user/orders"><FaBoxOpen /> Comenzile mele</a>
-                      <a href="/user/wishlist"><FaHeart /> Favorite</a>
-                      <a href="/user/settings"><IoMdSettings/> Setări cont</a>
+                      <a href="/user/myaccount/orders"><FaBoxOpen /> Comenzile mele</a>
+                      <a href="/user/myaccount/favorite"><FaHeart /> Favorite</a>
+                      <a href="/user/myaccount"><IoMdSettings/> Setări cont</a>
                       <hr />
                       <button onClick={() => logout()} className="logout-btn">
                         <FaSignOutAlt /> Ieșire

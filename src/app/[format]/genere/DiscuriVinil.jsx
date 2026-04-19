@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import './DiscuriVinil.css';
 import ProduseSideBar from '@/components/ProduseSideBar';
 import { useRouter } from 'next/navigation';
+import { useCart } from '@/context/CartContext';
 
 // ── date mock — înlocuiești cu fetch real ──
 const toateGenurile = [
@@ -72,13 +73,28 @@ const ProductCard = ({ produs }) => {
       setImgLoaded(true);
     }
   }, [produs.cover_image, produs.thumb]);
-
+  const { addToCart } = useCart();
   const nav = useRouter();
   const artisti = produs.artist;
   const an = produs.year > 0 ? produs.year : null;
   const label = produs.labels?.[0]?.name;
   const format = produs.formats?.[0]?.name;
   const formatDesc = produs.formats?.[0]?.descriptions?.[0]; // "Album", "Single", etc.
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    addToCart({
+      productId: produs.id,
+      title: produs.title,
+      artist: produs.artist,
+      format: produs.format,
+      imageUrl: produs.cover_image,
+      price: produs.price || 0,
+      quantity: 1
+    })
+  }
+
+  console.log(produs)
 
   return (
     <div className="productCard" onClick={() => nav.push(`/produs/${produs.id}`)}>
@@ -124,7 +140,7 @@ const ProductCard = ({ produs }) => {
         </div>
       </div>
 
-      <button className="addToCartBtn">Adaugă în coș</button>
+      <button className="addToCartBtn" onClick={(e)=>handleAddToCart(e)}>Adaugă în coș</button>
     </div>
   );
 };

@@ -1,10 +1,9 @@
 import React from 'react';
+import ComenzileleMelePage from './ComenziClient';
 
 const Page = () => {
     return (
-        <div>
-            com
-        </div>
+        <ComenzileleMelePage/>
     );
 }
 

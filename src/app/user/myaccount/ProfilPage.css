@@ -19,7 +19,7 @@
   background-color: var(--accent1);
   border: #1f1f1d83 1px solid;
   overflow: hidden;
-    position: relative;
+  position: relative;
 }
 
 .userProfilePageInner main {
@@ -39,7 +39,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: var(--foreground);
+  background-color: #494949;
   color: #fff;
   padding: 2rem 1rem;
 
@@ -89,7 +89,7 @@
 }
 
 .userProfilePageInner aside ol li {
-  padding: .7rem;
+
   border-radius: 17px;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -98,8 +98,16 @@
 
   display: flex;
   align-items: center;
-  gap: .5rem;
 
+}
+
+.userProfilePageInner aside ol li a {
+  /* background-color: red; */
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  width: 100%;
+  padding: .7rem;
 }
 
 .userProfilePageInner aside ol li:hover {
@@ -325,6 +333,7 @@
   .userProfilePageInner main {
     grid-area: auto;
     margin-top: 2rem;
+    padding: 0 0;
   }
 
   .userProfilePageInner main .accountSetGrid {
