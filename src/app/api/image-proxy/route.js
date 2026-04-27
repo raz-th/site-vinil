@@ -3,6 +3,8 @@ import { NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
+export const runtime = 'edge';
+
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const imageUrl = searchParams.get('url');
