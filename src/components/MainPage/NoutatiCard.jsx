@@ -35,11 +35,12 @@ export const Card = ({ i, data }) => {
     }, []);
 
     return (
-        <div
+        <a
             className="noutati_card"
             onMouseEnter={() => setRotate(true)}
             onMouseLeave={() => setRotate(false)}
-            onClick={()=>router.push(`/produs/${data.id}`)}
+            // onClick={()=>router.push(`/produs/${data.id}`)}
+            href={`/produs/${data.id}`}
         >
             <Reveal delay={i * 100 + 200}>
                 <img
@@ -54,6 +55,6 @@ export const Card = ({ i, data }) => {
                     <VinylDisk className='diskVi' img={`/api/image-proxy?url=${encodeURIComponent(data.cover_image)}`} color={color} spin={rotate} />
                 </div>
             </Reveal>
-        </div>
+        </a>
     );
 };
