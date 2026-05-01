@@ -36,6 +36,7 @@ const VideoCard = ({ name, time, uri }) => {
 
 
 
+
 const ProdusPage = ({ produs }) => {
     const { id } = useParams();
     const { addToCart} = useCart();
@@ -234,7 +235,7 @@ const ProdusPage = ({ produs }) => {
                         </div>
                         <div className="cont-stoc">
                             <span className="stoc-dot" />
-                            În stoc · {produs.stock} disponibile
+                            În stoc · {produs.stock} {produs.stock!==1?"disponibile":"disponibil"}
                         </div>
                         <div className="cont-btns">
                             <button className="btn-add-cart" onClick={()=>handleAddToCart()}><GrCart />Adaugă in coș</button>

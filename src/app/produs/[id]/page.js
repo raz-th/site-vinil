@@ -4,6 +4,44 @@ import ProdusPage from './ProdusPage';
 import { adminDb } from '@/lib/firebaseAdmin';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 
+export async function generateMetadata({ params }) {
+    const { id } = await params;
+
+    try {
+        const dbRef = adminDb.collection('releases').doc(id);
+        const dbDoc = await dbRef.get();
+
+        if (!dbDoc.exists) {
+            return {
+                title: 'Produs negăsit',
+                description: 'Produsul căutat nu există în inventarul nostru.',
+            };
+        }
+
+        const data = dbDoc.data();
+        const artist = data.artist || '';
+        const title = data.title || '';
+        const year = data.year || '';
+        const format = data.format || '';
+        const country = data.country || '';
+
+        return {
+            title: `${artist} – ${title} (${year}) | Vinil1.ro`,
+            description: `Cumpără ${format} "${title}" de ${artist}, lansat în ${year} în ${country}. Disponibil în stoc pe Vinil1.ro.`,
+            openGraph: {
+                title: `${artist} – ${title}`,
+                description: `${format} · ${year} · ${country}`,
+                images: [{ url: data.cover_image || '' }],
+            },
+        };
+    } catch (error) {
+        return {
+            title: 'Vinil1.ro',
+            description: 'Magazin de muzică fizică — viniluri, CD-uri, casete.',
+        };
+    }
+}
+
 const Page = async ({ params }) => {
     const { id } = await params;
 
