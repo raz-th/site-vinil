@@ -218,8 +218,8 @@ const ProdusPage = ({ produs }) => {
                                 <p>{produs.country}</p>
                             </div>
                             <div className="detalie-row">
-                                <p>Label</p>
-                                <p>Well Of Urd — Wur002</p>
+                                <p>Casa de discuri</p>
+                                <p>{produs.labels.map((v)=>v.name).join(", ")}</p>
                             </div>
                             <div className="detalie-row">
                                 <p>Format</p>
@@ -228,13 +228,13 @@ const ProdusPage = ({ produs }) => {
                         </div>
                         <hr className='divider' />
                         <div className="pret_container">
-                            <p className="pret-old">79.99 Lei</p>
-                            <p className="pret">59.99 Lei</p>
-                            <p className="pret-reducere">-25%</p>
+                            {/* <p className="pret-old">79.99 Lei</p> */}
+                            <p className="pret">{produs.price} Lei</p>
+                            {/* <p className="pret-reducere">-25%</p> */}
                         </div>
                         <div className="cont-stoc">
                             <span className="stoc-dot" />
-                            În stoc · 3 disponibile
+                            În stoc · {produs.stock} disponibile
                         </div>
                         <div className="cont-btns">
                             <button className="btn-add-cart" onClick={()=>handleAddToCart()}><GrCart />Adaugă in coș</button>

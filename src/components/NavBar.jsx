@@ -100,7 +100,7 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
   return (
     <header className={`navBarContainer ${isVisible ? '' : 'nav-hidden'} ${hiden ? "vrajala" : ""}`}>
       <div className="navBarContent">
-        <h1 className="nume_logo"><a href='/'>Vinil.ro</a></h1>
+        <h1 className="nume_logo"><a href='/'>Vinil1.ro</a></h1>
 
         {/* ── navigatie desktop ── */}
         <ul className="navLinks">

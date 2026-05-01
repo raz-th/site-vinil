@@ -66,6 +66,7 @@
 .nume_logo {
   font-family: "Lacheyard Script", cursive;
   color: #fff;
+  letter-spacing: .2rem;
   margin: 0;
   flex-shrink: 0;
 }

@@ -94,9 +94,9 @@ export default function SearchClient({ id, format, produse, infoPagina, q }) {
 
     const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
 
-    useEffect(()=>{setSearchVal(q||'')}, [q])
+    useEffect(() => { setSearchVal(q || '') }, [q])
 
-// console.log(produse)
+    // console.log(produse)
     const paginatie = () => {
         const pages = [];
 
@@ -140,10 +140,13 @@ export default function SearchClient({ id, format, produse, infoPagina, q }) {
                         type="text"
                         placeholder="Artist, album..."
                         value={searchVal}
-                        onChange={(e) => setSearchVal(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter" && searchVal.trim()) {
-                                router.push(`/search?q=${encodeURIComponent(searchVal)}`);
+                        onChange={(e) => {
+                            const val = e.target.value;
+                            setSearchVal(val);
+                            if (val.trim()) {
+                                router.replace(`/search?q=${encodeURIComponent(val.trim())}`);
+                            } else {
+                                router.replace(`/search`);
                             }
                         }}
                         autoFocus
