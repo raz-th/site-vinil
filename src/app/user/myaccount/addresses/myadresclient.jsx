@@ -27,7 +27,7 @@ export default function AdreseleMelePage() {
     return (
         <div className="addrPage_page">
             <div className="mainCard_header" style={{ marginBottom: "2rem" }}>
-                <p>Produse Favorite</p>
+                <p>Adrese de livrare</p>
                 <div className="fadedLine" />
                 <button className="addrPage_addBtn" onClick={() => setShowForm(!showForm)}>
                     <IoMdAdd /> {showForm ? "Anulează" : "Adresă nouă"}
@@ -91,7 +91,7 @@ export default function AdreseleMelePage() {
                     <div key={addr.id} className={`addrPage_addressCard ${addr.isDefault ? "addrPage_default" : ""}`}>
                         {addr.isDefault && (
                             <span className="addrPage_defaultBadge">
-                                <IoMdCheckmark /> Implicită
+                                <IoMdCheckmark /> Selectată
                             </span>
                         )}
                         <div className="addrPage_addrInfo">
@@ -103,7 +103,7 @@ export default function AdreseleMelePage() {
                         <div className="addrPage_addrActions">
                             {!addr.isDefault && (
                                 <button onClick={() => setDefaultAddress(addr.id)}>
-                                    Setează implicită
+                                    Selectează adresa
                                 </button>
                             )}
                             <button className="addrPage_delBtn" onClick={() => removeAddress(addr.id)}>

@@ -225,8 +225,13 @@
   right: 2px;
   background: var(--accent2);
   color: #fff;
-  font-size: 10px;
-  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /* font-weight: 900; */
+  /* font-family: 'Crimson Text', Georgia, serif; */
   width: 16px;
   height: 16px;
   border-radius: 50%;

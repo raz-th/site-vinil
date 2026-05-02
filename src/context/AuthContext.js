@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from '@/lib/firebaseClient';
 import { doc, getDoc } from 'firebase/firestore';
+import { useRouter } from 'next/navigation';
 
 const AuthContext = createContext({});
 
@@ -11,6 +12,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [userData, setUserData] = useState(null)
     const [loading, setLoading] = useState(true);
+    const router = useRouter()
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -33,12 +35,13 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const logout = async () => {
-        try {
-            await signOut(auth);
-        } catch (error) {
-            console.error("Eroare la logout:", error);
-        }
+        const confirmed = window.confirm("Ești sigur că vrei să te deconectezi?");
+        if (!confirmed) return;
+
+        await signOut(auth);
+        router.push('/');
     };
+
 
     return (
         <AuthContext.Provider value={{ user, userData, loading, logout }}>

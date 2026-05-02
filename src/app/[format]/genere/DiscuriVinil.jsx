@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import './DiscuriVinil.css';
 import ProduseSideBar from '@/components/ProduseSideBar';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 
 // ── date mock — înlocuiești cu fetch real ──
@@ -66,6 +66,8 @@ const cleanArtistName = (name) => name.replace(/\s*\(\d+\)$/, '').trim();
 const ProductCard = ({ produs }) => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const imgRef = useRef(null);
+  const { addToCart } = useCart();
+  const nav = useRouter();
 
   useEffect(() => {
     setImgLoaded(false);
@@ -73,13 +75,12 @@ const ProductCard = ({ produs }) => {
       setImgLoaded(true);
     }
   }, [produs.cover_image, produs.thumb]);
-  const { addToCart } = useCart();
-  const nav = useRouter();
+
   const artisti = produs.artist;
   const an = produs.year > 0 ? produs.year : null;
   const label = produs.labels?.[0]?.name;
   const format = produs.formats?.[0]?.name;
-  const formatDesc = produs.formats?.[0]?.descriptions?.[0]; // "Album", "Single", etc.
+  const formatDesc = produs.formats?.[0]?.descriptions?.[0];
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
@@ -91,10 +92,8 @@ const ProductCard = ({ produs }) => {
       imageUrl: produs.cover_image,
       price: produs.price || 0,
       quantity: 1
-    })
-  }
-
-  console.log(produs)
+    });
+  };
 
   return (
     <div className="productCard" onClick={() => nav.push(`/produs/${produs.id}`)}>
@@ -104,29 +103,24 @@ const ProductCard = ({ produs }) => {
           <img
             ref={imgRef}
             src={produs.cover_image || produs.thumb || "/assets/image.png"}
-            alt={`${artisti} - ${produs.title}`}
+            alt={`${produs.title} - ${artisti}`}
             loading="lazy"
             onLoad={() => setImgLoaded(true)}
             onError={() => setImgLoaded(true)}
             style={{ opacity: imgLoaded ? 1 : 0, transition: 'opacity 0.3s ease' }}
           />
         </div>
-
-        {/* <div className="vinylDecor" /> */}
-
         {format && <span className="productBadge">{format}</span>}
       </div>
 
       <div className="productInfo">
-        <p className="productArtist">{artisti}</p>
-        <p className="productName">{produs.title}</p>
-
+        <p className="productArtist">{produs.title}</p>
+        <p className="productName">{artisti}</p>
         <div className="productMeta">
           {an && <span className="productMetaItem">{an}</span>}
           {label && <span className="productMetaItem">{label}</span>}
           {formatDesc && <span className="productMetaItem">{formatDesc}</span>}
         </div>
-
         {produs.genres?.length > 0 && (
           <div className="productGenres">
             {produs.genres.map(s => (
@@ -134,13 +128,12 @@ const ProductCard = ({ produs }) => {
             ))}
           </div>
         )}
-
         <div className="productPrices">
-          <span className="productPrice">00.00 Lei</span>
+          <span className="productPrice">{produs.price ? `${produs.price}.00 Lei` : 'Preț indisponibil'}</span>
         </div>
       </div>
 
-      <button className="addToCartBtn" onClick={(e)=>handleAddToCart(e)}>Adaugă în coș</button>
+      <button className="addToCartBtn" onClick={handleAddToCart}>Adaugă în coș</button>
     </div>
   );
 };
@@ -148,7 +141,6 @@ const ProductCard = ({ produs }) => {
 export default function DiscuriVinil({ format, produse, infoPagina }) {
   const titlu = format;
 
-  const [sortare, setSortare] = useState(optiuniSortare[0]);
   const [inStoc, setInStoc] = useState(false);
   const [genSelect, setGenSelect] = useState([]);
   const [prodSelect, setProdSelect] = useState([]);
@@ -158,6 +150,32 @@ export default function DiscuriVinil({ format, produse, infoPagina }) {
   const totalPagini = Math.ceil(infoPagina.total / infoPagina.perPage);
   const currentPage = infoPagina.currentPage;
   const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const sortLabelMap = {
+    'pret-crescator': 'Preț (Crescător)',
+    'pret-descrescator': 'Preț (Descrescător)',
+    'noutati': 'Noutăți',
+    'nume-az': 'Nume (A-Z)',
+  };
+
+  const sortFromUrl = searchParams.get('sort');
+  const [sortare, setSortare] = useState(sortLabelMap[sortFromUrl] || optiuniSortare[0]);
+
+  const handleSortare = (val) => {
+    const sortMap = {
+      'Preț (Crescător)': 'pret-crescator',
+      'Preț (Descrescător)': 'pret-descrescator',
+      'Noutăți': 'noutati',
+      'Nume (A-Z)': 'nume-az',
+    };
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('sort', sortMap[val]);
+    params.set('page', '1');
+    router.push(`?${params.toString()}`);
+  };
 
 
   const paginatie = () => {
@@ -225,7 +243,10 @@ export default function DiscuriVinil({ format, produse, infoPagina }) {
               <select
                 className="sortSelect"
                 value={sortare}
-                onChange={(e) => setSortare(e.target.value)}
+                onChange={(e) => {
+                  setSortare(e.target.value);
+                  handleSortare(e.target.value);
+                }}
               >
                 {optiuniSortare.map((o) => (
                   <option key={o}>{o}</option>

@@ -322,7 +322,7 @@ const ClientLogin = ({ type: initialType }) => {
                   <AuthInput
                     label="Email"
                     type="email"
-                    placeholder="marinescu@email.com"
+                    placeholder="nume@exemplu.com"
                     icon={<MdEmail />}
                     value={signInEmail}
                     onChange={(e) => setSignInEmail(e.target.value)}

@@ -143,7 +143,7 @@ const ProduseSideBar = ({ search = false, id, format }) => {
             </div>
 
             {/* ── STATUS STOC ── */}
-            <div className="sideSection">
+            {/* <div className="sideSection">
                 <h2 className="sideSectionTitle">Status stoc</h2>
                 <div className="filterGroup">
                     <label className="filterCheckbox">
@@ -156,7 +156,7 @@ const ProduseSideBar = ({ search = false, id, format }) => {
                         <span className="filterCount">(361)</span>
                     </label>
                 </div>
-            </div>
+            </div> */}
 
             {/* ── FORMAT ── */}
             <div className="sideSection">

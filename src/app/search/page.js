@@ -3,6 +3,18 @@ import React from 'react';
 import SearchClient from './SearchClient';
 import { formatMap } from '@/config/site';
 
+export async function generateMetadata({ searchParams }) {
+    const params = await searchParams;
+    const q = params?.q || '';
+
+    return {
+        title: q ? `Rezultate pentru "${q}" | Vinil1.ro` : 'Căutare | Vinil1.ro',
+        description: q
+            ? `Rezultate căutare pentru "${q}" pe Vinil1.ro — viniluri, CD-uri, casete.`
+            : 'Caută în colecția Vinil1.ro.',
+    };
+}
+
 const Page = async ({ searchParams }) => {
   const { q, page, format, genres } = await searchParams;
 

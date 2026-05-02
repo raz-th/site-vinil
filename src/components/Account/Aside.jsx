@@ -12,12 +12,17 @@ import Link from "next/link";
 
 const Aside = () => {
   const [diskHover, setDiskHover] = useState(false);
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const router = useRouter();
   const path = usePathname();
 
 
   // if (!user) return null;
+
+
+
+
+
   return (
     <aside>
       {!user && (<div className="img-skeleton" style={{ backgroundColor: '#eec99d' }} />)}
@@ -61,12 +66,12 @@ const Aside = () => {
             className={
               path === "/user/myaccount/addresses" ? "selected" : ""
             }
-            >
+          >
             <Link href={"/user/myaccount/addresses"}><FiMapPin /> Adrese de livrare</Link>
           </li>
         </ol>
         <hr />
-        <button className="logout_btn">
+        <button className="logout_btn" onClick={()=>logout()} >
           <FaSignOutAlt /> Ieșire
         </button>
       </div>

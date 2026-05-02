@@ -7,6 +7,7 @@ import { FaRegUser, FaSignOutAlt, FaBoxOpen, FaHeart } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import { CgBox } from "react-icons/cg";
 import { useAuth } from '@/context/AuthContext';
+import { useCart } from '@/context/CartContext';
 
 const IconSearch = () => (
   <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><line x1="16.5" y1="16.5" x2="22" y2="22" /></svg>
@@ -55,7 +56,7 @@ const useIsMobile = () => {
 
   return isMobile;
 };
-const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
+const NavBar = ({ wishlistCount = 0, hiden }) => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [searchVal, setSearchVal] = useState('');
@@ -66,6 +67,7 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
   const nav = useRouter()
   const isMobile = useIsMobile();
   const { user, logout } = useAuth();
+  const {cartCount} = useCart()
 
   useEffect(() => { console.log(user) }, [user])
   // const controlNavbar = useCallback(() => {
@@ -85,6 +87,8 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
   //   window.addEventListener('scroll', controlNavbar);
   //   return () => window.removeEventListener('scroll', controlNavbar);
   // }, [controlNavbar]);
+
+
 
   const toggleDrawerItem = (i) => {
     setOpenDrawerItem(prev => prev === i ? null : i);
@@ -147,15 +151,17 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
             />
           </div>
 
-          <button className="navActionBtn" aria-label="Favorite" onClick={()=>nav.push("/user/myaccount/favorite")}>
+          <a className="navActionBtn" aria-label="Favorite" href={"/user/myaccount/favorite"}>
             <IconHeart />
             {wishlistCount > 0 && <span className="navBadge">{wishlistCount}</span>}
-          </button>
+          </a>
 
-          <button className="navActionBtn" aria-label="Coș" onClick={()=>nav.push("/user/myaccount/mycart")}>
+          <a className="navActionBtn" aria-label="Coș" href={"/user/myaccount/mycart"}>
             <IconCart />
+            
+
             {cartCount > 0 && <span className="navBadge">{cartCount}</span>}
-          </button>
+          </a>
 
           <ul className="navLinks">
             <li className='noHover'>
@@ -257,7 +263,7 @@ const NavBar = ({ cartCount = 0, wishlistCount = 0, hiden }) => {
                     background: '#292524',
                     border: '#44403c solid 1px'
                   }}><CgBox color='var(--accent2)' size={20} />Comenzi</button>
-                  <button style={{
+                  <button onClick={()=>logout()} style={{
                     width: "100%",
                     padding: '1rem',
                     fontSize: 15,
