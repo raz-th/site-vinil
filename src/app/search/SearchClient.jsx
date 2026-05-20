@@ -72,7 +72,7 @@ const ProductCard = ({ produs }) => {
                 )}
 
                 <div className="productPrices">
-                    <span className="productPrice">00.00 Lei</span>
+                    <span className="productPrice">{produs.price} Lei</span>
                 </div>
             </div>
 
@@ -95,6 +95,21 @@ export default function SearchClient({ id, format, produse, infoPagina, q }) {
     const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
 
     useEffect(() => { setSearchVal(q || '') }, [q])
+
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            const query = searchVal.trim();
+
+            router.replace(
+                query
+                    ? `/search?q=${encodeURIComponent(query)}`
+                    : `/search`
+            );
+        }, 400); // delay
+
+        return () => clearTimeout(timeout);
+    }, [searchVal, router]);
 
     // console.log(produse)
     const paginatie = () => {
@@ -137,19 +152,14 @@ export default function SearchClient({ id, format, produse, infoPagina, q }) {
                     <FaSearch />
 
                     <input
-                        type="text"
-                        placeholder="Artist, album..."
+                        type="search"
+                        placeholder="Caută artist, album, label..."
                         value={searchVal}
-                        onChange={(e) => {
-                            const val = e.target.value;
-                            setSearchVal(val);
-                            if (val.trim()) {
-                                router.replace(`/search?q=${encodeURIComponent(val.trim())}`);
-                            } else {
-                                router.replace(`/search`);
-                            }
-                        }}
+                        onChange={(e) => setSearchVal(e.target.value)}
                         autoFocus
+                        autoComplete="off"
+                        spellCheck={false}
+                        className="searchInput"
                     />
                 </div>
             </div>

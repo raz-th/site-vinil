@@ -1,4 +1,4 @@
-import { adminDb } from '@/lib/firebaseAdmin';
+import { supabase } from '@/lib/supabase';
 import React from 'react';
 import SearchClient from './SearchClient';
 import { formatMap } from '@/config/site';
@@ -18,9 +18,11 @@ export async function generateMetadata({ searchParams }) {
 const Page = async ({ searchParams }) => {
   const { q, page, format, genres } = await searchParams;
 
-  const searchTerm = q?.trim().toLowerCase() || '';
+  const searchTerm = q?.trim() || '';
   const currentPage = Number(page) || 1;
   const perPage = 24;
+  const from = (currentPage - 1) * perPage;
+  const to = from + perPage - 1;
 
   const genresArray = genres || null;
   const formatFiltrat = formatMap[format] || null;
@@ -28,100 +30,53 @@ const Page = async ({ searchParams }) => {
   let releases = [];
   let totalProduse = 0;
 
+  let query = supabase
+    .from('products')
+    .select('*', { count: 'exact' });
+
   if (searchTerm) {
-    // 🔍 BASE QUERIES (title + artist)
-    let baseTitleQuery = adminDb.collection('releases')
-      .where('title_lowercase', '>=', searchTerm)
-      .where('title_lowercase', '<=', searchTerm + '\uf8ff');
+    query = query.or(`title.ilike.%${searchTerm}%,artist.ilike.%${searchTerm}%`);
 
-    let baseArtistQuery = adminDb.collection('releases')
-      .where('artist_lowercase', '>=', searchTerm)
-      .where('artist_lowercase', '<=', searchTerm + '\uf8ff');
-
-    // 🔥 APPLY FILTERS
     if (formatFiltrat) {
-      baseTitleQuery = baseTitleQuery.where('format', '==', formatFiltrat);
-      baseArtistQuery = baseArtistQuery.where('format', '==', formatFiltrat);
+      query = query.eq('format', formatFiltrat);
     }
 
     if (genresArray && genresArray !== 'toate') {
-      baseTitleQuery = baseTitleQuery.where('genres', 'array-contains-any', [genresArray]);
-      baseArtistQuery = baseArtistQuery.where('genres', 'array-contains-any', [genresArray]);
+      query = query.overlaps('genres', [genresArray]);
     }
 
-    // 🔁 pagination (Firestore style)
-    let qTitle = baseTitleQuery.limit(perPage);
-    let qArtist = baseArtistQuery.limit(perPage);
+    const { data, count, error } = await query
+      .order('date_added', { ascending: false })
+      .range(from, to);
 
-    if (currentPage > 1) {
-      const skipTitle = await baseTitleQuery.limit((currentPage - 1) * perPage).get();
-      const lastTitle = skipTitle.docs[skipTitle.docs.length - 1];
+    if (error) console.error(error.message);
 
-      if (lastTitle) {
-        qTitle = baseTitleQuery.startAfter(lastTitle).limit(perPage);
-      }
-
-      const skipArtist = await baseArtistQuery.limit((currentPage - 1) * perPage).get();
-      const lastArtist = skipArtist.docs[skipArtist.docs.length - 1];
-
-      if (lastArtist) {
-        qArtist = baseArtistQuery.startAfter(lastArtist).limit(perPage);
-      }
-    }
-
-    const [byTitle, byArtist] = await Promise.all([
-      qTitle.get(),
-      qArtist.get(),
-    ]);
-
-    // 🔥 combine + dedupe
-    const seen = new Set();
-    [...byTitle.docs, ...byArtist.docs].forEach(doc => {
-      if (!seen.has(doc.id)) {
-        seen.add(doc.id);
-        releases.push({ id: doc.id, ...doc.data() });
-      }
-    });
-
-    // ⚠️ COUNT (approximation, since Firestore can't combine queries)
-    totalProduse = seen.size + (currentPage - 1) * perPage;
+    releases = data || [];
+    totalProduse = count || 0;
 
   } else {
-    // 🧾 NO SEARCH → normal listing
-    let baseQuery = adminDb.collection('releases').orderBy('date_added', 'desc');
-
     if (formatFiltrat && formatFiltrat !== 'toate') {
-      baseQuery = baseQuery.where('format', '==', formatFiltrat);
+      query = query.eq('format', formatFiltrat);
     }
 
     if (genresArray) {
-      baseQuery = baseQuery.where('genres', 'array-contains-any', [genresArray]);
+      query = query.overlaps('genres', [genresArray]);
     }
 
-    let qRef = baseQuery.limit(perPage);
+    const { data, count, error } = await query
+      .order('date_added', { ascending: false })
+      .range(from, to);
 
-    if (currentPage > 1) {
-      const skipSnapshot = await baseQuery.limit((currentPage - 1) * perPage).get();
-      const lastDoc = skipSnapshot.docs[skipSnapshot.docs.length - 1];
+    if (error) console.error(error.message);
 
-      if (lastDoc) {
-        qRef = baseQuery.startAfter(lastDoc).limit(perPage);
-      }
-    }
-
-    const snapshot = await qRef.get();
-    releases = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-    // ✅ correct count
-    const countSnapshot = await baseQuery.count().get();
-    totalProduse = countSnapshot.data().count;
+    releases = data || [];
+    totalProduse = count || 0;
   }
 
-  // 📄 pagination info
   const infoPagina = {
     total: totalProduse,
-    deLa: (currentPage - 1) * perPage + 1,
-    panaLa: Math.min(currentPage * perPage, totalProduse),
+    deLa: totalProduse === 0 ? 0 : from + 1,
+    panaLa: Math.min(to + 1, totalProduse),
     currentPage,
     perPage,
   };

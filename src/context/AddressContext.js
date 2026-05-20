@@ -1,7 +1,6 @@
 'use client';
 import { createContext, useContext, useEffect, useState } from "react";
-import { doc, onSnapshot, setDoc } from "firebase/firestore";
-import { db } from "@/lib/firebaseClient";
+import { supabase } from "@/lib/supabase"; // <--- Importul tău personalizat
 import { useAuth } from "./AuthContext";
 
 const AddressContext = createContext(null);
@@ -11,6 +10,7 @@ export const AddressProvider = ({ children }) => {
     const [addresses, setAddresses] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    // Încarcă adresele când utilizatorul se conectează
     useEffect(() => {
         if (!user) {
             setAddresses([]);
@@ -18,41 +18,67 @@ export const AddressProvider = ({ children }) => {
             return;
         }
 
-        const unsubscribe = onSnapshot(doc(db, "users", user.uid), (snap) => {
-            if (snap.exists()) {
-                setAddresses(snap.data().addresses || []);
-            }
-            setLoading(false);
-        });
+        const fetchAddresses = async () => {
+            try {
+                setLoading(true);
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('addresses')
+                    .eq('id', user.id)
+                    .single();
 
-        return () => unsubscribe();
+                if (error) throw error;
+
+                if (data) {
+                    setAddresses(data.addresses || []);
+                }
+            } catch (err) {
+                console.error("Eroare la preluarea adreselor:", err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchAddresses();
     }, [user]);
 
-    const updateFirestoreAddresses = async (newAddresses) => {
+    // Salvează modificările în câmpul JSONB din tabela public.profiles
+    const updateSupabaseAddresses = async (newAddresses) => {
         if (!user) return;
         try {
-            await setDoc(doc(db, "users", user.uid), { 
-                addresses: newAddresses 
-            }, { merge: true });
+            const { error } = await supabase
+                .from('profiles')
+                .update({ addresses: newAddresses })
+                .eq('id', user.id);
+
+            if (error) throw error;
+
+            // Actualizăm și starea locală instant
+            setAddresses(newAddresses);
         } catch (err) {
-            console.error("Eroare salvare adrese:", err);
+            console.error("Eroare salvare adrese în Supabase:", err.message);
         }
     };
 
     const addAddress = async (address) => {
-        const id = Date.now().toString(); // Generăm un ID unic local
+        const id = Date.now().toString(); 
         const newAddress = { ...address, id, isDefault: addresses.length === 0 };
         const newAddresses = [...addresses, newAddress];
-        await updateFirestoreAddresses(newAddresses);
+        await updateSupabaseAddresses(newAddresses);
     };
 
     const removeAddress = async (id) => {
-        const newAddresses = addresses.filter(addr => addr.id !== id);
+        let newAddresses = addresses.filter(addr => addr.id !== id);
+        
         // Dacă am șters adresa implicită, o setăm pe prima rămasă ca default
-        if (addresses.find(a => a.id === id)?.isDefault && newAddresses.length > 0) {
-            newAddresses[0].isDefault = true;
+        const wasDefault = addresses.find(a => a.id === id)?.isDefault;
+        if (wasDefault && newAddresses.length > 0) {
+            newAddresses = newAddresses.map((addr, idx) => ({
+                ...addr,
+                isDefault: idx === 0
+            }));
         }
-        await updateFirestoreAddresses(newAddresses);
+        await updateSupabaseAddresses(newAddresses);
     };
 
     const setDefaultAddress = async (id) => {
@@ -60,7 +86,7 @@ export const AddressProvider = ({ children }) => {
             ...addr,
             isDefault: addr.id === id
         }));
-        await updateFirestoreAddresses(newAddresses);
+        await updateSupabaseAddresses(newAddresses);
     };
 
     return (

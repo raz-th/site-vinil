@@ -39,6 +39,9 @@ const formatari = [
   { label: "Casete audio", href: "casete" },
   { label: "DVD", href: "dvd" },
   { label: "Blu-ray", href: "bluray" },
+  { label: "Minidisc", href: "minidisc" },
+  { label: "Box set", href: "boxset" },
+  { label: "SACD", href: "sacd" },
 ];
 
 
@@ -66,8 +69,8 @@ const NavBar = ({ wishlistCount = 0, hiden }) => {
   const [openDrawerItem, setOpenDrawerItem] = useState(null);
   const nav = useRouter()
   const isMobile = useIsMobile();
-  const { user, logout } = useAuth();
-  const {cartCount} = useCart()
+  const { user, userData, logout } = useAuth();
+  const { cartCount } = useCart()
 
   useEffect(() => { console.log(user) }, [user])
   // const controlNavbar = useCallback(() => {
@@ -94,7 +97,7 @@ const NavBar = ({ wishlistCount = 0, hiden }) => {
     setOpenDrawerItem(prev => prev === i ? null : i);
   };
 
-  const navigateMobil = (to) =>{
+  const navigateMobil = (to) => {
     nav.push(to);
     setDrawerOpen(false)
   }
@@ -125,6 +128,11 @@ const NavBar = ({ wishlistCount = 0, hiden }) => {
               </div>
             </li>
           ))}
+          <li>
+            <a href={`/mistery-box`} className='button'>
+              Mistery box
+            </a>
+          </li>
           {/* <li><a href="#">Noutăți</a></li>
           <li><a href="#">Oferte</a></li>
           <li><a href="#">Artiști</a></li> */}
@@ -158,7 +166,7 @@ const NavBar = ({ wishlistCount = 0, hiden }) => {
 
           <a className="navActionBtn" aria-label="Coș" href={"/user/myaccount/mycart"}>
             <IconCart />
-            
+
 
             {cartCount > 0 && <span className="navBadge">{cartCount}</span>}
           </a>
@@ -179,13 +187,13 @@ const NavBar = ({ wishlistCount = 0, hiden }) => {
                     // --- VARIANTĂ LOGAT ---
                     <>
                       <div className="user-info-header">
-                        <p className="user-name">{user.displayName || 'Utilizator'}</p>
+                        <p className="user-name">{userData?.full_name || userData?.display_name || user?.email?.split('@')[0]}</p>
                         <p className="user-email">{user.email}</p>
                       </div>
                       <hr />
                       <a href="/user/myaccount/orders"><FaBoxOpen /> Comenzile mele</a>
                       <a href="/user/myaccount/favorite"><FaHeart /> Favorite</a>
-                      <a href="/user/myaccount"><IoMdSettings/> Setări cont</a>
+                      <a href="/user/myaccount"><IoMdSettings /> Setări cont</a>
                       <hr />
                       <button onClick={() => logout()} className="logout-btn">
                         <FaSignOutAlt /> Ieșire
@@ -229,15 +237,15 @@ const NavBar = ({ wishlistCount = 0, hiden }) => {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10, position: 'relative', width: '100%' }}>
                 <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                   {
-                    user.photoURL ? <img className='ic' style={{padding: 0}}  src={user.photoURL} /> : <div className='ic'><FaRegUser /></div>
+                    user.photoURL ? <img className='ic' style={{ padding: 0 }} src={user.photoURL} /> : <div className='ic'><FaRegUser /></div>
                   }
                   <div>
-                    <h3>{user.displayName}</h3>
+                    <h3>{userData?.full_name || userData?.display_name || user?.email?.split('@')[0]}</h3>
                     <span>{user.email}</span>
                   </div>
                 </div>
                 <div style={{ display: 'flex', width: '100%', gap: 20, justifyContent: 'space-between' }}>
-                  <button onClick={()=>{navigateMobil("/user/myaccount")}} style={
+                  <button onClick={() => { navigateMobil("/user/myaccount") }} style={
                     {
                       width: "100%",
                       padding: '1rem',
@@ -263,7 +271,7 @@ const NavBar = ({ wishlistCount = 0, hiden }) => {
                     background: '#292524',
                     border: '#44403c solid 1px'
                   }}><CgBox color='var(--accent2)' size={20} />Comenzi</button>
-                  <button onClick={()=>logout()} style={{
+                  <button onClick={() => logout()} style={{
                     width: "100%",
                     padding: '1rem',
                     fontSize: 15,

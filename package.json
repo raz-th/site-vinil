@@ -10,9 +10,9 @@
     "pages:build": "npx @cloudflare/next-on-pages"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.10.3",
+    "@supabase/supabase-js": "^2.106.0",
     "colorthief": "^3.3.1",
-    "firebase": "^12.11.0",
-    "firebase-admin": "^13.7.0",
     "next": "^16.2.4",
     "react": "19.2.4",
     "react-dom": "19.2.4",

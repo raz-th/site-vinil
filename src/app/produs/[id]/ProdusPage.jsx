@@ -50,6 +50,7 @@ const ProdusPage = ({ produs }) => {
     const [touchEnd, setTouchEnd] = useState(null);
 
     useEffect(() => {
+        console.log(produs)
         const el = scrollRef.current;
         if (!el) return;
 
@@ -65,6 +66,7 @@ const ProdusPage = ({ produs }) => {
             clearTimeout(timer);
             window.removeEventListener('resize', checkOverflow);
         };
+
     }, [produs]);
 
     const scrollLeft = () => {
@@ -201,7 +203,7 @@ const ProdusPage = ({ produs }) => {
                     </section>
                     <section>
                         <p className='productType'>{produs.format} · {produs.format_desc}</p>
-                        <p className='productArtistName'>{produs.artists.map((v) => v.name).join(", ")}</p>
+                        <p className='productArtistName'>{produs.artist}</p>
                         <h1 className='productName'>{produs.title}</h1>
                         <div className='generesTags'>
                             {
@@ -211,7 +213,7 @@ const ProdusPage = ({ produs }) => {
                         <hr className='divider' />
                         <div className="detalies">
                             <div className="detalie-row">
-                                <p>An lansare</p>
+                                <p>An producție</p>
                                 <p>{produs.year}</p>
                             </div>
                             <div className="detalie-row">
@@ -220,11 +222,19 @@ const ProdusPage = ({ produs }) => {
                             </div>
                             <div className="detalie-row">
                                 <p>Casa de discuri</p>
-                                <p>{produs.labels.map((v)=>v.name).join(", ")}</p>
+                                <p>{produs.label}</p>
                             </div>
                             <div className="detalie-row">
                                 <p>Format</p>
-                                <p>{produs.formats.map((v) => v.name).join(", ")}</p>
+                                <p>{produs.format}</p>
+                            </div>
+                            <div className="detalie-row">
+                                <p>Stare {produs.format === "Vinyl" ? "coperta" : "carcasă"}</p>
+                                <p>{produs.stare.stare_coperta}</p>
+                            </div>
+                            <div className="detalie-row">
+                                <p>Stare {produs.format === "Vinyl" ? "vinil" : "disc"}</p>
+                                <p>{produs.stare.stare_coperta}</p>
                             </div>
                         </div>
                         <hr className='divider' />
@@ -256,12 +266,12 @@ const ProdusPage = ({ produs }) => {
                         </ul>
                     </section>
                     {
-                        (produs.note && <section>
+                        (produs.description && <section>
                             <div className="secondInfoHeader">
-                                <h2>Note</h2>
+                                <h2>Descriere</h2>
                                 <div className="line" />
                             </div>
-                            <p>{produs.notes}</p>
+                            <p>{produs.description}</p>
                         </section>)
                     }
                 </div>

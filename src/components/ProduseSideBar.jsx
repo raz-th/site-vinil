@@ -15,11 +15,15 @@ const producatori = [
 ];
 
 const formatari = [
-    { label: 'Vinil', value: 'vinil' },
-    { label: 'CD', value: 'cd' },
-    { label: 'Casetă', value: 'caseta' },
-    { label: 'DVD', value: 'dvd' },
-    { label: 'Blu-ray', value: 'bluray' },
+  { label: "Viniluri", value: "vinil" },
+  { label: "CD-uri", value: "cd" },
+  { label: "Casete audio", value: "casete" },
+  { label: "DVD", value: "dvd" },
+  { label: "Blu-ray", value: "bluray" },
+  { label: "Minidisc", value: "minidisc" },
+  { label: "Box set", value: "boxset" },
+  { label: "SACD", value: "sacd" },
+  { label: "Mistery box", value: "mistery-box" },
 ];
 
 const ProduseSideBar = ({ search = false, id, format }) => {

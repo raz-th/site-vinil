@@ -12,66 +12,45 @@ import Link from "next/link";
 
 const Aside = () => {
   const [diskHover, setDiskHover] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, userData, logout } = useAuth();
   const router = useRouter();
   const path = usePathname();
-
-
-  // if (!user) return null;
-
-
-
-
 
   return (
     <aside>
       {!user && (<div className="img-skeleton" style={{ backgroundColor: '#eec99d' }} />)}
       <div className="leftSection_header">
-
         <div onMouseEnter={() => setDiskHover(true)} onMouseLeave={() => setDiskHover(false)}>
-          <VinylDisk spin={diskHover} style={{ marginBottom: 20, transition: '.2s', transform: diskHover ? "scale(1.1)" : "", height: 150, width: 150 }} img={user?.photoURL || "/assets/default_user.png"} hideHole={true} />
+          <VinylDisk 
+            spin={diskHover} 
+            style={{ marginBottom: 20, transition: '.2s', transform: diskHover ? "scale(1.1)" : "", height: 150, width: 150 }} 
+            img={userData?.avatar_url || "/assets/default_user.png"} 
+            hideHole={true} 
+          />
         </div>
-        <p className="leftSection_header_name">{user?.displayName}</p>
+        <p className="leftSection_header_name">{userData?.full_name || userData?.display_name || user?.email?.split('@')[0]}</p>
         <p className="leftSection_header_email">{user?.email}</p>
       </div>
       <div className="leftSection_content">
         <ol>
-          <li
-            className={path === "/user/myaccount" ? "selected" : ""}
-          >
+          <li className={path === "/user/myaccount" ? "selected" : ""}>
             <Link href={"/user/myaccount"}><FaRegUser /> Contul meu</Link>
           </li>
-          <li
-            className={
-              path === "/user/myaccount/orders" ? "selected" : ""
-            }
-          >
+          <li className={path === "/user/myaccount/orders" ? "selected" : ""}>
             <Link href={"/user/myaccount/orders"}><SlHandbag /> Comenzile mele</Link>
           </li>
-          <li
-            className={
-              path === "/user/myaccount/mycart" ? "selected" : ""
-            }
-          >
+          <li className={path === "/user/myaccount/mycart" ? "selected" : ""}>
             <Link href={"/user/myaccount/mycart"}><IoCartOutline /> Coșul meu</Link>
           </li>
-          <li
-            className={
-              path === "/user/myaccount/favorite" ? "selected" : ""
-            }
-          >
+          <li className={path === "/user/myaccount/favorite" ? "selected" : ""}>
             <Link href={"/user/myaccount/favorite"}><IoMdHeartEmpty /> Favorite</Link>
           </li>
-          <li
-            className={
-              path === "/user/myaccount/addresses" ? "selected" : ""
-            }
-          >
+          <li className={path === "/user/myaccount/addresses" ? "selected" : ""}>
             <Link href={"/user/myaccount/addresses"}><FiMapPin /> Adrese de livrare</Link>
           </li>
         </ol>
         <hr />
-        <button className="logout_btn" onClick={()=>logout()} >
+        <button className="logout_btn" onClick={() => logout()}>
           <FaSignOutAlt /> Ieșire
         </button>
       </div>

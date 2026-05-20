@@ -6,19 +6,10 @@ import './LoginPage.css';
 import { MdEmail } from "react-icons/md";
 import { FaLock, FaUser } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import {
-  auth,
-  googleProvider
-} from '@/lib/firebaseClient';
-import {
-  signInWithPopup,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  updateProfile,
-} from 'firebase/auth';
+
+import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { createUserProfile } from './userFunctions';
 
 const AuthInput = ({
   label,
@@ -67,18 +58,20 @@ const ClientLogin = ({ type: initialType }) => {
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-
-
   const handleGoogleLogin = async () => {
     try {
       setError('');
-      const result = await signInWithPopup(auth, googleProvider);
+      
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
 
-      await createUserProfile(result.user);
-
-      console.log("Google login success:", result.user);
+      if (error) throw error;
     } catch (error) {
-      console.error("Google login error:", error.code, error.message);
+      console.error("Google login error:", error.message);
       setError("Autentificarea cu Google a eșuat.");
     }
   };
@@ -102,34 +95,28 @@ const ClientLogin = ({ type: initialType }) => {
     try {
       setSubmitting(true);
 
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        signUpEmail,
-        signUpPassword
-      );
-
-      await updateProfile(userCredential.user, {
-        displayName: fullName,
-        logged_with: userCredential.user.providerId
+      const { data, error } = await supabase.auth.signUp({
+        email: signUpEmail,
+        password: signUpPassword,
+        options: {
+          data: {
+            full_name: fullName, // Collected by the database trigger
+          },
+        },
       });
-      await createUserProfile(userCredential.user, { fullName });
 
-      console.log("Cont creat:", userCredential.user);
+      if (error) throw error;
+
+      console.log("Cont creat cu succes:", data.user);
     } catch (error) {
-      console.error("Sign up error:", error.code, error.message);
+      console.error("Sign up error:", error.message);
 
-      switch (error.code) {
-        case 'auth/email-already-in-use':
-          setError("Există deja un cont cu acest email.");
-          break;
-        case 'auth/invalid-email':
-          setError("Email invalid.");
-          break;
-        case 'auth/weak-password':
-          setError("Parola este prea slabă.");
-          break;
-        default:
-          setError("Nu am putut crea contul. Încearcă din nou.");
+      if (error.message.includes('already registered') || error.status === 422) {
+        setError("Există deja un cont cu acest email.");
+      } else if (error.message.includes('weak') || error.message.includes('at least 6')) {
+        setError("Parola este prea slabă.");
+      } else {
+        setError("Nu am putut crea contul. Încearcă din nou.");
       }
     } finally {
       setSubmitting(false);
@@ -143,27 +130,21 @@ const ClientLogin = ({ type: initialType }) => {
     try {
       setSubmitting(true);
 
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        signInEmail,
-        signInPassword
-      );
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: signInEmail,
+        password: signInPassword,
+      });
 
-      console.log("Login reușit:", userCredential.user);
+      if (error) throw error;
+
+      console.log("Login reușit:", data.user);
     } catch (error) {
-      console.error("Sign in error:", error.code, error.message);
+      console.error("Sign in error:", error.message);
 
-      switch (error.code) {
-        case 'auth/invalid-credential':
-        case 'auth/wrong-password':
-        case 'auth/user-not-found':
-          setError("Email sau parolă incorectă.");
-          break;
-        case 'auth/invalid-email':
-          setError("Email invalid.");
-          break;
-        default:
-          setError("Nu am putut face autentificarea.");
+      if (error.status === 400 || error.message.includes('Invalid login credentials')) {
+        setError("Email sau parolă incorectă.");
+      } else {
+        setError("Nu am putut face autentificarea.");
       }
     } finally {
       setSubmitting(false);
@@ -171,8 +152,6 @@ const ClientLogin = ({ type: initialType }) => {
   };
 
   useEffect(() => {
-    console.log("User:", user);
-
     if (!loading && user) {
       nav.push("/");
     }

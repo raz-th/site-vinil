@@ -1,13 +1,17 @@
 export const nume = "vinil1.ro";
-export const formatari = ['toate', 'vinil', 'cd', 'caseta', 'dvd', 'bluray'];
+export const formatari = ['toate', 'vinil', 'cd', 'caseta', 'dvd', 'bluray', 'minidisc', 'boxset', 'sacd', 'mistery-box'];
 export const an_curent = new Date().getFullYear();
 export const formatMap = {
   'toate': null,
   'vinil': 'Vinyl',
   'cd': 'CD',
-  'caseta': 'Cassette',
+  'casete': 'Cassette',
   'dvd': 'DVD',
   'bluray': 'Blu-ray',
+  'minidisc': "Minidisc",
+  "boxset": "Box Set",
+  "sacd": "SACD",
+  "mistery-box": "Mistery box"
 };
 export const genuri_muzicale = {
   // "toate":{

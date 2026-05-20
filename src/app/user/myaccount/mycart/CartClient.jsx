@@ -3,8 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "@/lib/firebaseClient";
+import { supabase } from "@/lib/supabase";
 import "./cart.css";
 import { IoMdTrash } from "react-icons/io";
 import { SlHandbag } from "react-icons/sl";
@@ -32,20 +31,24 @@ export default function CartPage() {
         setCheckoutLoading(true);
         setError("");
         try {
-            await addDoc(collection(db, "orders"), {
-                userId: user.uid,
-                status: "in_procesare",
-                createdAt: serverTimestamp(),
-                items: cart,
-                subtotal,
-                shippingCost,
-                total,
-                shippingAddress: address,
-            });
+            const { error: insertError } = await supabase
+                .from("orders")
+                .insert({
+                    userId: user.id,
+                    status: "in_procesare",
+                    items: cart,
+                    subtotal,
+                    shippingCost,
+                    total,
+                    shippingAddress: address,
+                });
+
+            if (insertError) throw insertError;
+
             await clearCart();
             router.push("/user/myaccount/comenzile-mele");
         } catch (err) {
-            console.error(err);
+            console.error(err.message);
             setError("A apărut o eroare. Încearcă din nou.");
         } finally {
             setCheckoutLoading(false);

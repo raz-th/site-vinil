@@ -4,6 +4,8 @@ import './GenrePage.css';
 import ProduseSideBar from '@/components/ProduseSideBar';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
+import Image from 'next/image';
+import Pagination from '@/components/Pagination';
 
 
 
@@ -13,12 +15,14 @@ import { useCart } from '@/context/CartContext';
 
 
 const optiuniSortare = [
+  'Nume (A-Z)',
   'Preț (Crescător)',
   'Preț (Descrescător)',
   'Noutăți',
   'Cele mai vândute',
-  'Nume (A-Z)',
+
 ];
+
 
 // ── iconița disc placeholder ──
 const IconDisc = () => (
@@ -30,81 +34,93 @@ const IconDisc = () => (
 );
 
 // ── card produs ──
-const cleanArtistName = (name) => name.replace(/\s*\(\d+\)$/, '').trim();
 
 const ProductCard = ({ produs }) => {
-    const [imgLoaded, setImgLoaded] = useState(false);
-    const imgRef = useRef(null);
-    const { addToCart } = useCart();
-    const nav = useRouter();
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const imgRef = useRef(null);
+  const { addToCart } = useCart();
+  const nav = useRouter();
+  // console.log(produs)
+  useEffect(() => {
+    setImgLoaded(false);
+    if (imgRef.current?.complete && imgRef.current?.naturalWidth > 0) {
+      setImgLoaded(true);
+    }
+  }, [produs.cover_image, produs.thumb]);
 
-    useEffect(() => {
-        setImgLoaded(false);
-        if (imgRef.current?.complete && imgRef.current?.naturalWidth > 0) {
-            setImgLoaded(true);
-        }
-    }, [produs.cover_image, produs.thumb]);
+  const artisti = produs.artist;
+  const an = produs.year > 0 ? produs.year : null;
+  const label = produs.labels?.[0]?.name;
+  const format = produs.format;
 
-    const artisti = produs.artist;
-    const an = produs.year > 0 ? produs.year : null;
-    const label = produs.labels?.[0]?.name;
-    const format = produs.formats?.[0]?.name;
-    const formatDesc = produs.formats?.[0]?.descriptions?.[0];
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    addToCart({
+      productId: produs.id,
+      title: produs.title,
+      artist: produs.artist,
+      format: produs.format,
+      imageUrl: produs.cover_image,
+      price: produs.price || 0,
+      quantity: 1
+    });
+  };
 
-    const handleAddToCart = (e) => {
-        e.stopPropagation();
-        addToCart({
-            productId: produs.id,
-            title: produs.title,
-            artist: produs.artist,
-            format: produs.format,
-            imageUrl: produs.cover_image,
-            price: produs.price || 0,
-            quantity: 1
-        });
-    };
-
-    return (
-        <div className="productCard" onClick={() => nav.push(`/produs/${produs.id}`)}>
-            <div className="productImageWrap">
-                <div style={{ position: 'relative' }}>
-                    {!imgLoaded && <div className="img-skeleton" />}
-                    <img
-                        ref={imgRef}
-                        src={produs.cover_image || produs.thumb || "/assets/image.png"}
-                        alt={`${produs.title} - ${artisti}`}
-                        loading="lazy"
-                        onLoad={() => setImgLoaded(true)}
-                        onError={() => setImgLoaded(true)}
-                        style={{ opacity: imgLoaded ? 1 : 0, transition: 'opacity 0.3s ease' }}
-                    />
-                </div>
-                {format && <span className="productBadge">{format}</span>}
-            </div>
-
-            <div className="productInfo">
-                <p className="productArtist">{produs.title}</p>
-                <p className="productName">{artisti}</p>
-                <div className="productMeta">
-                    {an && <span className="productMetaItem">{an}</span>}
-                    {label && <span className="productMetaItem">{label}</span>}
-                    {formatDesc && <span className="productMetaItem">{formatDesc}</span>}
-                </div>
-                {produs.genres?.length > 0 && (
-                    <div className="productGenres">
-                        {produs.genres.map(s => (
-                            <span key={s} className="productGenreTag">{s}</span>
-                        ))}
-                    </div>
-                )}
-                <div className="productPrices">
-                    <span className="productPrice">{produs.price ? `${produs.price}.00 Lei` : 'Preț indisponibil'}</span>
-                </div>
-            </div>
-
-            <button className="addToCartBtn" onClick={handleAddToCart}>Adaugă în coș</button>
+  return (
+    <div className="productCard" onClick={() => nav.push(`/produs/${produs.id}`)}>
+      <div className="productImageWrap">
+        <div style={{ position: 'relative' }}>
+          {!imgLoaded && <div className="img-skeleton" />}
+          <img
+            ref={imgRef}
+            src={produs.cover_image || produs.thumb || "/assets/image.png"}
+            alt={`${produs.title} - ${artisti}`}
+            loading="lazy"
+            onLoad={() => setImgLoaded(true)}
+            onError={() => setImgLoaded(true)}
+            style={{ opacity: imgLoaded ? 1 : 0, transition: 'opacity 0.3s ease' }}
+          />
+          {/* <Image
+            ref={imgRef}
+            src={produs.cover_image || produs.thumb || "/assets/image.png"}
+            alt={`${produs.title} - ${artisti}`}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+            loading="lazy"
+            onLoad={() => setImgLoaded(true)}
+            onError={() => setImgLoaded(true)}
+            style={{
+              objectFit: 'cover',
+              opacity: imgLoaded ? 1 : 0,
+              transition: 'opacity 0.3s ease',
+            }}
+          /> */}
         </div>
-    );
+        {format && <span className="productBadge">{format === "Vinyl" ? "Vinil" : format}</span>}
+      </div>
+
+      <div className="productInfo">
+        <p className="productArtist">{artisti}</p>
+        <p className="productName">{produs.title}</p>
+        <div className="productMeta">
+          {an && <span className="productMetaItem">{an}</span>}
+          {label && <span className="productMetaItem">{label}</span>}
+        </div>
+        {produs.genres?.length > 0 && (
+          <div className="productGenres">
+            {produs.genres.map(s => (
+              <span key={s} className="productGenreTag">{s}</span>
+            ))}
+          </div>
+        )}
+        <div className="productPrices">
+          <span className="productPrice">{produs.price ? `${produs.price}.00 Lei` : 'Preț indisponibil'}</span>
+        </div>
+      </div>
+
+      <button className="addToCartBtn" onClick={handleAddToCart}>Adaugă în coș</button>
+    </div>
+  );
 };
 
 // ── componenta principala ──
@@ -139,38 +155,10 @@ export default function GenereClient({ id, format, produse, infoPagina }) {
   const totalPagini = Math.ceil(infoPagina.total / infoPagina.perPage);
   const currentPage = infoPagina.currentPage;
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
 
 
-  const paginatie = () => {
-    const pages = [];
 
-    const maxVisible = isMobile ? 3 : 5;
 
-    pages.push(1);
-
-    if (currentPage > 2) {
-      pages.push("...");
-    }
-
-    const offset = Math.floor(maxVisible / 2);
-    const start = Math.max(2, currentPage - offset);
-    const end = Math.min(totalPagini - 1, currentPage + offset);
-
-    for (let i = start; i <= end; i++) {
-      pages.push(i);
-    }
-
-    if (currentPage < totalPagini - 1) {
-      pages.push("...");
-    }
-
-    if (totalPagini > 1) {
-      pages.push(totalPagini);
-    }
-
-    return pages;
-  };
 
   // console.log(produse)
   return (
@@ -224,22 +212,7 @@ export default function GenereClient({ id, format, produse, infoPagina }) {
           </div>
 
           {/* paginare */}
-          <div className="pagination">
-            {
-              currentPage > 1 ?
-                <a className={"pageBtn"} href={`?page=${currentPage - 1}`}>‹</a> :
-                <p className={"pageBtn disabled"}>‹</p>
-            }
-            {paginatie().map((n, i) => (
-              n !== "..." ? <a key={i} href={`?page=${n}`} className={`pageBtn ${n === currentPage ? 'active' : ''}`}>{n}</a> :
-                <p key={i} className={`pageBtn`} style={{ cursor: "unset" }}>...</p>
-            ))}
-            {
-              currentPage < totalPagini ?
-                <a className={"pageBtn"} href={`?page=${currentPage + 1}`}>›</a> :
-                <p className={"pageBtn disabled"}>›</p>
-            }
-          </div>
+          <Pagination currentPage={currentPage} totalPagini={totalPagini}/>
 
         </main>
       </div>

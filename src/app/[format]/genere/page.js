@@ -1,6 +1,5 @@
 import DiscuriVinil from './DiscuriVinil';
-import Footer from '@/components/MainPage/Footer';
-import { adminDb } from '@/lib/firebaseAdmin';
+import { supabase } from '@/lib/supabase';
 import { formatMap, formatari } from '@/config/site';
 import { Suspense } from 'react';
 
@@ -10,9 +9,8 @@ export function generateStaticParams() {
   return formatari.map((format) => ({ format }));
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params }) { 
   const { format } = await params;
-
   const formatName = formatMap[format] || format;
 
   return {
@@ -24,59 +22,53 @@ export async function generateMetadata({ params }) {
 const Page = async ({ params, searchParams }) => {
   const { format } = await params;
   const { styles, page, sort } = await searchParams;
+  
   const currentPage = Number(page) || 1;
   const perPage = 24;
+  const from = (currentPage - 1) * perPage;
+  const to = from + perPage - 1;
 
   const stylesArray = styles ? styles.split(',').map(v => v.trim()) : null;
   const formatFiltrat = formatMap[format] || null;
 
-  // Sortare
+
+  let query = supabase
+    .from('products')
+    .select('*', { count: 'exact' });
+
+
+  if (formatFiltrat) {
+    query = query.eq('format', formatFiltrat);
+  }
+
+  if (stylesArray && stylesArray.length > 0) {
+    query = query.overlaps('styles', stylesArray);
+  }
+
+
   const sortMap = {
-    'pret-crescator': { field: 'price', dir: 'asc' },
-    'pret-descrescator': { field: 'price', dir: 'desc' },
-    'noutati': { field: 'date_added', dir: 'desc' },
-    'nume-az': { field: 'title_lowercase', dir: 'asc' },
+    'pret-crescator': { column: 'price', ascending: true },
+    'pret-descrescator': { column: 'price', ascending: false },
+    'noutati': { column: 'date_added', ascending: false },
+    'nume-az': { column: 'title', ascending: true }, 
   };
-  const sortOption = sortMap[sort] || { field: 'date_added', dir: 'desc' };
-  console.log(sortOption)
-  let baseQuery = adminDb.collection('releases');
+  
+  const sortOption = sortMap[sort] || { column: 'date_added', ascending: false };
+  query = query.order(sortOption.column, { ascending: sortOption.ascending });
 
-  if (stylesArray) {
-    baseQuery = baseQuery.where('styles', 'array-contains-any', stylesArray);
-  }
-  if (formatFiltrat) {
-    baseQuery = baseQuery.where('format', '==', formatFiltrat);
-  }
 
-  baseQuery = baseQuery.orderBy(sortOption.field, sortOption.dir);
+  const { data: produse, count, error } = await query.range(from, to);
 
-  let q = baseQuery.limit(perPage);
-
-  if (currentPage > 1) {
-    const skipSnapshot = await baseQuery.limit((currentPage - 1) * perPage).get();
-    const lastDoc = skipSnapshot.docs[skipSnapshot.docs.length - 1];
-    if (lastDoc) {
-      q = baseQuery.startAfter(lastDoc).limit(perPage);
-    }
+  if (error) {
+    console.error("Error fetching data from Supabase:", error.message);
   }
 
-  let countQuery = adminDb.collection('releases');
-  if (formatFiltrat) {
-    countQuery = countQuery.where('format', '==', formatFiltrat);
-  }
-  if (stylesArray) {
-    countQuery = countQuery.where('styles', 'array-contains-any', stylesArray);
-  }
-  const countSnapshot = await countQuery.count().get();
-  const totalProduse = countSnapshot.data().count;
-
-  const snapshot = await q.get();
-  const produse = snapshot.docs.map(doc => doc.data());
+  const totalProduse = count || 0;
 
   const infoPagina = {
     total: totalProduse,
-    deLa: (currentPage - 1) * perPage + 1,
-    panaLa: Math.min(currentPage * perPage, totalProduse),
+    deLa: totalProduse === 0 ? 0 : from + 1,
+    panaLa: Math.min(to + 1, totalProduse),
     currentPage,
     perPage,
   };
@@ -84,9 +76,9 @@ const Page = async ({ params, searchParams }) => {
   return (
     <>
       <Suspense fallback={null}>
-        <DiscuriVinil format={format} produse={produse} infoPagina={infoPagina} />
+        <DiscuriVinil format={format} produse={produse || []} infoPagina={infoPagina} />
       </Suspense>
-      <Footer />
+
     </>
   );
 };

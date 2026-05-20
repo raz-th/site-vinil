@@ -1,7 +1,6 @@
 'use client';
 import { createContext, useContext, useEffect, useState } from "react";
-import { doc, onSnapshot, updateDoc } from "firebase/firestore";
-import { db } from "@/lib/firebaseClient";
+import { supabase } from "@/lib/supabase"; 
 import { useAuth } from "./AuthContext";
 
 const CartContext = createContext(null);
@@ -11,6 +10,7 @@ export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    // Încarcă coșul de cumpărături din profilul utilizatorului
     useEffect(() => {
         if (!user) {
             setCart([]);
@@ -18,41 +18,68 @@ export const CartProvider = ({ children }) => {
             return;
         }
 
-        const unsubscribe = onSnapshot(doc(db, "users", user.uid), (snap) => {
-            if (snap.exists()) {
-                setCart(snap.data().cart || []);
-            }
-            setLoading(false);
-        });
+        const fetchCart = async () => {
+            try {
+                setLoading(true);
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('cart')
+                    .eq('id', user.id)
+                    .single();
 
-        return () => unsubscribe();
+                if (error) throw error;
+
+                if (data) {
+                    setCart(data.cart || []);
+                }
+            } catch (err) {
+                console.error("Eroare la preluarea coșului:", err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCart();
     }, [user]);
 
-    const updateFirestoreCart = async (newCart) => {
+    // Actualizează coloana jsonb 'cart' din tabela public.profiles
+    const updateSupabaseCart = async (newCart) => {
         if (!user) return;
-        await updateDoc(doc(db, "users", user.uid), { cart: newCart });
+        try {
+            const { error } = await supabase
+                .from('profiles')
+                .update({ cart: newCart })
+                .eq('id', user.id);
+
+            if (error) throw error;
+        } catch (err) {
+            console.error("Eroare salvare coș în Supabase:", err.message);
+        }
     };
 
     const addToCart = async (product) => {
         const existing = cart.find(item => item.productId === product.productId);
         let newCart;
+        
         if (existing) {
             newCart = cart.map(item =>
                 item.productId === product.productId
-                    ? { ...item, quantity: item.quantity + 1 }
+                    ? { ...item, quantity: item.quantity + (product.quantity || 1) }
                     : item
             );
         } else {
-            newCart = [...cart, { ...product, quantity: 1 }];
+            newCart = [...cart, { ...product, quantity: product.quantity || 1 }];
         }
+        
+
         setCart(newCart);
-        await updateFirestoreCart(newCart);
+        await updateSupabaseCart(newCart);
     };
 
     const removeFromCart = async (productId) => {
         const newCart = cart.filter(item => item.productId !== productId);
         setCart(newCart);
-        await updateFirestoreCart(newCart);
+        await updateSupabaseCart(newCart);
     };
 
     const updateQuantity = async (productId, quantity) => {
@@ -61,13 +88,14 @@ export const CartProvider = ({ children }) => {
             item.productId === productId ? { ...item, quantity } : item
         );
         setCart(newCart);
-        await updateFirestoreCart(newCart);
+        await updateSupabaseCart(newCart);
     };
 
     const clearCart = async () => {
         setCart([]);
-        await updateFirestoreCart([]);
+        await updateSupabaseCart([]);
     };
+
 
     const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
     const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);

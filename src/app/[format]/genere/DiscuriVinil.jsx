@@ -4,6 +4,8 @@ import './DiscuriVinil.css';
 import ProduseSideBar from '@/components/ProduseSideBar';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
+import Image from 'next/image';
+import Pagination from '@/components/Pagination';
 
 // ── date mock — înlocuiești cu fetch real ──
 const toateGenurile = [
@@ -43,11 +45,13 @@ const producatori = [
 // ];
 
 const optiuniSortare = [
+  'Relevanță',
+  'Nume (A-Z)',
   'Preț (Crescător)',
   'Preț (Descrescător)',
   'Noutăți',
   'Cele mai vândute',
-  'Nume (A-Z)',
+
 ];
 
 // ── iconița disc placeholder ──
@@ -79,8 +83,7 @@ const ProductCard = ({ produs }) => {
   const artisti = produs.artist;
   const an = produs.year > 0 ? produs.year : null;
   const label = produs.labels?.[0]?.name;
-  const format = produs.formats?.[0]?.name;
-  const formatDesc = produs.formats?.[0]?.descriptions?.[0];
+  const format = produs.format;
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
@@ -98,28 +101,41 @@ const ProductCard = ({ produs }) => {
   return (
     <div className="productCard" onClick={() => nav.push(`/produs/${produs.id}`)}>
       <div className="productImageWrap">
-        <div style={{ position: 'relative' }}>
+        <div
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: '300px',
+          }}
+        >
           {!imgLoaded && <div className="img-skeleton" />}
-          <img
+
+          <Image
             ref={imgRef}
             src={produs.cover_image || produs.thumb || "/assets/image.png"}
             alt={`${produs.title} - ${artisti}`}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
             loading="lazy"
             onLoad={() => setImgLoaded(true)}
             onError={() => setImgLoaded(true)}
-            style={{ opacity: imgLoaded ? 1 : 0, transition: 'opacity 0.3s ease' }}
+            style={{
+              objectFit: 'cover',
+              opacity: imgLoaded ? 1 : 0,
+              transition: 'opacity 0.3s ease',
+            }}
           />
         </div>
-        {format && <span className="productBadge">{format}</span>}
+
+        {format && <span className="productBadge">{format === "Vinyl" ? "Vinil" : format}</span>}
       </div>
 
       <div className="productInfo">
-        <p className="productArtist">{produs.title}</p>
-        <p className="productName">{artisti}</p>
+        <p className="productArtist">{artisti}</p>
+        <p className="productName">{produs.title}</p>
         <div className="productMeta">
           {an && <span className="productMetaItem">{an}</span>}
           {label && <span className="productMetaItem">{label}</span>}
-          {formatDesc && <span className="productMetaItem">{formatDesc}</span>}
         </div>
         {produs.genres?.length > 0 && (
           <div className="productGenres">
@@ -149,7 +165,6 @@ export default function DiscuriVinil({ format, produse, infoPagina }) {
 
   const totalPagini = Math.ceil(infoPagina.total / infoPagina.perPage);
   const currentPage = infoPagina.currentPage;
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -170,6 +185,7 @@ export default function DiscuriVinil({ format, produse, infoPagina }) {
       'Preț (Descrescător)': 'pret-descrescator',
       'Noutăți': 'noutati',
       'Nume (A-Z)': 'nume-az',
+      "Relevanță": null
     };
     const params = new URLSearchParams(searchParams.toString());
     params.set('sort', sortMap[val]);
@@ -178,35 +194,6 @@ export default function DiscuriVinil({ format, produse, infoPagina }) {
   };
 
 
-  const paginatie = () => {
-    const pages = [];
-
-    const maxVisible = isMobile ? 3 : 5;
-
-    pages.push(1);
-
-    if (currentPage > 2) {
-      pages.push("...");
-    }
-
-    const offset = Math.floor(maxVisible / 2);
-    const start = Math.max(2, currentPage - offset);
-    const end = Math.min(totalPagini - 1, currentPage + offset);
-
-    for (let i = start; i <= end; i++) {
-      pages.push(i);
-    }
-
-    if (currentPage < totalPagini - 1) {
-      pages.push("...");
-    }
-
-    if (totalPagini > 1) {
-      pages.push(totalPagini);
-    }
-
-    return pages;
-  };
 
 
   return (
@@ -262,22 +249,7 @@ export default function DiscuriVinil({ format, produse, infoPagina }) {
           </div>
 
           {/* paginare */}
-          <div className="pagination">
-            {
-              currentPage > 1 ?
-                <a className={"pageBtn"} href={`?page=${currentPage - 1}`}>‹</a> :
-                <p className={"pageBtn disabled"}>‹</p>
-            }
-            {paginatie().map((n, i) => (
-              n !== "..." ? <a key={i} href={`?page=${n}`} className={`pageBtn ${n === currentPage ? 'active' : ''}`}>{n}</a> :
-                <p key={i} className={`pageBtn`} style={{ cursor: "unset" }}>...</p>
-            ))}
-            {
-              currentPage < totalPagini ?
-                <a className={"pageBtn"} href={`?page=${currentPage + 1}`}>›</a> :
-                <p className={"pageBtn disabled"}>›</p>
-            }
-          </div>
+          <Pagination currentPage={currentPage} totalPagini={totalPagini} />
 
         </main>
       </div>

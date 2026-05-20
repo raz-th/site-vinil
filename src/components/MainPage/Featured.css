@@ -90,7 +90,6 @@
     font-weight: 500;
     font-family: "Lacheyard Script", cursive;
 }
-
 .carousel_wrap {
   position: relative;
   display: flex;
@@ -99,19 +98,25 @@
   width: 100%;
 }
 
+/* NOU: Containerul care ascunde cardurile inactive */
+.carousel_viewport {
+  overflow: hidden;
+  width: 100%;
+  flex: 1; 
+}
+
+/* ACTUALIZAT: gap-ul a fost scos de aici; spațiul e generat acum de padding-ul de pe card */
 .carousel_track {
   display: flex;
-  gap: 16px;
-  flex: 1;
-  /* overflow-x: hidden; */
   cursor: grab;
   user-select: none;
 }
 
+/* ACTUALIZAT */
 .carousel_card {
-  flex: 1;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.4s ease, opacity 0.4s ease;
   min-width: 0;
+  box-sizing: border-box; /* Previne stricarea proporțiilor cauzate de padding */
 }
 
 .carousel_card_side {
@@ -172,16 +177,15 @@
   .carousel_wrap {
     gap: 6px;
   }
-
-  /* pe mobil arata doar 1 card */
+  
   .carousel_card_side {
-    display: none;
+    opacity: 1; /* Pe mobil vrei probabil să vezi normal dacă apuci să tragi puțin */
+    transform: scale(1);
   }
 
   .carousel_card_center {
     opacity: 1;
     transform: scale(1);
-    flex: 1;
   }
 
   .carousel_btn {
@@ -189,13 +193,4 @@
     height: 32px;
     font-size: 12px;
   }
-}
-
-@media (max-width: 768px) {
-    .feat_content{
-        grid-template-columns: repeat(1, 1fr);
-    }
-    .feat_header h2{
-        font-size: 1.25rem;
-    }
 }

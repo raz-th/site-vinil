@@ -1,41 +1,40 @@
 'use client';
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { onAuthStateChanged } from "firebase/auth";
-import { collection, query, where, orderBy, getDocs } from "firebase/firestore";
-import { auth, db } from "@/lib/firebaseClient";
-import "./comenzile-mele.css"; // 1. Updated Import
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/context/AuthContext";
+import "./comenzile-mele.css";
 import { SlHandbag } from "react-icons/sl";
 
 export default function ComenzileleMelePage() {
     const [comenzi, setComenzi] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedComanda, setSelectedComanda] = useState(null);
+    const { user, loading: authLoading } = useAuth();
     const router = useRouter();
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-            if (!currentUser) {
+        if (!authLoading) {
+            if (!user) {
                 router.push('/');
                 return;
             }
-            await fetchComenzi(currentUser.uid);
-        });
-        return () => unsubscribe();
-    }, []);
+            fetchComenzi(user.id);
+        }
+    }, [user, authLoading]);
 
     const fetchComenzi = async (uid) => {
         try {
-            const q = query(
-                collection(db, "orders"),
-                where("userId", "==", uid),
-                orderBy("createdAt", "desc")
-            );
-            const snapshot = await getDocs(q);
-            const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            setComenzi(data);
+            const { data, error } = await supabase
+                .from("orders")
+                .select("*")
+                .eq("userId", uid)
+                .order("createdAt", { ascending: false });
+
+            if (error) throw error;
+            setComenzi(data || []);
         } catch (err) {
-            console.error("Eroare la fetch comenzi:", err);
+            console.error("Eroare la fetch comenzi:", err.message);
         } finally {
             setLoading(false);
         }
@@ -49,14 +48,14 @@ export default function ComenzileleMelePage() {
 
     const formatDate = (timestamp) => {
         if (!timestamp) return "—";
-        const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+        const date = new Date(timestamp);
         return date.toLocaleDateString("ro-RO", { day: "2-digit", month: "long", year: "numeric" });
     };
 
     const formatPrice = (price) =>
         new Intl.NumberFormat("ro-RO", { style: "currency", currency: "RON" }).format(price);
 
-    if (loading) return (
+    if (loading || authLoading) return (
         <div className="loadingWrap">
             <div className="spinner"></div>
             <p>Se încarcă comenzile...</p>
@@ -115,7 +114,7 @@ function OrderList({ comenzi, onSelect, statusConfig, formatDate, formatPrice })
                                     }
                                 </div>
                                 <div className="cardInfo">
-                                    <p className="cardId">Comanda #{comanda.orderNumber || comanda.id.slice(0, 8).toUpperCase()}</p>
+                                    <p className="cardId">Comanda #{comanda.orderNumber || String(comanda.id).slice(0, 8).toUpperCase()}</p>
                                     <p className="cardDate">{formatDate(comanda.createdAt)}</p>
                                     <p className="cardItems">
                                         {comanda.items?.length || 0} {comanda.items?.length === 1 ? "produs" : "produse"}
@@ -141,7 +140,8 @@ function OrderDetail({ comanda, onBack, statusConfig, formatDate, formatPrice })
     const status = statusConfig[comanda.status] || { label: comanda.status, color: "gray" };
     const steps = ["in_procesare", "trimisa", "livrata"];
     const currentStep = steps.indexOf(comanda.status);
-    const router = useRouter()
+    const router = useRouter();
+
     return (
         <div className="detail">
             <button className="backBtn" onClick={onBack}>
@@ -150,7 +150,7 @@ function OrderDetail({ comanda, onBack, statusConfig, formatDate, formatPrice })
 
             <div className="detailHeader">
                 <div>
-                    <h3>Comanda #{comanda.orderNumber || comanda.id.slice(0, 8).toUpperCase()}</h3>
+                    <h3>Comanda #{comanda.orderNumber || String(comanda.id).slice(0, 8).toUpperCase()}</h3>
                     <p className="detailDate">Plasată pe {formatDate(comanda.createdAt)}</p>
                 </div>
                 <span className={`statusBadge ${status.color}`}>
