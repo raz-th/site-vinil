@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import "./Featured.css"
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import { TextBanner } from '../Icons';
@@ -21,18 +21,22 @@ const extendedItems = [...items, ...items, ...items];
 
 const Featured = () => {
     const total = items.length;
- 
-    const [current, setCurrent] = useState(total); 
+
+    const [current, setCurrent] = useState(total);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [visible, setVisible] = useState(3);
-    
+
     const [dragging, setDragging] = useState(false);
     const [startX, setStartX] = useState(0);
+    const [autoPlayKey, setAutoPlayKey] = useState(0);
 
     const transitionDuration = 400; // ms
 
+    const isTransitioningRef = useRef(false);
+
     const next = () => {
-        if (isTransitioning) return;
+        if (isTransitioningRef.current) return;
+        isTransitioningRef.current = true;
         setIsTransitioning(true);
         setCurrent(c => c + 1);
     };
@@ -41,6 +45,16 @@ const Featured = () => {
         if (isTransitioning) return;
         setIsTransitioning(true);
         setCurrent(c => c - 1);
+    };
+
+    const nextManual = () => {
+        next();
+        setAutoPlayKey(k => k + 1);
+    };
+
+    const prevManual = () => {
+        prev();
+        setAutoPlayKey(k => k + 1);
     };
 
 
@@ -52,18 +66,15 @@ const Featured = () => {
     }, []);
 
     useEffect(() => {
-        const interval = setInterval(next, 4000); //4 sec
+        const interval = setInterval(next, 4000);
         return () => clearInterval(interval);
-    }, [current, isTransitioning]);
+    }, [autoPlayKey]);
 
     const handleTransitionEnd = () => {
+        isTransitioningRef.current = false;
         setIsTransitioning(false);
-        if (current >= total * 2) {
-            setCurrent(current - total);
-        } 
-        else if (current <= total - 1) {
-            setCurrent(current + total);
-        }
+        if (current >= total * 2) setCurrent(current - total);
+        else if (current <= total - 1) setCurrent(current + total);
     };
 
 
@@ -75,14 +86,14 @@ const Featured = () => {
     const onDragEnd = (e) => {
         if (!dragging) return;
         const endX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
-        if (startX - endX > 50) next();
-        else if (endX - startX > 50) prev();
+        if (startX - endX > 50) nextManual();
+        else if (endX - startX > 50) prevManual();
         setDragging(false);
     };
 
-  
-    const trackWidth = (extendedItems.length / visible) * 100; 
-    const itemWidth = 100 / extendedItems.length; 
+
+    const trackWidth = (extendedItems.length / visible) * 100;
+    const itemWidth = 100 / extendedItems.length;
     const transformValue = (current / extendedItems.length) * 100;
 
     return (
@@ -97,8 +108,8 @@ const Featured = () => {
                 </Reveal>
 
                 <div className='carousel_wrap'>
-      
-                    <button className='carousel_btn carousel_btn_left' onClick={prev} aria-label="Anterior">
+
+                    <button className='carousel_btn carousel_btn_left' onClick={prevManual} aria-label="Anterior">
                         <FaChevronLeft />
                     </button>
 
@@ -118,7 +129,7 @@ const Featured = () => {
                             }}
                         >
                             {extendedItems.map((item, i) => {
-            
+
                                 let cardClass = 'carousel_card_side';
                                 if (visible === 1) {
                                     if (i === current) cardClass = 'carousel_card_center';
@@ -150,13 +161,13 @@ const Featured = () => {
                         </div>
                     </div>
 
-     
-                    <button className='carousel_btn carousel_btn_right' onClick={next} aria-label="Următor">
+
+                    <button className='carousel_btn carousel_btn_right' onClick={nextManual} aria-label="Următor">
                         <FaChevronRight />
                     </button>
                 </div>
 
-        
+
                 <div className='carousel_dots'>
                     {items.map((_, i) => {
                         const realIndex = current % total;
@@ -170,6 +181,7 @@ const Featured = () => {
                                     if (isTransitioning) return;
                                     setIsTransitioning(true);
                                     setCurrent(i + total);
+                                    setAutoPlayKey(k => k + 1);
                                 }}
                                 aria-label={`Slide ${i + 1}`}
                             />

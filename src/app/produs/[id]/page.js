@@ -67,7 +67,7 @@ const Page = async ({ params }) => {
             );
         }
 
-        const response = await fetch(`https://api.discogs.com/releases/${id}`, {
+        const response = await fetch(`https://api.discogs.com/releases/${dbData.discogsId || id}`, {
             headers: { 'User-Agent': 'YourAppName/1.0' },
             next: { revalidate: 3600 }
         });
@@ -90,7 +90,7 @@ const Page = async ({ params }) => {
             tracklist: data.tracklist || [],
             artist: dbData.artist || [],
             label: dbData.label || [],
-            images: data.images || [],
+            images: dbData.images || data.images.map((v)=>v.uri) || [],
             notes: data.notes || "",
             videos: data.videos,
             price: dbData.price || "N/A",

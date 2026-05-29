@@ -20,6 +20,8 @@
   background-repeat: repeat;
 }
 
+/* ─── Main grid ──────────────────────────────────────────────────────────────── */
+
 .footer__grid {
   position: relative;
   z-index: 1;
@@ -72,6 +74,8 @@
   color: #e8dfc0;
 }
 
+/* ─── Social buttons ─────────────────────────────────────────────────────────── */
+
 .footer__social {
   display: flex;
   gap: 10px;
@@ -106,6 +110,46 @@
   fill: currentColor;
 }
 
+/* ─── ANPC / SOL EU logos ────────────────────────────────────────────────────── */
+
+.footer__anpc {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.footer__anpc-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: 'Crimson Text', Georgia, serif;
+  color: #7a7260;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer__anpc-link:hover {
+  color: #b8ad90;
+}
+
+.footer__anpc-link svg {
+  width: 34px;
+  height: 34px;
+  color: #7a7260;
+  transition: color 0.2s;
+}
+
+.footer__anpc-link:hover svg {
+  color: #b8ad90;
+}
+
+/* ─── Divider ────────────────────────────────────────────────────────────────── */
+
 .footer__divider {
   position: relative;
   z-index: 1;
@@ -113,6 +157,55 @@
   border-top: 1px solid rgba(212, 201, 168, 0.15);
   margin: 0 0 20px;
 }
+
+/* ─── Legal block ────────────────────────────────────────────────────────────── */
+
+.footer__legal-block {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 0 24px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #5e594d;
+  font-family: 'Crimson Text', Georgia, serif;
+}
+
+.footer__legal-block p {
+  margin: 0;
+}
+
+.footer__legal-block strong {
+  color: #7a7260;
+  font-weight: 600;
+}
+
+.footer__legal-block a {
+  color: #7a7260;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: rgba(122, 114, 96, 0.4);
+  transition: color 0.2s, text-decoration-color 0.2s;
+}
+
+.footer__legal-block a:hover {
+  color: #b8ad90;
+  text-decoration-color: rgba(184, 173, 144, 0.6);
+}
+
+.footer__legal-notice {
+  max-width: 80ch;
+}
+
+.footer__legal-notice abbr {
+  text-decoration: underline dotted;
+  text-underline-offset: 2px;
+  cursor: help;
+}
+
+/* ─── Bottom bar ─────────────────────────────────────────────────────────────── */
 
 .footer__bottom {
   position: relative;
@@ -124,17 +217,35 @@
   letter-spacing: 0.03em;
 }
 
+/* ─── Responsive ─────────────────────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .footer__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .footer__grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .footer__legal-notice {
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
+  .footer {
+    padding: 40px 24px 24px;
+  }
+
   .footer__grid {
     grid-template-columns: 1fr;
   }
-  .footer {
-    padding: 40px 24px 24px;
+
+  .footer__anpc {
+    flex-direction: row;
+    justify-content: flex-start;
   }
 }

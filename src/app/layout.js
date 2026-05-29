@@ -6,6 +6,7 @@ import { CartProvider } from "@/context/CartContext";
 import { FavoritesProvider } from "@/context/FavoriteContext";
 import { AddressProvider } from "@/context/AddressContext";
 import Footer from "@/components/MainPage/Footer";
+import Loading from "./Loading";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,15 +26,16 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>
+      <body className="no-scroll">
         <AuthProvider>
           <CartProvider>
             <FavoritesProvider>
               <AddressProvider>
+                <Loading />
                 <NavBar />
                 <NavBar hiden={true} />
                 {children}
-                <Footer/>
+                <Footer />
               </AddressProvider>
             </FavoritesProvider>
           </CartProvider>

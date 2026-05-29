@@ -82,7 +82,7 @@ const ProductCard = ({ produs }) => {
 
   const artisti = produs.artist;
   const an = produs.year > 0 ? produs.year : null;
-  const label = produs.labels?.[0]?.name;
+  const label = produs.label;
   const format = produs.format;
 
   const handleAddToCart = (e) => {
@@ -208,9 +208,7 @@ export default function DiscuriVinil({ format, produse, infoPagina }) {
           <a href={`/${format}/genere`}>Genuri</a>
         </nav>
 
-        <nav className="breadcrumb">
-
-        </nav>
+  
 
         {/* ── SIDEBAR ── */}
         <ProduseSideBar format={format} />

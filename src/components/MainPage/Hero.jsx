@@ -13,15 +13,7 @@ const Hero = () => {
                 <WaveDivider noiseIntensity={1}
                     blendMode="soft-light" />
                 <div className='hero_content'>
-                    <div style={
-                        {
-                            height: '100%',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            // alignItems: 'center',
-                            // justifyContent: 'center'
-                            padding: "3rem 1rem",
-                        }}>
+                    <div className='hero_nj' >
                         <Reveal>
                             <h1>DESCOPERĂ<br />SUNETUL VINILULUI<hr style={{ width: "100%" }} /></h1>
                         </Reveal>
@@ -33,15 +25,23 @@ const Hero = () => {
                             <a className='button' href='/toate/genere'>CUMPĂRĂ ACUM</a>
                         </Reveal>
                     </div>
-                    {/* <div className='dreapta'>
-                        <img className='album' src='http://localhost:3000/api/image-proxy?url=https%3A%2F%2Fi.discogs.com%2F6oo3CZ1iL87g4zw-rSPkCgLFmq3QsOCYKFUdzkahANw%2Frs%3Afit%2Fg%3Asm%2Fq%3A90%2Fh%3A600%2Fw%3A600%2FczM6Ly9kaXNjb2dz%2FLWRhdGFiYXNlLWlt%2FYWdlcy9SLTEyODg5%2FMDcxLTE1NDM5MTUw%2FMDEtNjQ1Ni5qcGVn.jpeg' />
-                        <div className='vinil-wrapper'>
-                            <VinylDisk className='vinil' img='http://localhost:3000/api/image-proxy?url=https%3A%2F%2Fi.discogs.com%2F6oo3CZ1iL87g4zw-rSPkCgLFmq3QsOCYKFUdzkahANw%2Frs%3Afit%2Fg%3Asm%2Fq%3A90%2Fh%3A600%2Fw%3A600%2FczM6Ly9kaXNjb2dz%2FLWRhdGFiYXNlLWlt%2FYWdlcy9SLTEyODg5%2FMDcxLTE1NDM5MTUw%2FMDEtNjQ1Ni5qcGVn.jpeg' />
-                        </div>
-                    </div> */}
-                    <div className='img'>
-                        <Reveal delay={600}><img src={"/assets/vinilplayer.png"} /></Reveal>
+                    <div className='dreapta'>
+                        <Reveal>
+                            <div className="album-wrapper">
+                                <VinylDisk className='vinil' img='https://i.discogs.com/6oo3CZ1iL87g4zw-rSPkCgLFmq3QsOCYKFUdzkahANw/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEyODg5/MDcxLTE1NDM5MTUw/MDEtNjQ1Ni5qcGVn.jpeg' />
+                                <img className='album' src='https://i.discogs.com/6oo3CZ1iL87g4zw-rSPkCgLFmq3QsOCYKFUdzkahANw/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEyODg5/MDcxLTE1NDM5MTUw/MDEtNjQ1Ni5qcGVn.jpeg' />
+                                <img className='album2' src='https://i.discogs.com/3j4G7HZAdVjQOgmu6pHnL3fpzhPFty_iPdiKQBS-F1c/rs:fit/g:sm/q:90/h:600/w:597/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEwNzM4/MTMtMTE5MDEzNzA2/MC5qcGVn.jpeg' />
+                                <img className='album3' src='https://i.discogs.com/ZN8kIuAonS37EQ6edn75PqTHxP6MdXqJ_w3Pchuay6I/rs:fit/g:sm/q:90/h:597/w:599/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTgyNjMw/MjUtMTQ1ODIxNTMw/NS0xOTIzLmpwZWc.jpeg' />
+
+                            </div>
+                        </Reveal>
+                        {/* <div className='vinil-wrapper'>
+                            
+                        </div> */}
                     </div>
+                    {/* <div className='img'>
+                        <Reveal delay={600}><img src={"/assets/vinilplayer.png"} /></Reveal>
+                    </div> */}
                 </div>
             </div>
         </div>

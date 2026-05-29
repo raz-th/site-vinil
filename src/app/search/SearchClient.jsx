@@ -36,9 +36,8 @@ const ProductCard = ({ produs }) => {
     const nav = useRouter();
     const artisti = produs.artist;
     const an = produs.year > 0 ? produs.year : null;
-    const label = produs.labels?.[0]?.name;
-    const format = produs.formats?.[0]?.name;
-    const formatDesc = produs.formats?.[0]?.descriptions?.[0]; // "Album", "Single", etc.
+    const label = produs.label;
+    const formatDesc = produs.formats?.[0]?.descriptions?.[0];
 
     return (
         <div className="productCard" onClick={() => nav.push(`/produs/${produs.id}`)}>
@@ -50,7 +49,7 @@ const ProductCard = ({ produs }) => {
                 />
                 {/* <div className="vinylDecor" /> */}
 
-                {format && <span className="productBadge">{format}</span>}
+                {produs.format && <span className="productBadge">{produs.format}</span>}
             </div>
 
             <div className="productInfo">

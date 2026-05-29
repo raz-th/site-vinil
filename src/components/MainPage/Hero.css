@@ -22,6 +22,14 @@
     background-repeat: repeat, no-repeat; */
 }
 
+.hero_nj {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    padding: 3rem 1rem;
+}
+
 .wave-container {
     /* height: 100%; */
     /* line-height: 0; */
@@ -33,7 +41,7 @@
     flex-direction: row;
     align-items: flex-end;
     justify-content: center;
-  
+
 }
 
 .wave-container svg {
@@ -67,45 +75,177 @@
 .hero_content .img img {
     width: 50vw;
 }
-.hero_content .dreapta {
-    position: relative;
-    transform-style: preserve-3d;
-    perspective: 1000px;
-    padding-right: 5rem;
+
+/* .dreapta:not(.hero-ready) .album-wrapper img.album2,
+.dreapta:not(.hero-ready) .album-wrapper img.album3 {
+    animation: none;
+}
+
+.dreapta:not(.hero-ready) .vinil {
+    animation: none;
 }
 
 
-.hero_content .dreapta .album {
+.dreapta:not(.hero-ready) {
+    animation: none;
+} */
+
+.hero_content .dreapta {
+    position: relative;
+    display: inline-block;
+    animation: levitate 3s ease-in-out infinite;
+    animation-delay: 2.2s;
+}
+
+.hero_content .dreapta .album-wrapper {
     position: relative;
     max-width: 25vw;
-    transform: rotateY(-18deg) rotateZ(-8deg) translateZ(10px);
+    transform: perspective(1200px) rotateZ(-15deg) rotateX(20deg) rotateZ(-10deg) translateY(3rem);
+    transform-origin: center center;
     z-index: 10;
 }
 
-.hero_content .dreapta .vinil-wrapper {
+.hero_content .dreapta .album-wrapper::after {
+    content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 25vw;
-    height: 25vw;
-    transform: rotateY(-19deg) rotateZ(-8deg) translateX(12rem) translateZ(-10px); 
-    z-index: 5;
-}
-
-
-.hero_content .dreapta .vinil {
+    bottom: -4px;
+    right: -5px;
     width: 100%;
     height: 100%;
-    transform-origin: center center;
-    /* animation: invarteVinil 8s linear infinite; */
+    background: #1a1a1a;
+    z-index: -1;
+    border-radius: 2px;
 }
+
+.hero_content .dreapta .album-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 11;
+    border-radius: 2px;
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.08) 0%,
+            rgba(255, 255, 255, 0.02) 40%,
+            rgba(0, 0, 0, 0.05) 60%,
+            rgba(0, 0, 0, 0.12) 100%);
+    pointer-events: none;
+}
+
+.hero_content .dreapta .album-wrapper img {
+    display: block;
+    width: 100%;
+    border-radius: 2px;
+    box-shadow:
+        -8px -6px 20px rgba(0, 0, 0, 0.4),
+        8px 12px 40px rgba(0, 0, 0, 0.8);
+}
+
+.album-wrapper img.album {
+    position: relative;
+    z-index: 5;
+    /* relativ la wrapper, nu la pagină */
+}
+
+.album-wrapper img.album2 {
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+    transform: translateX(0deg) rotate(0deg);
+    animation: album2 1s ease-in-out forwards;
+    animation-delay: 2s;
+}
+
+.album-wrapper img.album3 {
+    position: absolute;
+    bottom: 0;
+    z-index: 0;
+    transform: translateX(0rem) rotate(0deg);
+    animation: album3 1s ease-in-out forwards;
+    animation-delay: 2s;
+}
+
+
+.album-wrapper .vinil {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -95%);
+    z-index: 4;
+
+    width: 90%;
+    height: 90%;
+
+    flex-shrink: 0;
+    animation: vinilShow 2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    transition: .5s;
+}
+
+.album-wrapper:hover .vinil {
+    /* animation: none; */
+    transform: translate(-50%, -105%);
+}
+
+
+@keyframes levitate {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes vinilShow {
+    0% {
+        transform: translate(-50%, -50%);
+    }
+
+    100% {
+        transform: translate(-50%, -95%);
+    }
+}
+
+@keyframes album2 {
+    0% {
+        transform: translateX(0rem) rotate(0deg);
+    }
+
+    100% {
+        transform: translateX(-2rem) rotate(-5deg);
+    }
+}
+
+@keyframes album3 {
+    0% {
+        transform: translateX(0rem) rotate(0deg);
+    }
+
+    100% {
+        transform: translateX(-3rem) rotate(-15deg);
+    }
+}
+
+
+
 
 @media (max-width: 768px) {
     .hero_content {
-        /* flex-direction: column;
-        text-align: center; */
-        padding: 0rem;
+        flex-direction: column;
+        align-items: center;
+        justify-content: unset;
         height: fit-content;
+        padding: 0;
+    }
+
+
+    .hero_content .dreapta .album-wrapper {
+        max-width: 40vw;
+        transform: perspective(1200px) rotateZ(-15deg) rotateX(20deg) rotateZ(-10deg) translateX(10rem) translateY(0rem);
     }
 
     .hero_content h1 {
@@ -119,13 +259,12 @@
 
     .wave-container {
         max-height: none;
-        /* height: 90vh; */
+        height: 60vh;
         align-items: start;
     }
 
     .wave-container svg {
-        object-fit: fill;
-        height: 90vh;
+        height: 60vh;
     }
 
     .hero_content .img {

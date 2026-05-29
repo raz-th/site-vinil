@@ -348,6 +348,8 @@
   transition: max-height 0.35s ease, padding 0.35s ease;
   background: #1a1a18;
   border-top: 1px solid #3a3028;
+  max-height: calc(90dvh);
+  overflow-y: auto;
 }
 
 .navDrawerContent {
@@ -355,8 +357,9 @@
   flex-direction: column;
   gap: 4px;
   max-height: 0;
-  overflow: hidden;
+  overflow: hidden auto;
   padding: 0 1.5rem;
+    /* max-height: 90vh; */
   transition: max-height 0.35s ease, padding 0.35s ease;
 }
 
@@ -549,6 +552,21 @@
 
 
 @media (max-width: 768px) {
+   /* .navDrawer {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+
+    background: #1a1a18;
+    z-index: 99;
+  } */
+   
   .navLinks {
     display: none;
   }

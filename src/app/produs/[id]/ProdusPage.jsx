@@ -7,6 +7,9 @@ import { useParams } from "next/navigation";
 import { FaPlay } from "react-icons/fa";
 import { useCart } from "@/context/CartContext";
 import { useFavorites } from "@/context/FavoriteContext";
+import { BsInfoCircle } from "react-icons/bs";
+import useIsMobile from "@/components/useIsMobile";
+import InfoDrawer from "./InfoDrawer";
 
 const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600);
@@ -35,11 +38,41 @@ const VideoCard = ({ name, time, uri }) => {
 }
 
 
+const gradatiiCoperta = {
+    "Vinyl": {
+        "G": ["Good (G)", "Deteriorări evidente, uzură accentuată și defecte multiple."],
+        "VG": ["Very Good (VG)", "Uzură vizibilă, colțuri tocite, mici rupturi sau pete."],
+        "VG+": ["Very Good Plus (VG+)", "Uzură moderată, mici îndoiri sau urme de frecare."],
+        "EX": ["Excellent (EX)", "Ușoare semne de uzură pe margini sau colțuri."],
+        "NM": ["Near Mint (NM)", "Aproape perfectă, cu urme minime de manipulare."],
+    },
+    "default": {
+        "Stare buna": ["Stare buna", "Carcasa prezintă zgârieturi superficiale și/sau ușoară opacitate."],
+        "Stare foarte buna": ["Stare foarte buna", "Carcasa poate prezenta mici zgârieturi, fară fisuri, fară alte defecte."]
+    }
+
+}
+
+const gradatiiDisc = {
+    "Vinyl": {
+        "G": ["Good (G)", "Uzură evidentă, cu defecte vizuale și audio perceptibile."],
+        "VG": ["Very Good (VG)", "Vizibil utilizat. Pot exista pocnituri, clicuri sau zgârieturi superficiale."],
+        "VG+": ["Very Good Plus (VG+)", "Mici semne de utilizare sau zgomot de fundal foarte redus."],
+        "EX": ["Excellent (EX)", "Urme foarte fine de utilizare, fără impact asupra redării audio."],
+        "NM": ["Near Mint (NM)", "Ascultat de foarte puține ori. Fără urme sau zgârieturi vizibile."],
+    },
+    "default": {
+        "Stare buna": ["Stare buna", "Carcasa prezintă zgârieturi superficiale și/sau ușoară opacitate."],
+        "Stare foarte buna": ["Stare foarte buna", "Carcasa poate prezenta mici zgârieturi, fară fisuri, fară alte defecte."]
+    }
+}
+
+
 
 
 const ProdusPage = ({ produs }) => {
     const { id } = useParams();
-    const { addToCart} = useCart();
+    const { addToCart } = useCart();
     const { toggleFavorite, isFavorite } = useFavorites();
     const [selectedImage, setSelectedImage] = useState(0);
 
@@ -48,6 +81,12 @@ const ProdusPage = ({ produs }) => {
 
     const [touchStart, setTouchStart] = useState(null);
     const [touchEnd, setTouchEnd] = useState(null);
+
+    const [show, setShow] = useState({ gradatieVinil: false, gradatieDisc: false })
+
+    const isMobile = useIsMobile(1374);
+
+
 
     useEffect(() => {
         console.log(produs)
@@ -145,7 +184,7 @@ const ProdusPage = ({ produs }) => {
                 <div className='mainInfo'>
                     <section>
                         <div style={{ position: 'relative' }}>
-                            <img className='mainImage' src={produs.images[selectedImage].uri || "/assets/image.png"}
+                            <img className='mainImage' src={produs.images[selectedImage] || "/assets/image.png"}
                                 onTouchStart={handleTouchStart}
                                 onTouchMove={handleTouchMove}
                                 onTouchEnd={handleTouchEnd}
@@ -178,12 +217,12 @@ const ProdusPage = ({ produs }) => {
                                 )
                             }
 
-                            <div className={`moreImages ${hasOverflow?"":"nu"}`} ref={scrollRef} style={{ width: !hasOverflow ? "100%" : '90%' }}>
+                            <div className={`moreImages ${hasOverflow ? "" : "nu"}`} ref={scrollRef} style={{ width: !hasOverflow ? "100%" : '90%' }}>
                                 {
                                     produs.images.map((v, i) => (
                                         <img
                                             key={i}
-                                            src={v.uri || "/assets/image.png"}
+                                            src={v || "/assets/image.png"}
                                             onClick={() => setSelectedImage(i)}
                                             className={selectedImage === i ? "selected" : ""}
                                         />
@@ -202,7 +241,7 @@ const ProdusPage = ({ produs }) => {
                         </div>
                     </section>
                     <section>
-                        <p className='productType'>{produs.format} · {produs.format_desc}</p>
+                        <p className='productType'>{produs.format === "Vinyl" ? "Vinil" : produs.format}</p>
                         <p className='productArtistName'>{produs.artist}</p>
                         <h1 className='productName'>{produs.title}</h1>
                         <div className='generesTags'>
@@ -230,12 +269,42 @@ const ProdusPage = ({ produs }) => {
                             </div>
                             <div className="detalie-row">
                                 <p>Stare {produs.format === "Vinyl" ? "coperta" : "carcasă"}</p>
-                                <p>{produs.stare.stare_coperta}</p>
+                                <p>{produs.stare.stare_coperta}
+                                    {!isMobile ? <BsInfoCircle className="infoIcon"
+                                        onMouseEnter={() => setShow((e) => ({ ...e, gradatieVinil: true }))}
+                                        onMouseLeave={() => setShow((e) => ({ ...e, gradatieVinil: false }))}
+                                    /> : <InfoDrawer
+                                        title={gradatiiCoperta[produs.format][produs.stare.stare_coperta][0]}
+                                        content={gradatiiCoperta[produs.format][produs.stare.stare_coperta][1]}
+                                    />
+                                    }
+                                </p>
+                                {!isMobile ? <div className={`infocontainer ${show.gradatieVinil ? "active" : ""}`}>
+                                    <p className="cont">{gradatiiCoperta[produs.format][produs.stare.stare_coperta][1]}</p>
+                                </div> : <></>}
                             </div>
                             <div className="detalie-row">
                                 <p>Stare {produs.format === "Vinyl" ? "vinil" : "disc"}</p>
-                                <p>{produs.stare.stare_coperta}</p>
+                                <p>{produs.stare.stare_disc}
+                                    {!isMobile ? <BsInfoCircle className="infoIcon"
+                                        onMouseEnter={() => setShow((e) => ({ ...e, gradatieDisc: true }))}
+                                        onMouseLeave={() => setShow((e) => ({ ...e, gradatieDisc: false }))}
+                                    /> : <InfoDrawer
+                                        title={gradatiiCoperta[produs.format][produs.stare.stare_disc][0]}
+                                        content={gradatiiCoperta[produs.format][produs.stare.stare_disc][1]}
+                                    />
+                                    }
+                                </p>
+                                {!isMobile ? <div className={`infocontainer ${show.gradatieDisc ? "active" : ""}`}>
+                                    <p className="cont">{gradatiiDisc[produs.format][produs.stare.stare_coperta][1]}</p>
+                                </div> : <></>}
                             </div>
+                            {
+                                produs.description && (<div className="detalie-row">
+                                    <p>Descriere</p>
+                                    <p>{produs.description}</p>
+                                </div>)
+                            }
                         </div>
                         <hr className='divider' />
                         <div className="pret_container">
@@ -245,11 +314,11 @@ const ProdusPage = ({ produs }) => {
                         </div>
                         <div className="cont-stoc">
                             <span className="stoc-dot" />
-                            În stoc · {produs.stock} {produs.stock!==1?"disponibile":"disponibil"}
+                            În stoc · {produs.stock} {produs.stock !== 1 ? "disponibile" : "disponibil"}
                         </div>
                         <div className="cont-btns">
-                            <button className="btn-add-cart" onClick={()=>handleAddToCart()}><GrCart />Adaugă in coș</button>
-                            <button className="btn-add-wish" onClick={()=>toggleFavorite(produs)}>{isFavorite(id)?<IoMdHeart/>:<IoMdHeartEmpty />}</button>
+                            <button className="btn-add-cart" onClick={() => handleAddToCart()}><GrCart />Adaugă in coș</button>
+                            <button className="btn-add-wish" onClick={() => toggleFavorite(produs)}>{isFavorite(id) ? <IoMdHeart /> : <IoMdHeartEmpty />}</button>
                         </div>
                     </section>
                 </div>
@@ -265,7 +334,7 @@ const ProdusPage = ({ produs }) => {
                             }
                         </ul>
                     </section>
-                    {
+                    {/* {
                         (produs.description && <section>
                             <div className="secondInfoHeader">
                                 <h2>Descriere</h2>
@@ -273,7 +342,7 @@ const ProdusPage = ({ produs }) => {
                             </div>
                             <p>{produs.description}</p>
                         </section>)
-                    }
+                    } */}
                 </div>
                 {
                     produs.videos.length > 0 && (
