@@ -105,6 +105,7 @@ const Page = async ({ params }) => {
             },
             oferta_activa: dbData.oferta_activa || false,
             oferta_procent: dbData.oferta_procent || 0,
+            id,
         }} />
 
     } catch (error) {

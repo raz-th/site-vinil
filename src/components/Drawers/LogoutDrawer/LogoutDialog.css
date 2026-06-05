@@ -1,0 +1,102 @@
+.ld-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(6px);
+    z-index: 2100;
+}
+
+.ld-content {
+    background: var(--foreground);
+    border-top: 2px solid #c44804;
+    border-radius: 24px 24px 0 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    outline: none;
+    z-index: 2101;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.ld-container {
+    padding: 16px 24px 36px 24px;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.ld-handle {
+    width: 36px;
+    height: 4px;
+    background-color: #3a3028;
+    border-radius: 99px;
+    margin: 0 auto 28px auto;
+}
+
+.ld-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.ld-title {
+    font-family: 'Crimson Text', Georgia, serif;
+    color: #eec99d;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+}
+
+.ld-description {
+    color: #9a8870;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.ld-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+
+.ld-btn-primary {
+    background: #c44804;
+    color: #fff;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s active, background 0.2s;
+    font-family: inherit;
+}
+
+.ld-btn-primary:hover {
+    background: #db5207;
+}
+
+.ld-btn-primary:active {
+    transform: scale(0.98);
+}
+
+
+.ld-btn-secondary {
+    background: transparent;
+    color: #c8b99a;
+    border: 1px solid #3a3028;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ld-btn-secondary:hover {
+    background: #2a2018;
+    color: #eec99d;
+    border-color: #c44804;
+}

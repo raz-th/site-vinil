@@ -11,6 +11,14 @@ const nextConfig = {
         hostname: 'i.discogs.com',
       },
     ],
+    localPatterns: [
+      {
+        pathname: '/api/image-proxy',
+      },
+      {
+        pathname: '/**'
+      }
+    ],
   },
   // output: "export"
 };

@@ -1,5 +1,5 @@
 'use client';
-import VinylDisk from '@/components/VinylDisk';
+import VinylDisk from '@/components/Discuri/VinylDisk';
 import React, { useEffect, useState } from 'react';
 
 const Loading = () => {

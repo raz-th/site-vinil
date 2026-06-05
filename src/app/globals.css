@@ -100,7 +100,7 @@ a {
 
 .loadingContainer {
   position: absolute;
-  z-index: 20;
+  z-index: 90;
   background-image: var(--_noise-texture), radial-gradient(#1f1f1f, #000000);
   background-size: var(--_noise-size), auto;
   background-position: center, center;

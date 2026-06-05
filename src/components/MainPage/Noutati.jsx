@@ -5,13 +5,13 @@ import { Reveal } from '../Reveal';
 import { Card } from './NoutatiCard';
 
 const Noutati = async () => {
-    // Interogăm tabela "products" din Supabase
+
     const { data: nouStuff, error } = await supabase
         .from('products')
         .select('*')
         .eq('format', 'Vinyl')
         .order('date_added', { ascending: false })
-        .range(0, 3);
+        .range(0, 7);
 
     if (error) {
         console.error("Error fetching recent products from Supabase:", error.message);
@@ -42,7 +42,7 @@ const Noutati = async () => {
                                 <Card data={v} key={v.id || i} i={i} />
                             ))
                         }
-                        {/* Cardurile tale placeholder rămân neschimbate */}
+
                         {/* <Card i={0} imgNum={1} />
                         <Card i={1} imgNum={2} />
                         <Card i={2} imgNum={3} />

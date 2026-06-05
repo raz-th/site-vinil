@@ -1,17 +1,24 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Pagination = ({ currentPage, totalPagini }) => {
+    const searchParams = useSearchParams();
+    const [isMobile, setIsMobile] = useState(false);
 
-    const searchParams = useSearchParams()
-
-    const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 640);
+        
+        checkMobile();
+        
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     const paginatie = () => {
         const pages = [];
 
-        const maxVisible = isMobile ? 3 : 5;
+        const maxVisible = isMobile ? 4 : 7;
 
         pages.push(1);
 
@@ -35,8 +42,9 @@ const Pagination = ({ currentPage, totalPagini }) => {
             pages.push(totalPagini);
         }
 
-        return pages;
+        return [...new Set(pages)];
     };
+
     const buildPageUrl = (page) => {
         const params = new URLSearchParams(searchParams.toString());
 
@@ -48,62 +56,42 @@ const Pagination = ({ currentPage, totalPagini }) => {
 
         return `?${params.toString()}`;
     };
+
     return (
         <div className="pagination">
+            {currentPage > 1 ? (
+                <a className="pageBtn" href={buildPageUrl(currentPage - 1)}>
+                    ‹
+                </a>
+            ) : (
+                <p className="pageBtn disabled">‹</p>
+            )}
 
-            {
-                currentPage > 1
-                    ? (
-                        <a
-                            className="pageBtn"
-                            href={buildPageUrl(currentPage - 1)}
-                        >
-                            ‹
-                        </a>
-                    )
-                    : <p className="pageBtn disabled">‹</p>
-            }
+            {paginatie().map((n, i) => (
+                n !== "..." ? (
+                    <a
+                        key={i} 
+                        href={buildPageUrl(n)}
+                        className={`pageBtn ${n === currentPage ? 'active' : ''}`}
+                    >
+                        {n}
+                    </a>
+                ) : (
+                    <p key={`ellipsis-${i}`} className="pageBtn" style={{ cursor: "unset" }}>
+                        ...
+                    </p>
+                )
+            ))}
 
-            {
-                paginatie().map((n, i) => (
-
-                    n !== "..."
-                        ? (
-                            <a
-                                key={i}
-                                href={buildPageUrl(n)}
-                                className={`pageBtn ${n === currentPage ? 'active' : ''}`}
-                            >
-                                {n}
-                            </a>
-                        )
-                        : (
-                            <p
-                                key={i}
-                                className="pageBtn"
-                                style={{ cursor: "unset" }}
-                            >
-                                ...
-                            </p>
-                        )
-
-                ))
-            }
-            {
-                currentPage < totalPagini
-                    ? (
-                        <a
-                            className="pageBtn"
-                            href={buildPageUrl(currentPage + 1)}
-                        >
-                            ›
-                        </a>
-                    )
-                    : <p className="pageBtn disabled">›</p>
-            }
-
+            {currentPage < totalPagini ? (
+                <a className="pageBtn" href={buildPageUrl(currentPage + 1)}>
+                    ›
+                </a>
+            ) : (
+                <p className="pageBtn disabled">›</p>
+            )}
         </div>
     );
-}
+};
 
 export default Pagination;

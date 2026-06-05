@@ -89,6 +89,8 @@
     border-radius: 10px;
     max-width: 500px;
     width: 100%;
+    height: auto; 
+    object-fit: cover; 
 }
 
 .produsPage .mainInfo section .moreImagesContainer {
@@ -150,12 +152,12 @@
 
 .produsPage .mainInfo section .moreImages img {
     width: 100px;
+    height: auto; 
     aspect-ratio: 1/1;
     object-fit: cover;
     border-radius: 10px;
     cursor: pointer;
 }
-
 
 .produsPage .mainInfo section .moreImages img.selected {
     border: 2px solid var(--accent2);

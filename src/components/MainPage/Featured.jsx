@@ -4,6 +4,7 @@ import "./Featured.css"
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import { TextBanner } from '../Icons';
 import { Reveal } from '../Reveal';
+import Image from 'next/image'; 
 
 const items = [
     { label: 'Rock', img: '/assets/featured/rock.jpg', href: '/toate/genere/rock', color: 'rgba(45, 36, 26, 0.91)' },
@@ -16,7 +17,7 @@ const items = [
     { label: 'Pop', img: '/assets/featured/pop.jpg', href: '/toate/genere/pop', color: 'rgba(100, 30, 30, 0.91)' },
 ];
 
-// Triplăm itemii pentru a crea efectul de loop infinit
+
 const extendedItems = [...items, ...items, ...items];
 
 const Featured = () => {
@@ -143,12 +144,22 @@ const Featured = () => {
                                         className={`feat_card carousel_card ${cardClass}`}
                                         style={{
                                             width: `${itemWidth}%`,
-                                            padding: visible === 3 ? '0 8px' : '0', // Emulează un gap de 16px
+                                            padding: visible === 3 ? '0 8px' : '0',
                                         }}
                                     >
                                         <Reveal>
                                             <a href={item.href} draggable={false}>
-                                                <img src={item.img} alt={item.label} draggable={false} />
+                                                
+                                      
+                                                <Image 
+                                                    src={item.img} 
+                                                    alt={item.label} 
+                                                    width={500}
+                                                    height={500}
+                                                    draggable={false} 
+                                                    priority={i < 8} 
+                                                />
+
                                                 <div className='feat_card_banner'>
                                                     <TextBanner color={item.color} size={80} />
                                                     <p className='feat_card_banner_txt'>{item.label}</p>

@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import Image from 'next/image';
 import Pagination from '@/components/Pagination';
+import { ProductCard } from './ProductCard';
 
 // ── date mock — înlocuiești cu fetch real ──
 const toateGenurile = [
@@ -67,92 +68,7 @@ const IconDisc = () => (
 
 const cleanArtistName = (name) => name.replace(/\s*\(\d+\)$/, '').trim();
 
-const ProductCard = ({ produs }) => {
-  const [imgLoaded, setImgLoaded] = useState(false);
-  const imgRef = useRef(null);
-  const { addToCart } = useCart();
-  const nav = useRouter();
 
-  useEffect(() => {
-    setImgLoaded(false);
-    if (imgRef.current?.complete && imgRef.current?.naturalWidth > 0) {
-      setImgLoaded(true);
-    }
-  }, [produs.cover_image, produs.thumb]);
-
-  const artisti = produs.artist;
-  const an = produs.year > 0 ? produs.year : null;
-  const label = produs.label;
-  const format = produs.format;
-
-  const handleAddToCart = (e) => {
-    e.stopPropagation();
-    addToCart({
-      productId: produs.id,
-      title: produs.title,
-      artist: produs.artist,
-      format: produs.format,
-      imageUrl: produs.cover_image,
-      price: produs.price || 0,
-      quantity: 1
-    });
-  };
-
-  return (
-    <div className="productCard" onClick={() => nav.push(`/produs/${produs.id}`)}>
-      <div className="productImageWrap">
-        <div
-          style={{
-            position: 'relative',
-            width: '100%',
-            height: '300px',
-          }}
-        >
-          {!imgLoaded && <div className="img-skeleton" />}
-
-          <Image
-            ref={imgRef}
-            src={produs.cover_image || produs.thumb || "/assets/image.png"}
-            alt={`${produs.title} - ${artisti}`}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-            loading="lazy"
-            onLoad={() => setImgLoaded(true)}
-            onError={() => setImgLoaded(true)}
-            style={{
-              objectFit: 'cover',
-              opacity: imgLoaded ? 1 : 0,
-              transition: 'opacity 0.3s ease',
-            }}
-          />
-        </div>
-
-        {format && <span className="productBadge">{format === "Vinyl" ? "Vinil" : format}</span>}
-      </div>
-
-      <div className="productInfo">
-        <p className="productArtist">{artisti}</p>
-        <p className="productName">{produs.title}</p>
-        <div className="productMeta">
-          {an && <span className="productMetaItem">{an}</span>}
-          {label && <span className="productMetaItem">{label}</span>}
-        </div>
-        {produs.genres?.length > 0 && (
-          <div className="productGenres">
-            {produs.genres.map(s => (
-              <span key={s} className="productGenreTag">{s}</span>
-            ))}
-          </div>
-        )}
-        <div className="productPrices">
-          <span className="productPrice">{produs.price ? `${produs.price}.00 Lei` : 'Preț indisponibil'}</span>
-        </div>
-      </div>
-
-      <button className="addToCartBtn" onClick={handleAddToCart}>Adaugă în coș</button>
-    </div>
-  );
-};
 
 export default function DiscuriVinil({ format, produse, infoPagina }) {
   const titlu = format;

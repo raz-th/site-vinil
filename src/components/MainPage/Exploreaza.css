@@ -1,0 +1,147 @@
+.explo_container {
+    width: 100%;
+    padding: 4rem 2rem;
+    max-width: var(--max-width);
+    /* margin: 0 auto; */
+}
+
+.explor_grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.explor_grid>* {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+.explor_grid .explor_item {
+    position: relative;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    background: transparent;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+.explor_media_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+.explor_grid .explor_item .vinyl {
+    width: 220px !important;
+    height: 220px !important;
+}
+
+.explor_grid .explor_item .cd-disk {
+    width: 220px !important;
+    height: 220px !important;
+}
+
+.explor_grid .explor_item .cassette-tape {
+    width: 260px !important;
+    height: 165px !important;
+    transform: none !important;
+}
+
+.explor_grid .explor_item .newspaper-book {
+    width: 160px !important;
+    height: 150px !important;
+    transform: none !important;
+    font-size: 1rem !important;
+}
+
+.explor_text_wrapper {
+    width: 100%;
+    margin-top: auto;
+}
+
+.explor_text_wrapper h3 {
+    font-size: 1.2rem;
+    margin: 2px 0;
+}
+
+.explor_text_wrapper p {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin: 0;
+}
+
+@media (max-width: 767px) {
+    .explo_container {
+        padding: 4rem 2rem;
+    }
+
+    .explor_grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 5px;
+    }
+
+    .explor_grid .explor_item {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 10px 6px;
+        overflow: hidden;
+    }
+
+    .explor_media_wrapper {
+        width: 100px;
+        height: 110px;
+    }
+
+    .explor_grid .explor_item .vinyl {
+        width: 110px !important;
+        height: 110px !important;
+    }
+
+    .explor_grid .explor_item .cd-disk {
+        width: 110px !important;
+        height: 110px !important;
+    }
+
+    .explor_grid .explor_item .cassette-tape {
+        transform: scale(0.5) !important;
+        margin: 0 !important;
+    }
+
+    .explor_grid .explor_item .newspaper-book {
+        width: 140px !important;
+        height: 91px !important;
+        transform: scale(0.9) !important;
+        font-size: 0.35rem !important;
+        margin: 0 !important;
+    }
+
+    .explor_text_wrapper {
+        margin-top: 8px;
+    }
+
+    .explor_text_wrapper h3 {
+        font-size: 0.9rem;
+    }
+
+    .explor_text_wrapper p {
+        font-size: 0.65rem;
+    }
+}

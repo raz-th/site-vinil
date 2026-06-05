@@ -7,8 +7,9 @@ import { FiMapPin } from "react-icons/fi";
 import { useAuth } from "@/context/AuthContext";
 import React, { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import VinylDisk from "../VinylDisk";
+import VinylDisk from "../Discuri/VinylDisk";
 import Link from "next/link";
+import LogoutDialog from "../Drawers/LogoutDrawer/LogoutDialog";
 
 const Aside = () => {
   const [diskHover, setDiskHover] = useState(false);
@@ -50,9 +51,7 @@ const Aside = () => {
           </li>
         </ol>
         <hr />
-        <button className="logout_btn" onClick={() => logout()}>
-          <FaSignOutAlt /> Ieșire
-        </button>
+        <LogoutDialog onLogout={()=>logout()} className="logout_btn"/>
       </div>
     </aside>
   );

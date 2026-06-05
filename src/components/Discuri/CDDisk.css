@@ -1,0 +1,91 @@
+.cd-disk {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+  z-index: 1;
+  /* Baza argintie/metalizată a CD-ului */
+  background: radial-gradient(circle at center, #e0e0e0 0%, #b0b0b0 50%, #d8d8d8 100%);
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    0 12px 32px rgba(0, 0, 0, 0.2),
+    inset 0 0 4px rgba(255, 255, 255, 0.6);
+}
+
+.cd-disk.spinning {
+  animation: spin 3s linear infinite;
+}
+
+/* Efectul de curcubeu / reflexie irizată specific CD-urilor */
+.cd__reflection {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    rgba(255, 0, 0, 0.15) 0deg,
+    rgba(255, 165, 0, 0.15) 30deg,
+    rgba(255, 255, 0, 0.15) 60deg,
+    rgba(0, 128, 0, 0.15) 120deg,
+    rgba(0, 0, 255, 0.15) 180deg,
+    rgba(75, 0, 130, 0.15) 240deg,
+    rgba(238, 130, 238, 0.15) 300deg,
+    rgba(255, 0, 0, 0.15) 360deg
+  );
+  
+  mask: radial-gradient(circle at center, transparent 20%, black 20%);
+  -webkit-mask: radial-gradient(circle at center, transparent 20%, black 20%);
+}
+
+.cd__reflection::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    rgba(255, 255, 255, 0.4) 0deg,
+    transparent 45deg,
+    rgba(255, 255, 255, 0.3) 135deg,
+    transparent 180deg,
+    rgba(255, 255, 255, 0.4) 225deg,
+    transparent 270deg,
+    rgba(255, 255, 255, 0.3) 315deg,
+    transparent 360deg
+  );
+}
+
+/* Inelul din mijloc (zona de plastic transparent + eticheta) */
+.cd__label {
+  position: absolute;
+  width: 40%; /* CD-urile au cercul interior puțin mai mic ca proporție a etichetei */
+  height: 40%;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Efect de plastic transparent/argintiu pentru inelul interior dacă nu are imagine */
+  background: radial-gradient(circle at center, #ffffff 0%, #e6e6e6 40%, #b5b5b5 70%, #999 100%);
+  box-shadow: 
+    0 0 0 2px rgba(255, 255, 255, 0.5),
+    inset 0 0 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+/* Gaura centrală - mai mare la CD-uri decât la vinil */
+.cd__hole {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: #000; /* Sau poți pune transparent dacă fundalul paginii e fix */
+  box-shadow: 
+    0 0 0 1px rgba(0, 0, 0, 0.4),
+    0 0 0 4px rgba(255, 255, 255, 0.3); /* Inelul de plastic complet transparent din buza găurii */
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

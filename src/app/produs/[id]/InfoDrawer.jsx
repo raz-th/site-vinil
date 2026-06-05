@@ -10,7 +10,7 @@ const InfoDrawer = ({title, content}) => {
             <Drawer.Trigger className='drawerTrigger'><BsInfoCircle/></Drawer.Trigger>
             <Drawer.Portal>
                 <Drawer.Overlay className="drawerOverlay" />
-                <Drawer.Content className="drawerContent">
+                <Drawer.Content className="drawerContent" aria-describedby={undefined}>
                     <Drawer.Title className='drawerTitle'>{title}</Drawer.Title>
                     {content}
                 </Drawer.Content>

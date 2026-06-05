@@ -3,6 +3,7 @@
 import { genuri_muzicale } from '@/config/site';
 import { useSearchParams, useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
+import useIsMobile from './useIsMobile';
 
 const toateGenurile = Object.keys(genuri_muzicale);
 
@@ -42,7 +43,8 @@ const ProduseSideBar = ({ search = false, id, format }) => {
     const currentGenre = searchParams.get('genres') || '';
     const currentFormat = searchParams.get('format') || '';
 
-    // 🔥 helper pentru update params
+    const isMobile = useIsMobile();
+
     const updateParam = (key, value) => {
         const params = new URLSearchParams(searchParams.toString());
 
@@ -86,6 +88,8 @@ const ProduseSideBar = ({ search = false, id, format }) => {
             setGenuri(["Classic Rock", "Hip Hop", "Pop", "Electronic"]);
         }
     }, [id]);
+
+    if (isMobile) return null;
 
     return (
         <aside className="sidebar">
@@ -211,7 +215,7 @@ const ProduseSideBar = ({ search = false, id, format }) => {
 
             {/* ── STYLES ── */}
             <div className="sideSection">
-                <h2 className="sideSectionTitle">Gen</h2>
+                <h2 className="sideSectionTitle">Stil</h2>
                 <div className="filterGroup">
                     {genuri.map((g, i) => (
                         <label key={i} className="filterCheckbox">
@@ -227,7 +231,7 @@ const ProduseSideBar = ({ search = false, id, format }) => {
             </div>
 
             {/* ── PRODUCATORI ── */}
-            <div className="sideSection">
+            {/* <div className="sideSection">
                 <h2 className="sideSectionTitle">Producători</h2>
                 <div className="filterGroup">
                     {producatori.map((p) => (
@@ -242,7 +246,7 @@ const ProduseSideBar = ({ search = false, id, format }) => {
                         </label>
                     ))}
                 </div>
-            </div>
+            </div> */}
 
         </aside>
     );

@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from "react";
 
-export const Reveal = ({ children, width = "100%", delay = 0, ready = true }) => {
+export const Reveal = ({ children, width = "100%", delay = 0, ready = true, style={} }) => {
   const [isInView, setIsInView] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef(null);
@@ -33,7 +33,7 @@ export const Reveal = ({ children, width = "100%", delay = 0, ready = true }) =>
   return (
     <div
       ref={ref}
-      style={{ width, position: "relative", transitionDelay: `${delay}ms` }}
+      style={{...style, width, position: "relative", transitionDelay: `${delay}ms`}}
       className={`reveal-section ${isVisible ? "is-visible" : ""}`}
     >
       {children}

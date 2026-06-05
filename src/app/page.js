@@ -1,3 +1,4 @@
+import ExploreazaFormatari from "@/components/MainPage/ExploreazaFormatari";
 import Featured from "@/components/MainPage/Featured";
 import Hero from "@/components/MainPage/Hero";
 import Noutati from "@/components/MainPage/Noutati";
@@ -7,6 +8,7 @@ export default function Home() {
     <div className="App">
       <Hero/>
       <Featured/>
+      <ExploreazaFormatari/>
       <Noutati/>
     </div>
   );

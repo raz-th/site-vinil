@@ -28,6 +28,7 @@
   color: #8a5a2a;
   padding: 3px 12px;
   border-radius: 20px;
+  min-width: fit-content;
 }
 
 /* ── Grid ── */

@@ -68,8 +68,9 @@
 
 
 
-.feat_card img{
+.feat_card img {
     width: 100%;
+    height: auto;
     aspect-ratio: 1/1;
     object-fit: cover;
     border-radius: 10px;
@@ -98,25 +99,25 @@
   width: 100%;
 }
 
-/* NOU: Containerul care ascunde cardurile inactive */
+
 .carousel_viewport {
   overflow: hidden;
   width: 100%;
   flex: 1; 
 }
 
-/* ACTUALIZAT: gap-ul a fost scos de aici; spațiul e generat acum de padding-ul de pe card */
+
 .carousel_track {
   display: flex;
   cursor: grab;
   user-select: none;
 }
 
-/* ACTUALIZAT */
+
 .carousel_card {
   transition: transform 0.4s ease, opacity 0.4s ease;
   min-width: 0;
-  box-sizing: border-box; /* Previne stricarea proporțiilor cauzate de padding */
+  box-sizing: border-box; 
 }
 
 .carousel_card_side {
@@ -179,7 +180,7 @@
   }
   
   .carousel_card_side {
-    opacity: 1; /* Pe mobil vrei probabil să vezi normal dacă apuci să tragi puțin */
+    opacity: 1; 
     transform: scale(1);
   }
 
@@ -192,5 +193,11 @@
     width: 32px;
     height: 32px;
     font-size: 12px;
+  }
+  .feat_header{
+    justify-content: space-between;
+  }
+  .feat_header .linie{
+    display: none;
   }
 }

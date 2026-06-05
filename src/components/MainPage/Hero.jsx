@@ -3,7 +3,7 @@ import './Hero.css'
 // import Image from 'next/image';
 import { WaveDivider, WaveDividerMobile } from '../Icons';
 import { Reveal } from '../Reveal';
-import VinylDisk from '../VinylDisk';
+import VinylDisk from '../Discuri/VinylDisk';
 
 
 const Hero = () => {
@@ -35,9 +35,7 @@ const Hero = () => {
 
                             </div>
                         </Reveal>
-                        {/* <div className='vinil-wrapper'>
-                            
-                        </div> */}
+                  
                     </div>
                     {/* <div className='img'>
                         <Reveal delay={600}><img src={"/assets/vinilplayer.png"} /></Reveal>

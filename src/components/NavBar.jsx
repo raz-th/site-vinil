@@ -8,6 +8,8 @@ import { IoMdSettings } from "react-icons/io";
 import { CgBox } from "react-icons/cg";
 import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
+import NavDrawer from '@/components/Drawers/NavDrawer/NavDrawer';
+import LogoutDialog from '@/components/Drawers/LogoutDrawer/LogoutDialog';
 
 const IconSearch = () => (
   <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><line x1="16.5" y1="16.5" x2="22" y2="22" /></svg>
@@ -191,30 +193,50 @@ const NavBar = ({ wishlistCount = 0, hiden }) => {
                 )}
               </a>
 
-              <div className="dropdown" style={{ right: '0%', left: 'unset', top: "calc(100% + 8px)" }}>
+              <div className="dropdown user-account-dropdown" style={{ right: '0%', left: 'unset', top: "calc(100% + 8px)" }}>
                 <div className='dropdown_content'>
                   {user ? (
-                    // --- VARIANTĂ LOGAT ---
+                    // VARIANTA LOGAT 
                     <>
                       <div className="user-info-header">
-                        <p className="user-name">{userData?.full_name || userData?.display_name || user?.email?.split('@')[0]}</p>
+                        <p className="user-name">
+                          {userData?.full_name || userData?.display_name || user?.email?.split('@')[0]}
+                        </p>
                         <p className="user-email">{user.email}</p>
                       </div>
-                      <hr />
-                      <a href="/user/myaccount/orders"><FaBoxOpen /> Comenzile mele</a>
-                      <a href="/user/myaccount/favorite"><FaHeart /> Favorite</a>
-                      <a href="/user/myaccount"><IoMdSettings /> Setări cont</a>
-                      <hr />
-                      <button onClick={() => logout()} className="logout-btn">
-                        <FaSignOutAlt /> Ieșire
-                      </button>
+
+                      <div className="dropdown-divider" />
+
+                      <a href="/user/myaccount/orders" className="dropdownItem">
+                        <FaBoxOpen className="dropdown-icon" />
+                        <span>Comenzile mele</span>
+                      </a>
+                      <a href="/user/myaccount/favorite" className="dropdownItem">
+                        <FaHeart className="dropdown-icon" />
+                        <span>Favorite</span>
+                      </a>
+                      <a href="/user/myaccount" className="dropdownItem">
+                        <IoMdSettings className="dropdown-icon" />
+                        <span>Setări cont</span>
+                      </a>
+
+                      <div className="dropdown-divider" />
+                      <LogoutDialog onLogout={()=>logout()}/>
+                      {/* <button onClick={() => logout()} className="logout-btn">
+                        <FaSignOutAlt className="dropdown-icon" />
+                        <span>Ieșire</span>
+                      </button> */}
                     </>
                   ) : (
-                    // --- VARIANTĂ NELOGAT (Originală) ---
-                    <>
-                      <a href="/user/login">Intră in cont</a>
-                      <a href="/user/login?type=sign up">Cont nou</a>
-                    </>
+                    // VARIANTA NELOGAT
+                    <div className="auth-prompt-container">
+                      <a href="/user/login" className="dropdownItem auth-login-btn">
+                        Intră în cont
+                      </a>
+                      <a href="/user/login?type=sign up" className="dropdownItem auth-register-link">
+                        Crează cont nou
+                      </a>
+                    </div>
                   )}
                 </div>
               </div>
@@ -226,124 +248,15 @@ const NavBar = ({ wishlistCount = 0, hiden }) => {
           </a> */}
 
 
-          <button className="navHamburger navActionBtn" onClick={() => setDrawerOpen(v => !v)} aria-label="Meniu">
+          {/* <button className="navHamburger navActionBtn" onClick={() => setDrawerOpen(v => !v)} aria-label="Meniu">
             {drawerOpen ? <IconX /> : <IconMenu />}
-          </button>
+          </button> */}
+          <NavDrawer user={user} userData={userData}/>
+
+
         </div>
       </div>
 
-      {/* ── drawer mobil ── */}
-      <div className={`navDrawer ${drawerOpen ? 'open' : ''}`}>
-        {/* profil în drawer */}
-        {/* <a href='/profil' className="navDrawerLink navDrawerProfile">
-          <svg viewBox="0 0 24 24" style={{ width: 18, height: 18, stroke: 'currentColor', fill: 'none', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round', flexShrink: 0 }}>
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
-          </svg>
-          Contul meu
-        </a> */}
-        <div className='navDrawerHero'>
-          {
-            user ?
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, position: 'relative', width: '100%' }}>
-                <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-                  {
-                    user.photoURL ? <img className='ic' style={{ padding: 0 }} src={user.photoURL} /> : <div className='ic'><FaRegUser /></div>
-                  }
-                  <div>
-                    <h3>{userData?.full_name || userData?.display_name || user?.email?.split('@')[0]}</h3>
-                    <span>{user.email}</span>
-                  </div>
-                </div>
-                <div style={{ display: 'flex', width: '100%', gap: 20, justifyContent: 'space-between' }}>
-                  <button onClick={() => { navigateMobil("/user/myaccount") }} style={
-                    {
-                      width: "100%",
-                      padding: '1rem',
-                      fontSize: 15,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      gap: 10,
-                      background: '#292524',
-                      border: '#44403c solid 1px'
-                    }
-                  }><FaRegUser color='var(--accent2)' size={20} /> Profil</button>
-                  <button style={{
-                    width: "100%",
-                    padding: '1rem',
-                    fontSize: 15,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: 10,
-                    background: '#292524',
-                    border: '#44403c solid 1px'
-                  }}><CgBox color='var(--accent2)' size={20} />Comenzi</button>
-                  <button onClick={() => logout()} style={{
-                    width: "100%",
-                    padding: '1rem',
-                    fontSize: 15,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: 10,
-                    background: '#292524',
-                    border: '#44403c solid 1px'
-                  }}><FaSignOutAlt color='var(--accent2)' size={20} />Iesire</button>
-                </div>
-              </div>
-              :
-              <>
-                <div style={{ display: 'flex', gap: 10, position: 'relative', width: '100%' }}>
-                  <div className='ic'>
-                    <FaRegUser />
-                  </div>
-                  <div>
-                    <p>Intră în universul tău muzical. </p>
-                    <span>Autentifică-te sau creează un cont</span>
-                  </div>
-                </div>
-                <button onClick={() => { nav.push("/user/login"); setDrawerOpen(false) }}>Intră</button>
-              </>
-          }
-
-
-        </div>
-        <div className="navDrawerContent">
-          {formatari.map((v, i) => (
-            <div key={i} className="navDrawerSection">
-
-              <button
-                className="navDrawerLink navDrawerToggle"
-                onClick={() => toggleDrawerItem(i)}
-              >
-                {v.label}
-                <IconChevron open={openDrawerItem === i} />
-              </button>
-
-              {/* subgenuri */}
-              <div className={`navDrawerSub ${openDrawerItem === i ? 'open' : ''}`}>
-                <a href={`/${v.href}/genere`} className="navDrawerSubLink">
-                  Toate
-                </a>
-                {Object.keys(genuri_muzicale).map((g, j) => (
-                  <a key={j} href={`/${v.href}/genere/${g}`} className="navDrawerSubLink">
-                    {genuri_muzicale[g].label}
-                  </a>
-                ))}
-              </div>
-
-            </div>
-          ))}
-        </div>
-
-        {/* <a href="#" className="navDrawerLink">Noutăți</a>
-        <a href="#" className="navDrawerLink">Oferte</a>
-        <a href="#" className="navDrawerLink">Artiști</a> */}
-      </div>
 
       <div className="stripe" />
     </header>

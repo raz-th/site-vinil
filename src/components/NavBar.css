@@ -17,7 +17,6 @@
   position: sticky;
 }
 
-/* ── banda de sus ── */
 .navBarBand {
   background: #c44804;
   text-align: center;
@@ -37,16 +36,10 @@
 }
 
 @keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
-/* ── bara principala ── */
 .navBarContent {
   padding: 0 2rem;
   background: var(--foreground);
@@ -56,7 +49,6 @@
   justify-content: space-between;
   gap: 1rem;
   height: 60px;
-
 }
 
 .nav-hidden {
@@ -71,7 +63,6 @@
   flex-shrink: 0;
 }
 
-/* ── navigatie ── */
 .navLinks {
   display: flex;
   align-items: center;
@@ -135,7 +126,6 @@
   transform: rotate(180deg);
 }
 
-/* ── dropdown genuri ── */
 .dropdown {
   position: absolute;
   top: calc(100% + 8px);
@@ -153,6 +143,14 @@
   border: 1px solid #3a3028;
   border-top: 2px solid var(--accent2);
   transform: translateY(10px);
+
+}
+
+.user-info-header{
+  color: #fff;
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 14px;
+  padding: 0px 1rem;
 }
 
 .navLinks li:hover .dropdown {
@@ -178,13 +176,6 @@
   color: #eec99d;
 }
 
-.dropdownIcon {
-  font-size: 16px;
-  width: 20px;
-  text-align: center;
-}
-
-/* ── actiuni dreapta ── */
 .navActions {
   display: flex;
   align-items: center;
@@ -230,18 +221,12 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  /* font-weight: 900; */
-  /* font-family: 'Crimson Text', Georgia, serif; */
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   line-height: 1;
 }
 
-/* ── search expand ── */
 .navSearch {
   display: flex;
   align-items: center;
@@ -273,55 +258,7 @@
   opacity: 1;
 }
 
-.user-info-header {
-  padding: 10px 15px;
-  /* background: #f9f9f9; */
-  border-radius: 4px;
-  margin-bottom: 5px;
-}
 
-.user-name {
-  font-weight: bold;
-  font-size: 0.9rem;
-  margin: 0;
-  color: #fff;
-}
-
-.user-email {
-  font-size: 0.75rem;
-  color: #777;
-  margin: 0;
-}
-
-.nav-avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid var(--accent1);
-}
-
-.logout-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  background: none;
-  border: none;
-  color: #e74c3c;
-  /* Roșu pentru logout */
-  padding: 10px 15px;
-  cursor: pointer;
-  text-align: left;
-  font-size: 0.9rem;
-}
-
-.logout-btn:hover {
-  color: red;
-}
-
-
-/* ── mobil ── */
 .navHamburger {
   display: none;
   background: none;
@@ -340,44 +277,66 @@
   stroke-linecap: round;
 }
 
-
-.navDrawer {
-  display: flex;
-  flex-direction: column;
-  /* gap: 4px; */
-  transition: max-height 0.35s ease, padding 0.35s ease;
-  background: #1a1a18;
-  border-top: 1px solid #3a3028;
-  max-height: calc(90dvh);
-  overflow-y: auto;
+.NavDrawerOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  z-index: 999;
 }
 
-.navDrawerContent {
+.NavDrawerContent {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 85vw;
+  max-width: 350px;
+  background: var(--foreground, #1a1a18);
+  border-left: 1px solid #3a3028;
+  border-radius: 16px 0 0 16px;
+  color: #fff3f3;
+  z-index: 1000;
+
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  max-height: 0;
-  overflow: hidden auto;
-  padding: 0 1.5rem;
-    /* max-height: 90vh; */
-  transition: max-height 0.35s ease, padding 0.35s ease;
+  height: 100dvh; 
+  overflow: hidden;
+}
+
+.NavDrawerScrollArea {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch; 
+  padding: 24px 20px; 
+  display: flex;
+  flex-direction: column;
+}
+
+.drawerHandle {
+  width: 6px;
+  height: 48px;
+  background-color: #44403c; 
+  border-radius: 9999px; 
+  margin: 0 auto 20px auto; 
+  flex-shrink: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 3px
 }
 
 .navDrawerHero {
-  width: 100%;
-  max-height: 0;
-  transition: max-height 0.35s ease, padding 0.35s ease;
-  overflow: hidden;
-  background: #1a1510;
-  color: #fff;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #3a3028;
+  margin-bottom: 20px;
 }
 
 .navDrawerHero .ic {
-  padding: 10px;
   height: 50px;
   width: 50px;
   border-radius: 50%;
@@ -385,80 +344,196 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
 }
 
-.navDrawer.open .navDrawerContent {
-  max-height: 100vh;
-  padding: 1rem 1.5rem;
+.heroUserInfo h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #eec99d;
+  font-family: 'Crimson Text', Georgia, serif;
 }
 
-.navDrawer.open .navDrawerHero {
-  max-height: 100vh;
-  padding: 1rem 1.5rem;
-  height: fit-content;
-  justify-content: space-between;
+.heroUserInfo span, .heroGuestInfo span {
+  font-size: 13px;
+  color: #9a8870;
+  font-family: 'Crimson Text', Georgia, serif;
 }
 
-.navDrawerHero p {
+.heroGuestInfo p {
   font-family: 'Crimson Text', Georgia, serif;
   font-size: 15px;
   color: #eec99d;
-  margin: 0 0 2px;
-  font-weight: 500;
+  margin: 0 0 2px 0;
 }
 
-.navDrawerHero span {
-  font-family: 'Crimson Text', Georgia, serif;
+.heroActionBtn {
+  flex: 1;
+  padding: 12px 8px;
   font-size: 13px;
-  color: #9a8870;
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  background: #292524;
+  border: 1px solid #44403c;
+  border-radius: 8px;
+  color: #c8b99a;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
+.heroActionBtn:hover {
+  background: #3a3533;
+  color: #eec99d;
+  border-color: #c44804;
+}
 
-
-
-
-.navDrawerHero button {
-  background: var(--accent2);
+.heroLoginBtn {
+  background: var(--accent2, #c44804);
   border: none;
   color: #fff;
   font-family: 'Crimson Text', Georgia, serif;
-  font-size: 14px;
-  padding: 6px 12px;
+  font-size: 15px;
+  padding: 10px 16px;
   cursor: pointer;
-  transition: color 0.15s;
-  /* width: 100%; */
-  border-radius: 10px;
+  border-radius: 8px;
+  width: 100%;
+  transition: background 0.2s;
 }
 
+.user-account-dropdown {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
 
-.navDrawerLink {
-  color: #c8b99a;
+/* User Info Section */
+.user-info-header {
+  padding: 14px 16px 10px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.user-name {
+  margin: 0;
+  font-weight: 600;
+  font-size: 16px;
+  color: #fff;
   font-family: 'Crimson Text', Georgia, serif;
-  font-size: 17px;
-  text-decoration: none;
-  padding: 10px 0;
-  border-bottom: 1px solid #2a2018;
-  transition: color 0.15s;
+  letter-spacing: 0.02em;
 }
 
-.navDrawerProfile {
+.user-email {
+  margin: 0;
+  font-size: 12px;
+  color: #9a8870; /* Elegant muted tan color */
+  font-family: system-ui, -apple-system, sans-serif; /* Clean sans-serif for reading dynamic emails */
+}
+
+/* Elegant Custom Divider replacing standard <hr> */
+.dropdown-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #3a3028 15%, #3a3028 85%, transparent);
+  margin: 4px 0;
+}
+
+/* Dropdown Menu Items Alignment */
+.dropdown_content .dropdownItem {
   display: flex;
   align-items: center;
-  gap: 10px;
-  border-bottom: none;
-  margin-top: 4px;
-  padding-top: 14px;
-  border-top: 1px solid #3a3028;
+  gap: 12px;
+  padding: 11px 16px;
+  font-size: 15px;
+  color: #c8b99a;
+  transition: all 0.2s ease;
+}
+
+/* Icons styling within the menu items */
+.dropdown-icon {
+  font-size: 15px;
+  color: #c44804; /* Store branding burnt orange tint */
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.dropdownItem:hover .dropdown-icon {
+  transform: translateX(2px); /* Subtle nudge effect on hover */
 }
 
 
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  background: none;
+  border: none;
+  color: #c8b99a;
+  padding: 12px 16px;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
 
-.navDrawerLink:hover {
-  color: #eec99d;
+.logout-btn .dropdown-icon {
+  color: #b85d53; 
+}
+
+.logout-btn:hover {
+  background: rgba(231, 76, 60, 0.08); 
+  color: #e74c3c;
+}
+
+.logout-btn:hover .dropdown-icon {
+  color: #e74c3c;
+  transform: translateX(2px);
+}
+
+.auth-prompt-container {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.auth-login-btn {
+  justify-content: center;
+  background: var(--accent2, #c44804) !important;
+  color: #fff !important;
+  border-radius: 6px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.auth-login-btn:hover {
+  background: #db5207 !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(196, 72, 4, 0.2);
+}
+
+.auth-register-link {
+  justify-content: center;
+  text-align: center;
+  font-size: 14px !important;
+  opacity: 0.8;
+}
+
+.auth-register-link:hover {
+  background: none !important;
+  color: #eec99d !important;
+  opacity: 1;
+}
+
+.navDrawerList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .navDrawerSection {
@@ -473,39 +548,51 @@
   background: none;
   border: none;
   cursor: pointer;
-  text-align: left;
+  padding: 14px 0;
+  color: #c8b99a;
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 17px;
+  transition: color 0.15s;
+}
+
+.navDrawerToggle:hover {
+  color: #eec99d;
 }
 
 .navDrawerSub {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
   display: flex;
   flex-direction: column;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
 }
 
 .navDrawerSub.open {
   max-height: 600px;
+  opacity: 1;
+  margin-bottom: 10px;
 }
 
 .navDrawerSubLink {
   color: #b8ad90;
   font-family: 'Crimson Text', Georgia, serif;
-  font-size: 14px;
+  font-size: 15px;
   text-decoration: none;
-  padding: 8px 0 8px 20px;
-  border-bottom: 1px solid #1a1208;
-  transition: color 0.15s;
+  padding: 10px 0 10px 20px;
+  border-left: 1px solid transparent;
+  transition: all 0.15s;
 }
 
 .navDrawerSubLink:hover {
   color: #eec99d;
+  border-left: 1px solid #c44804;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .navDrawerSubAll {
   color: #c44804;
   font-weight: 600;
-  padding-left: 20px;
 }
 
 .mobileSearchOverlay {
@@ -549,43 +636,24 @@
   font-family: 'Crimson Text', Georgia, serif;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 
 
 @media (max-width: 768px) {
-   /* .navDrawer {
-    position: fixed;
-    top: 60px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: contain;
-
-    background: #1a1a18;
-    z-index: 99;
-  } */
-   
-  .navLinks {
-    display: none;
-  }
-
-  .navHamburger {
-    display: flex;
-  }
-
-  .navSearch {
-    display: flex;
-    width: auto;
-  }
-
-  .navSearch input {
-    display: none;
-  }
-
-  /* ascunde iconița profil din bara principală pe mobil */
-  .navActionBtn[aria-label="Cont"] {
-    display: none;
-  }
+  .navLinks { display: none; }
+  .navHamburger { display: flex; }
+  .navSearch { display: flex; width: auto; }
+  .navSearch input { display: none; }
+  .navActionBtn[aria-label="Cont"] { display: none; }
 }

@@ -66,8 +66,8 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = async () => {
-        const confirmed = window.confirm("Ești sigur că vrei să te deconectezi?");
-        if (!confirmed) return;
+        // const confirmed = window.confirm("Ești sigur că vrei să te deconectezi?");
+        // if (!confirmed) return;
 
         try {
             const { error } = await supabase.auth.signOut();

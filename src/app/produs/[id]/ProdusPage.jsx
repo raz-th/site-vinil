@@ -10,6 +10,7 @@ import { useFavorites } from "@/context/FavoriteContext";
 import { BsInfoCircle } from "react-icons/bs";
 import useIsMobile from "@/components/useIsMobile";
 import InfoDrawer from "./InfoDrawer";
+import Image from "next/image";
 
 const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600);
@@ -45,6 +46,7 @@ const gradatiiCoperta = {
         "VG+": ["Very Good Plus (VG+)", "Uzură moderată, mici îndoiri sau urme de frecare."],
         "EX": ["Excellent (EX)", "Ușoare semne de uzură pe margini sau colțuri."],
         "NM": ["Near Mint (NM)", "Aproape perfectă, cu urme minime de manipulare."],
+        "default": ["N/A", "N/A"]
     },
     "default": {
         "Stare buna": ["Stare buna", "Carcasa prezintă zgârieturi superficiale și/sau ușoară opacitate."],
@@ -60,6 +62,7 @@ const gradatiiDisc = {
         "VG+": ["Very Good Plus (VG+)", "Mici semne de utilizare sau zgomot de fundal foarte redus."],
         "EX": ["Excellent (EX)", "Urme foarte fine de utilizare, fără impact asupra redării audio."],
         "NM": ["Near Mint (NM)", "Ascultat de foarte puține ori. Fără urme sau zgârieturi vizibile."],
+        "default": ["N/A", "N/A"]
     },
     "default": {
         "Stare buna": ["Stare buna", "Carcasa prezintă zgârieturi superficiale și/sau ușoară opacitate."],
@@ -85,6 +88,17 @@ const ProdusPage = ({ produs }) => {
     const [show, setShow] = useState({ gradatieVinil: false, gradatieDisc: false })
 
     const isMobile = useIsMobile(1374);
+
+    const gradatieCoperta =
+        gradatiiCoperta?.[produs.format]?.[produs.stare.stare_coperta] ??
+        gradatiiCoperta?.[produs.format]?.default ??
+        gradatiiCoperta?.default?.[produs.stare.stare_coperta] ??
+        ["N/A", "N/A"];
+    const gradatieDisc =
+        gradatiiDisc?.[produs.format]?.[produs.stare.stare_disc] ??
+        gradatiiDisc?.[produs.format]?.default ??
+        gradatiiDisc?.default?.[produs.stare.stare_disc] ??
+        ["N/A", "N/A"];
 
 
 
@@ -184,60 +198,64 @@ const ProdusPage = ({ produs }) => {
                 <div className='mainInfo'>
                     <section>
                         <div style={{ position: 'relative' }}>
-                            <img className='mainImage' src={produs.images[selectedImage] || "/assets/image.png"}
+                            <Image
+                                className="mainImage"
+                                src={produs.images[selectedImage] || "/assets/image.png"}
+                                alt="Imagine produs"
+                                width={500}
+                                height={500}
+                                priority
                                 onTouchStart={handleTouchStart}
                                 onTouchMove={handleTouchMove}
                                 onTouchEnd={handleTouchEnd}
+                                draggable={false}
                             />
                             <div className="mobileMoreImagesIndicator">
                                 <div className="dotsContainer">
                                     {visibleDots.map((_, i) => {
                                         const realIndex = start + i;
-
                                         return (
                                             <div
                                                 key={realIndex}
                                                 className={`
-                    dot
-                    ${selectedImage === realIndex ? "selected" : ""}
-                    ${i === 0 || i === maxDots - 1 ? "edge" : ""}
-                `}
+                                dot
+                                ${selectedImage === realIndex ? "selected" : ""}
+                                ${i === 0 || i === maxDots - 1 ? "edge" : ""}
+                            `}
                                             />
                                         );
                                     })}
                                 </div>
                             </div>
                         </div>
-                        <div className='moreImagesContainer'>
-                            {
-                                hasOverflow && (
-                                    <button onClick={scrollLeft} className="moreImagesBtn">
-                                        <FaChevronLeft />
-                                    </button>
-                                )
-                            }
+
+                        <div className="moreImagesContainer">
+                            {hasOverflow && (
+                                <button onClick={scrollLeft} className="moreImagesBtn">
+                                    <FaChevronLeft />
+                                </button>
+                            )}
 
                             <div className={`moreImages ${hasOverflow ? "" : "nu"}`} ref={scrollRef} style={{ width: !hasOverflow ? "100%" : '90%' }}>
-                                {
-                                    produs.images.map((v, i) => (
-                                        <img
-                                            key={i}
-                                            src={v || "/assets/image.png"}
-                                            onClick={() => setSelectedImage(i)}
-                                            className={selectedImage === i ? "selected" : ""}
-                                        />
-                                    ))
-                                }
+                                {produs.images.map((v, i) => (
+                                    <Image
+                                        key={i}
+                                        src={v || "/assets/image.png"}
+                                        alt={`Miniatură ${i}`}
+                                        width={100}
+                                        height={100}
+                                        onClick={() => setSelectedImage(i)}
+                                        className={selectedImage === i ? "selected" : ""}
+                                        draggable={false}
+                                    />
+                                ))}
                             </div>
 
-
-                            {
-                                hasOverflow && (
-                                    <button onClick={scrollRight} className="moreImagesBtn">
-                                        <FaChevronRight />
-                                    </button>
-                                )
-                            }
+                            {hasOverflow && (
+                                <button onClick={scrollRight} className="moreImagesBtn">
+                                    <FaChevronRight />
+                                </button>
+                            )}
                         </div>
                     </section>
                     <section>
@@ -274,13 +292,13 @@ const ProdusPage = ({ produs }) => {
                                         onMouseEnter={() => setShow((e) => ({ ...e, gradatieVinil: true }))}
                                         onMouseLeave={() => setShow((e) => ({ ...e, gradatieVinil: false }))}
                                     /> : <InfoDrawer
-                                        title={gradatiiCoperta[produs.format][produs.stare.stare_coperta][0]}
-                                        content={gradatiiCoperta[produs.format][produs.stare.stare_coperta][1]}
+                                        title={gradatieCoperta[0]}
+                                        content={gradatieCoperta[1]}
                                     />
                                     }
                                 </p>
-                                {!isMobile ? <div className={`infocontainer ${show.gradatieVinil ? "active" : ""}`}>
-                                    <p className="cont">{gradatiiCoperta[produs.format][produs.stare.stare_coperta][1]}</p>
+                                {!isMobile && produs.stare.stare_coperta ? <div className={`infocontainer ${show.gradatieVinil ? "active" : ""}`}>
+                                    <p className="cont">{gradatieCoperta[1]}</p>
                                 </div> : <></>}
                             </div>
                             <div className="detalie-row">
@@ -290,13 +308,13 @@ const ProdusPage = ({ produs }) => {
                                         onMouseEnter={() => setShow((e) => ({ ...e, gradatieDisc: true }))}
                                         onMouseLeave={() => setShow((e) => ({ ...e, gradatieDisc: false }))}
                                     /> : <InfoDrawer
-                                        title={gradatiiCoperta[produs.format][produs.stare.stare_disc][0]}
-                                        content={gradatiiCoperta[produs.format][produs.stare.stare_disc][1]}
+                                        title={gradatieDisc[0]}
+                                        content={gradatieDisc[1]}
                                     />
                                     }
                                 </p>
-                                {!isMobile ? <div className={`infocontainer ${show.gradatieDisc ? "active" : ""}`}>
-                                    <p className="cont">{gradatiiDisc[produs.format][produs.stare.stare_coperta][1]}</p>
+                                {!isMobile && produs.stare.stare_disc ? <div className={`infocontainer ${show.gradatieDisc ? "active" : ""}`}>
+                                    <p className="cont">{gradatieDisc[1]}</p>
                                 </div> : <></>}
                             </div>
                             {
