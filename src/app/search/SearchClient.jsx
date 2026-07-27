@@ -4,6 +4,7 @@ import './SearchClient.css';
 import ProduseSideBar from '@/components/ProduseSideBar';
 import { useRouter } from 'next/navigation';
 import { FaSearch } from 'react-icons/fa';
+import { FaMagnifyingGlass } from 'react-icons/fa6';
 
 
 
@@ -147,18 +148,18 @@ export default function SearchClient({ id, format, produse, infoPagina, q }) {
             <div className="searchContainer">
                 <h2>Căutare în catalog</h2>
 
-                <div className="searchInputContainer">
-                    <FaSearch />
+                <div className="hero_content_search_bar_wrapper">
+                    <FaMagnifyingGlass className="hero_content_search_icon" />
 
                     <input
                         type="search"
-                        placeholder="Caută artist, album, label..."
+                         placeholder="Caută artist, album sau gen..."
                         value={searchVal}
                         onChange={(e) => setSearchVal(e.target.value)}
                         autoFocus
                         autoComplete="off"
                         spellCheck={false}
-                        className="searchInput"
+                        className="hero_content_search_input"
                     />
                 </div>
             </div>

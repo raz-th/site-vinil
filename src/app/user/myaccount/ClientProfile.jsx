@@ -1,7 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import LoadingPage from "@/components/Loading/LoadingPage";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import CustomInput from '@/components/Drawers/ProfileEditDrawer/CustomInput';
@@ -53,7 +52,7 @@ const ClientProfile = () => {
         }
     };
 
-    if (loading) return <LoadingPage />;
+    if (loading) return <h1>Loading...</h1>;
     if (!user || !userData) return null;
 
     return (

@@ -6,68 +6,71 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* height: 40vh; */
-    /* background-color: #f5f5f5;
-    text-align: center;
-    --_noise-texture: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><defs><filter id='n' x='0' y='0' width='100%' height='100%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.3' numOctaves='3' stitchTiles='stitch' result='t'/><feColorMatrix type='saturate' values='0' in='t' result='g'/><feComponentTransfer in='g' result='a'><feFuncA type='linear' slope='0.5'/></feComponentTransfer></filter></defs><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-
-    --_noise-size: 10.4%;
-    --_gradient: --_noise-size: 11.4%;
-    --_gradient: linear-gradient(90deg, #20201f, #444345, #20201f);
-    ;
-
-    background-image: var(--_noise-texture), var(--_gradient);
-    background-size: var(--_noise-size), auto;
-    background-position: center, center;
-    background-repeat: repeat, no-repeat; */
+    width: 100%;
+    max-width: 100vw;
+    overflow: hidden;
 }
 
 .hero_nj {
     height: 100%;
+    width: fit-content;
     display: flex;
     flex-direction: column;
-
+    box-sizing: border-box;
     padding: 3rem 1rem;
+    order: 1;
+}
+
+.safeBackground{
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100vw;
+    /* height: clamp(100vh, 100%, 100vh); */
+    z-index: -10;
 }
 
 .wave-container {
-    /* height: 100%; */
-    /* line-height: 0; */
+    position: relative; /* IMPORTANT: Containerul trebuie să fie relativ pentru ca SVG-ul să preia înălțimea lui */
     overflow: hidden;
     width: 100%;
-    max-height: 75vh;
-    margin-top: 20px;
+    height: 75vh;
+    margin-top: 10px;
     display: flex;
     flex-direction: row;
     align-items: flex-end;
     justify-content: center;
-
 }
 
-.wave-container svg {
-    position: relative;
+.wave-container .waveDivider {
+    position: absolute;
     left: 0;
+    bottom: 0;
     width: 100%;
-    height: 100%;
-    /* object-fit: cover; */
+    height: 100%; /* Îi spunem să ocupe absolut toată înălțimea părintelui */
 }
 
 .hero_content {
-    position: absolute;
+    position: relative;
     width: 100%;
     height: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     padding: 0 5rem;
-    /* background-color: rgba(255, 0, 0, 0.288); */
+    overflow: hidden;
+}
+
+.hero_content h3 {
+    margin-top: 1rem;
 }
 
 .hero_content .img {
     position: absolute;
     right: 1rem;
-    /* bottom: clamp(100px, 4vw, 100px); */
     height: fit-content;
     width: fit-content;
 }
@@ -76,25 +79,12 @@
     width: 50vw;
 }
 
-/* .dreapta:not(.hero-ready) .album-wrapper img.album2,
-.dreapta:not(.hero-ready) .album-wrapper img.album3 {
-    animation: none;
-}
-
-.dreapta:not(.hero-ready) .vinil {
-    animation: none;
-}
-
-
-.dreapta:not(.hero-ready) {
-    animation: none;
-} */
-
 .hero_content .dreapta {
     position: relative;
     display: inline-block;
     animation: levitate 3s ease-in-out infinite;
     animation-delay: 2.2s;
+    order: 2;
 }
 
 .hero_content .dreapta .album-wrapper {
@@ -103,6 +93,7 @@
     transform: perspective(1200px) rotateZ(-15deg) rotateX(20deg) rotateZ(-10deg) translateY(3rem);
     transform-origin: center center;
     z-index: 10;
+    margin-bottom: 3rem;
 }
 
 .hero_content .dreapta .album-wrapper::after {
@@ -143,7 +134,6 @@
 .album-wrapper img.album {
     position: relative;
     z-index: 5;
-    /* relativ la wrapper, nu la pagină */
 }
 
 .album-wrapper img.album2 {
@@ -164,130 +154,46 @@
     animation-delay: 2s;
 }
 
-
 .album-wrapper .vinil {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -95%);
     z-index: 4;
-
     width: 90%;
     height: 90%;
-
     flex-shrink: 0;
     animation: vinilShow 2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     transition: .5s;
 }
 
 .album-wrapper:hover .vinil {
-    /* animation: none; */
     transform: translate(-50%, -105%);
 }
 
-
 @keyframes levitate {
-    0% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-10px);
-    }
-
-    100% {
-        transform: translateY(0);
-    }
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
 }
 
 @keyframes vinilShow {
-    0% {
-        transform: translate(-50%, -50%);
-    }
-
-    100% {
-        transform: translate(-50%, -95%);
-    }
+    0% { transform: translate(-50%, -50%); }
+    100% { transform: translate(-50%, -95%); }
 }
 
 @keyframes album2 {
-    0% {
-        transform: translateX(0rem) rotate(0deg);
-    }
-
-    100% {
-        transform: translateX(-2rem) rotate(-5deg);
-    }
+    0% { transform: translateX(0rem) rotate(0deg); }
+    100% { transform: translateX(-2rem) rotate(-5deg); }
 }
 
 @keyframes album3 {
-    0% {
-        transform: translateX(0rem) rotate(0deg);
-    }
-
-    100% {
-        transform: translateX(-3rem) rotate(-15deg);
-    }
-}
-
-
-
-
-@media (max-width: 768px) {
-    .hero_content {
-        flex-direction: column;
-        align-items: center;
-        justify-content: unset;
-        height: fit-content;
-        padding: 0;
-    }
-
-
-    .hero_content .dreapta .album-wrapper {
-        max-width: 40vw;
-        transform: perspective(1200px) rotateZ(-15deg) rotateX(20deg) rotateZ(-10deg) translateX(10rem) translateY(0rem);
-    }
-
-    .hero_content h1 {
-        width: min-content;
-        margin-bottom: 20px;
-    }
-
-    .hero_content h3 {
-        max-width: 90%;
-    }
-
-    .wave-container {
-        max-height: none;
-        height: 60vh;
-        align-items: start;
-    }
-
-    .wave-container svg {
-        height: 60vh;
-    }
-
-    .hero_content .img {
-        right: 40%;
-        bottom: 30%;
-        /* max-width: 500px; */
-        /* margin-right: 20px; */
-    }
-
-    .hero_content .img img {
-        position: absolute;
-        width: 250px;
-        /* margin-top: 20px; */
-
-        /* margin-right: 20px; */
-    }
-
-
-
+    0% { transform: translateX(0rem) rotate(0deg); }
+    100% { transform: translateX(-3rem) rotate(-15deg); }
 }
 
 .hero_content h1 {
-    font-size: clamp(2rem, 4vw, 5rem);
+    font-size: clamp(1.5rem, 4vw, 4.5rem);
     color: var(--accent1);
     font-weight: 200;
     font-family: "Ultra", serif;
@@ -301,23 +207,221 @@
 .hero_content h3 {
     color: var(--accent1);
     font-size: 1.2rem;
-
 }
 
-.hero_content .button {
+.hero_content .hero_content_buttons {
+    display: flex;
+    width: 100%;
+    gap: 1rem;
     margin-top: 20px;
+}
+
+.hero_content .hero_content_buttons a {
     padding: 0.8rem 1.5rem;
-    background-color: #c03c0b;
-    color: #ffffff;
-    border: none;
     font-weight: 900;
     border-radius: 5px;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: fit-content;
+    width: 40%;
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 1rem;
+    text-transform: uppercase;
+    text-align: center;
+    box-sizing: border-box;
+}
 
+.hero_content .hero_content_buttons .button {
+    background-color: var(--accent2);
+    color: #ffffff;
+    border: none;
+}
+
+.hero_content .hero_content_buttons .button2 {
+    border: 2px solid var(--accent1);
+    color: var(--accent1);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.hero_content_features_grid {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+    color: var(--accent1);
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    row-gap: 0.75rem;
+}
+
+.hero_content_feature_item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    padding: 0 2rem;
+    position: relative;
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+.hero_content_feature_item:first-child {
+    padding-left: 0;
+}
+
+.hero_content_feature_item:last-child {
+    padding-right: 0;
+}
+
+.hero_content_feature_item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 100%;
+    background-color: var(--accent2);
+}
+
+.hero_content_feature_item svg {
+    font-size: 1.75rem;
+}
+
+.hero_content_feature_item p {
+    font-weight: 900;
+    line-height: 1.25;
+    margin: 0;
+}
+
+
+
+/* =========================================
+   TABLET / MOBILE (<= 900px)
+   ========================================= */
+@media (max-width: 900px) {
+    .hero_content .dreapta .album-wrapper {
+        max-width: 34vw;
+    }
+}
+
+/* =========================================
+   MOBILE (<= 768px)
+   ========================================= */
+@media (max-width: 768px) {
+   .wave-container {
+        max-height: none;
+        min-height: max-content;
+        overflow: hidden;
+        align-items: start;
+    }
+
+    .wave-container .waveDivider {
+        width: 100%;
+        height: 100%; 
+    }
+
+    .hero_content {
+        /* position: relative; */
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        min-height: 80vh;
+        width: 100%;
+        padding: 0;
+    }
+
+    .hero_nj {
+        width: 100%;
+        padding: 1.75rem 1.25rem 2.5rem;
+        align-items: flex-start;
+        text-align: left;
+        box-sizing: border-box;
+    }
+
+    .hero_content h1 {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .hero_content h3 {
+        max-width: 100%;
+        font-size: 1rem;
+    }
+
+    /* the decorative vinyl stack is hidden on mobile, same as the reference layout */
+    .hero_content .dreapta {
+        display: none;
+    }
+
+    .hero_content_features_grid {
+        justify-content: flex-start;
+        column-gap: 0.75rem;
+        row-gap: 0.75rem;
+    }
+
+    .hero_content_feature_item {
+        flex: 0 0 calc(50% - 0.5rem);
+        padding: 0 0.75rem 0 0;
+        font-size: 0.85rem;
+        justify-content: flex-start;
+    }
+
+    .hero_content_feature_item:not(:last-child)::after {
+        display: none;
+    }
+
+    .hero_content_feature_item:nth-child(odd)::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 100%;
+        background-color: var(--accent2);
+    }
+
+    .hero_content .hero_content_buttons {
+        flex-direction: column;
+    }
+
+    .hero_content .hero_content_buttons a {
+        width: 100%;
+    }
+}
+
+/* =========================================
+   SMALL MOBILE (<= 480px)
+   ========================================= */
+@media (max-width: 480px) {
+    .hero_nj {
+        padding: 1.25rem 1rem 2rem;
+    }
+
+    .hero_content_features_grid {
+        justify-content: space-between;
+    }
+
+    .hero_content_feature_item {
+        flex: 0 0 46%;
+        padding: 0;
+        font-size: 0.8rem;
+    }
+
+    .hero_content_feature_item:nth-child(odd)::after {
+        display: none;
+    }
+
+    .hero_content_feature_item svg {
+        font-size: 1.4rem;
+    }
+
+    .hero_content_search_input {
+        font-size: 0.9rem;
+        padding: 0.9rem 1rem 0.9rem 2.75rem;
+    }
 }

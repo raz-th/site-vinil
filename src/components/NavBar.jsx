@@ -74,7 +74,6 @@ const NavBar = ({ wishlistCount = 0, hiden }) => {
   const { user, userData, logout } = useAuth();
   const { cartCount } = useCart()
 
-  useEffect(() => { console.log(user) }, [user])
   // const controlNavbar = useCallback(() => {
   //   try {
   //     if (typeof window !== 'undefined') {
@@ -176,12 +175,12 @@ const NavBar = ({ wishlistCount = 0, hiden }) => {
             {wishlistCount > 0 && <span className="navBadge">{wishlistCount}</span>}
           </a>
 
-          <a className="navActionBtn" aria-label="Coș" href={"/user/myaccount/mycart"}>
+          {/* <a className="navActionBtn" aria-label="Coș" href={"/user/myaccount/mycart"}>
             <IconCart />
 
 
             {cartCount > 0 && <span className="navBadge">{cartCount}</span>}
-          </a>
+          </a> */}
 
           <ul className="navLinks">
             <li className='noHover'>

@@ -7,16 +7,21 @@ const Loading = () => {
     const [mounted, setMounted] = useState(true);
 
     useEffect(() => {
-        document.body.classList.remove('no-scroll');
+        document.body.classList.add('no-scroll'); // <-- add it on mount
 
-        setTimeout(() => {
+        const hideTimer = setTimeout(() => {
             setShow(false);
-            setTimeout(() => {
+            document.body.classList.remove('no-scroll');
+            const unmountTimer = setTimeout(() => {
                 setMounted(false);
             }, 250);
+            return () => clearTimeout(unmountTimer);
         }, 600);
 
-
+        return () => {
+            clearTimeout(hideTimer);
+            document.body.classList.remove('no-scroll'); // safety cleanup
+        };
     }, []);
 
     if (!mounted) return null;
@@ -39,7 +44,6 @@ const Loading = () => {
                     <div className="bar"></div>
                 </div>
             </div>
-
         </div>
     )
 }

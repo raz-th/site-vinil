@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useCart } from '@/context/CartContext';
 import Image from 'next/image';
 import Link from 'next/link';
+import "./productCard.css"
 
 export const ProductCard = ({ produs }) => {
   const [imgLoaded, setImgLoaded] = useState(false);

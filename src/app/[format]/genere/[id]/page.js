@@ -46,7 +46,7 @@ const Page = async ({ params, searchParams }) => {
 
     let query = supabase
         .from('products')
-        .select('*', { count: 'exact' });
+        .select('*', { count: 'exact' }).eq('visible', true);
 
     if (formatFiltrat) {
         query = query.eq('format', formatFiltrat);

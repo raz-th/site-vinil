@@ -7,6 +7,8 @@ import { useCart } from '@/context/CartContext';
 import Image from 'next/image';
 import Pagination from '@/components/Pagination';
 import { ProductCard } from './ProductCard';
+import LayoutToggle from '@/components/LayoutToggle/LayoutToggle';
+import useIsMobile from '@/components/useIsMobile';
 
 // ── date mock — înlocuiești cu fetch real ──
 const toateGenurile = [
@@ -34,16 +36,7 @@ const producatori = [
   { label: 'Blue Note', count: 7 },
 ];
 
-// const produseDemo = [
-//   { id: 1, title: 'THE BRITISH HIT EXPLOSION (VINIL)', price: 49.99, cover_image: null },
-//   { id: 2, name: 'REO SPEEDWAGON - BEST FOOT FORWARD (VINIL)', price: 49.99, image: null },
-//   { id: 3, name: 'VERSO – VREAU DRAGOSTE (VINIL)', price: 59.99, oldPrice: 79.99, badge: '-25%', image: null },
-//   { id: 4, name: 'MIRCEA RUSU BAND – REFORMĂ PE PÂINE (VINIL)', price: 64.99, image: null },
-//   { id: 5, name: 'TREI ORI DE LA RĂSĂRIT (VINIL)', price: 44.99, image: null },
-//   { id: 6, name: 'PHOENIX – MUGUR DE FLUIER (VINIL)', price: 89.99, oldPrice: 109.99, badge: '-18%', image: null },
-//   { id: 7, name: 'IRIS – TRECÂND PRIN VIS (VINIL)', price: 74.99, image: null },
-//   { id: 8, name: 'COMPACT –ZIU DE ZI (VINIL)', price: 54.99, image: null },
-// ];
+
 
 const optiuniSortare = [
   'Relevanță',
@@ -72,7 +65,8 @@ const cleanArtistName = (name) => name.replace(/\s*\(\d+\)$/, '').trim();
 
 export default function DiscuriVinil({ format, produse, infoPagina }) {
   const titlu = format;
-
+  const mob = useIsMobile();
+  const [layout, setLayout] = useState(2);
   const [inStoc, setInStoc] = useState(false);
   const [genSelect, setGenSelect] = useState([]);
   const [prodSelect, setProdSelect] = useState([]);
@@ -153,10 +147,11 @@ export default function DiscuriVinil({ format, produse, infoPagina }) {
                   <option key={o}>{o}</option>
                 ))}
               </select>
+              <LayoutToggle onChange={(v)=>setLayout(v)} />
             </div>
           </div>
 
-          <div className="productsGrid">
+          <div className="productsGrid" style={mob?{gridTemplateColumns: `repeat(${layout}, 1fr)`}:{}}>
             {produse.map((p, i) => (
               <ProductCard key={i} produs={p} />
             ))}

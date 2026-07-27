@@ -7,6 +7,8 @@ import { useCart } from '@/context/CartContext';
 import Image from 'next/image';
 import Pagination from '@/components/Pagination';
 import { ProductCard } from '../ProductCard';
+import LayoutToggle from '@/components/LayoutToggle/LayoutToggle';
+import useIsMobile from '@/components/useIsMobile';
 
 
 
@@ -40,7 +42,8 @@ export default function GenereClient({ id, format, produse, infoPagina }) {
   const titlu = id.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
   const router = useRouter();
   const searchParams = useSearchParams();
-
+  const mob = useIsMobile();
+  const [layout, setLayout] = useState(2);
   const sortLabelMap = {
     'pret-crescator': 'Preț (Crescător)',
     'pret-descrescator': 'Preț (Descrescător)',
@@ -114,17 +117,18 @@ export default function GenereClient({ id, format, produse, infoPagina }) {
                   <option key={o}>{o}</option>
                 ))}
               </select>
+              <LayoutToggle onChange={(v) => setLayout(v)} />
             </div>
           </div>
 
-          <div className="productsGrid">
+          <div className="productsGrid" style={mob ? { gridTemplateColumns: `repeat(${layout}, 1fr)` } : {}}>
             {produse.map((p, i) => (
               <ProductCard key={i} produs={p} />
             ))}
           </div>
 
           {/* paginare */}
-          <Pagination currentPage={currentPage} totalPagini={totalPagini}/>
+          <Pagination currentPage={currentPage} totalPagini={totalPagini} />
 
         </main>
       </div>

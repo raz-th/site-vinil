@@ -35,7 +35,7 @@ const Page = async ({ searchParams }) => {
     .select('*', { count: 'exact' });
 
   if (searchTerm) {
-    query = query.or(`title.ilike.%${searchTerm}%,artist.ilike.%${searchTerm}%`);
+    query = query.or(`title.ilike.%${searchTerm}%,artist.ilike.%${searchTerm}%,id.ilike.%${searchTerm}%`).eq('visible', true);
 
     if (formatFiltrat) {
       query = query.eq('format', formatFiltrat);

@@ -1,14 +1,15 @@
 'use client';
 import { genuri_muzicale } from '@/config/site';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Drawer } from 'vaul';
 import { FaChevronRight, FaRegUser, FaSignOutAlt } from 'react-icons/fa';
 import { IoClose, IoMenu } from "react-icons/io5";
 import { CgBox } from 'react-icons/cg';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import LogoutDialog from '@/components/Drawers/LogoutDrawer/LogoutDialog';
 
 const formatari = [
+    { label: "Toate", href: "toate"},
     { label: "Viniluri", href: "vinil" },
     { label: "CD-uri", href: "cd" },
     { label: "Casete audio", href: "casete" },
@@ -19,10 +20,8 @@ const formatari = [
     { label: "SACD", href: "sacd" },
 ];
 
-
-
 const IconMenu = () => (
-    <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
+    <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /></svg>
 );
 
 const IconChevron = ({ open }) => (
@@ -33,8 +32,23 @@ const IconChevron = ({ open }) => (
 
 const NavDrawer = ({ user, userData, logout }) => {
     const nav = useRouter();
-    const [openDrawerItem, setOpenDrawerItem] = useState(null);
+    const pathname = usePathname() || '';
+    const pathSegments = pathname.split('/').filter(Boolean);
+
+    const currentFormat = pathSegments[0] || '';
+    const currentGenre = pathSegments[2] || '';
+
+    const getActiveIndex = () => {
+        const index = formatari.findIndex(item => item.href === currentFormat);
+        return index !== -1 ? index : null;
+    };
+
+    const [openDrawerItem, setOpenDrawerItem] = useState(getActiveIndex);
     const [drawerOpen, setDrawerOpen] = useState(false);
+
+    useEffect(() => {
+        setOpenDrawerItem(getActiveIndex());
+    }, [pathname]);
 
     const toggleDrawerItem = (i) => {
         setOpenDrawerItem(prev => prev === i ? null : i);
@@ -46,7 +60,6 @@ const NavDrawer = ({ user, userData, logout }) => {
             open={drawerOpen}
             onOpenChange={setDrawerOpen}
             modal={true}
-
         >
             <Drawer.Trigger className='navHamburger navActionBtn'>
                 {drawerOpen ? <IoClose /> : <IoMenu />}
@@ -59,7 +72,6 @@ const NavDrawer = ({ user, userData, logout }) => {
                     <div aria-hidden className="drawerHandle" />
                     <div className="NavDrawerScrollArea" >
                         <div className='navDrawerHero'>
-                            {/* <FaChevronRight onClick={() => setDrawerOpen(false)} color={'var(--accent1)'} size={20} /> */}
                             {user ? (
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: 20, position: 'relative', width: '100%' }}>
                                     <div style={{ display: 'flex', gap: 15, alignItems: 'center' }}>
@@ -124,11 +136,18 @@ const NavDrawer = ({ user, userData, logout }) => {
 
                                     {/* subgenuri */}
                                     <div className={`navDrawerSub ${openDrawerItem === i ? 'open' : ''}`}>
-                                        <a href={`/${v.href}/genere`} className="navDrawerSubLink navDrawerSubAll">
+                                        <a 
+                                            href={`/${v.href}/genere`} 
+                                            className={`navDrawerSubLink ${currentFormat === v.href && !currentGenre ? 'navDrawerSubAll' : ''}`}
+                                        >
                                             Toate
                                         </a>
                                         {genuri_muzicale && Object.keys(genuri_muzicale).map((g, j) => (
-                                            <a key={j} href={`/${v.href}/genere/${g}`} className="navDrawerSubLink">
+                                            <a 
+                                                key={j} 
+                                                href={`/${v.href}/genere/${g}`} 
+                                                className={`navDrawerSubLink ${currentFormat === v.href && currentGenre === g ? 'navDrawerSubAll' : ''}`}
+                                            >
                                                 {genuri_muzicale[g].label}
                                             </a>
                                         ))}

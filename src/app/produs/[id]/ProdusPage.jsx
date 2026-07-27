@@ -1,7 +1,7 @@
 'use client';
 import { GrCart } from "react-icons/gr";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaCheck, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from "next/navigation";
 import { FaPlay } from "react-icons/fa";
@@ -89,6 +89,9 @@ const ProdusPage = ({ produs }) => {
 
     const isMobile = useIsMobile(1374);
 
+    const [justAdded, setJustAdded] = useState(false);
+    const [heartPop, setHeartPop] = useState(false);
+
     const gradatieCoperta =
         gradatiiCoperta?.[produs.format]?.[produs.stare.stare_coperta] ??
         gradatiiCoperta?.[produs.format]?.default ??
@@ -163,17 +166,28 @@ const ProdusPage = ({ produs }) => {
         }
     };
 
+
     const handleAddToCart = () => {
         addToCart({
             productId: produs.id,
             title: produs.title,
-            artist: produs.artists.map((v) => v.name).join(", "),
+            artist: produs.artist,
             format: produs.format,
-            imageUrl: produs.images[0].uri,
+      imageUrl: produs.cover_image,
             price: produs.price || 0,
             quantity: 1
-        })
-    }
+        });
+
+        setJustAdded(true);
+        setTimeout(() => setJustAdded(false), 1200);
+    };
+
+    const handleToggleFavorite = () => {
+        toggleFavorite(produs);
+        setHeartPop(true);
+        setTimeout(() => setHeartPop(false), 500);
+    };
+
 
     const maxDots = 5;
     const total = produs.images.length;
@@ -335,8 +349,19 @@ const ProdusPage = ({ produs }) => {
                             În stoc · {produs.stock} {produs.stock !== 1 ? "disponibile" : "disponibil"}
                         </div>
                         <div className="cont-btns">
-                            <button className="btn-add-cart" onClick={() => handleAddToCart()}><GrCart />Adaugă in coș</button>
-                            <button className="btn-add-wish" onClick={() => toggleFavorite(produs)}>{isFavorite(id) ? <IoMdHeart /> : <IoMdHeartEmpty />}</button>
+                            <button
+                                className={`btn-add-cart ${justAdded ? "added" : ""}`}
+                                onClick={handleAddToCart}
+                            >
+                                {justAdded ? <FaCheck /> : <GrCart />}
+                                {justAdded ? "Adăugat!" : "Adaugă in coș"}
+                            </button>
+                            <button
+                                className={`btn-add-wish ${heartPop ? "pop" : ""}`}
+                                onClick={handleToggleFavorite}
+                            >
+                                {isFavorite(id) ? <IoMdHeart /> : <IoMdHeartEmpty />}
+                            </button>
                         </div>
                     </section>
                 </div>

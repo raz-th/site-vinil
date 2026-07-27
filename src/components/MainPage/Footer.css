@@ -2,7 +2,7 @@
 
 .footer {
   position: relative;
-  background-color: #1e1e1c;
+  background-color: var(--foreground);
   color: #d4c9a8;
   padding: 52px 48px 28px;
   overflow: hidden;

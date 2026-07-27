@@ -7,6 +7,7 @@ import { FavoritesProvider } from "@/context/FavoriteContext";
 import { AddressProvider } from "@/context/AddressContext";
 import Footer from "@/components/MainPage/Footer";
 import Loading from "./Loading";
+import FloatingCart from "@/components/FloatingCart/FloatingCart";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({ children }) {
                 <Loading />
                 <NavBar />
                 <NavBar hiden={true} />
+                <FloatingCart />
                 {children}
                 <Footer />
               </AddressProvider>

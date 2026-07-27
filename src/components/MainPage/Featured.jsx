@@ -1,10 +1,10 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import "./Featured.css"
+import "./Featured.css";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import { TextBanner } from '../Icons';
 import { Reveal } from '../Reveal';
-import Image from 'next/image'; 
+import Image from 'next/image';
 
 const items = [
     { label: 'Rock', img: '/assets/featured/rock.jpg', href: '/toate/genere/rock', color: 'rgba(45, 36, 26, 0.91)' },
@@ -17,22 +17,23 @@ const items = [
     { label: 'Pop', img: '/assets/featured/pop.jpg', href: '/toate/genere/pop', color: 'rgba(100, 30, 30, 0.91)' },
 ];
 
-
 const extendedItems = [...items, ...items, ...items];
+
+
+const ITEMS_PER_PAGE = 5;
 
 const Featured = () => {
     const total = items.length;
 
     const [current, setCurrent] = useState(total);
     const [isTransitioning, setIsTransitioning] = useState(false);
-    const [visible, setVisible] = useState(3);
+    const [visible, setVisible] = useState(ITEMS_PER_PAGE);
 
     const [dragging, setDragging] = useState(false);
     const [startX, setStartX] = useState(0);
     const [autoPlayKey, setAutoPlayKey] = useState(0);
 
-    const transitionDuration = 400; // ms
-
+    const transitionDuration = 400;
     const isTransitioningRef = useRef(false);
 
     const next = () => {
@@ -58,9 +59,16 @@ const Featured = () => {
         setAutoPlayKey(k => k + 1);
     };
 
-
     useEffect(() => {
-        const update = () => setVisible(window.innerWidth <= 768 ? 1 : 3);
+        const update = () => {
+            if (window.innerWidth <= 600) {
+                setVisible(1);
+            } else if (window.innerWidth <= 1024) {
+                setVisible(3);
+            } else {
+                setVisible(ITEMS_PER_PAGE);
+            }
+        };
         update();
         window.addEventListener('resize', update);
         return () => window.removeEventListener('resize', update);
@@ -78,7 +86,6 @@ const Featured = () => {
         else if (current <= total - 1) setCurrent(current + total);
     };
 
-
     const onDragStart = (e) => {
         setDragging(true);
         setStartX(e.touches ? e.touches[0].clientX : e.clientX);
@@ -92,10 +99,11 @@ const Featured = () => {
         setDragging(false);
     };
 
-
     const trackWidth = (extendedItems.length / visible) * 100;
     const itemWidth = 100 / extendedItems.length;
     const transformValue = (current / extendedItems.length) * 100;
+
+    const centerOffset = Math.floor(visible / 2);
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
@@ -109,7 +117,6 @@ const Featured = () => {
                 </Reveal>
 
                 <div className='carousel_wrap'>
-
                     <button className='carousel_btn carousel_btn_left' onClick={prevManual} aria-label="Anterior">
                         <FaChevronLeft />
                     </button>
@@ -130,13 +137,8 @@ const Featured = () => {
                             }}
                         >
                             {extendedItems.map((item, i) => {
-
-                                let cardClass = 'carousel_card_side';
-                                if (visible === 1) {
-                                    if (i === current) cardClass = 'carousel_card_center';
-                                } else {
-                                    if (i === current + 1) cardClass = 'carousel_card_center';
-                                }
+                                const isCenter = i === current + centerOffset;
+                                const cardClass = isCenter ? 'carousel_card_center' : 'carousel_card_side';
 
                                 return (
                                     <div
@@ -144,13 +146,11 @@ const Featured = () => {
                                         className={`feat_card carousel_card ${cardClass}`}
                                         style={{
                                             width: `${itemWidth}%`,
-                                            padding: visible === 3 ? '0 8px' : '0',
+                                            padding: visible > 1 ? '0 8px' : '0',
                                         }}
                                     >
                                         <Reveal>
                                             <a href={item.href} draggable={false}>
-                                                
-                                      
                                                 <Image 
                                                     src={item.img} 
                                                     alt={item.label} 
@@ -172,12 +172,10 @@ const Featured = () => {
                         </div>
                     </div>
 
-
                     <button className='carousel_btn carousel_btn_right' onClick={nextManual} aria-label="Următor">
                         <FaChevronRight />
                     </button>
                 </div>
-
 
                 <div className='carousel_dots'>
                     {items.map((_, i) => {
@@ -196,10 +194,9 @@ const Featured = () => {
                                 }}
                                 aria-label={`Slide ${i + 1}`}
                             />
-                        )
+                        );
                     })}
                 </div>
-
             </section>
         </div>
     );

@@ -89,8 +89,8 @@
     border-radius: 10px;
     max-width: 500px;
     width: 100%;
-    height: auto; 
-    object-fit: cover; 
+    height: auto;
+    object-fit: cover;
 }
 
 .produsPage .mainInfo section .moreImagesContainer {
@@ -152,7 +152,7 @@
 
 .produsPage .mainInfo section .moreImages img {
     width: 100px;
-    height: auto; 
+    height: auto;
     aspect-ratio: 1/1;
     object-fit: cover;
     border-radius: 10px;
@@ -384,6 +384,18 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
+    position: relative;
+    overflow: hidden;
+    transition: .3s;
+}
+
+.cont-btns .btn-add-cart:active {
+    transform: scale(0.96);
+}
+
+.cont-btns .btn-add-cart.added {
+    background: #4caf7d;
+    animation: cart-pulse 0.4s ease;
 }
 
 .cont-btns .btn-add-wish {
@@ -601,6 +613,32 @@
     justify-content: center;
     border: none;
     font-size: 1rem;
+}
+
+.cont-btns .btn-add-wish {
+    transition: background 0.15s, transform 0.15s;
+}
+
+.cont-btns .btn-add-wish:active {
+    transform: scale(0.9);
+}
+
+.cont-btns .btn-add-wish.pop svg {
+    animation: heart-pop 0.5s cubic-bezier(0.17, 0.89, 0.32, 1.49);
+}
+
+@keyframes heart-pop {
+    0%   { transform: scale(1); }
+    30%  { transform: scale(1.5); }
+    55%  { transform: scale(0.85); }
+    100% { transform: scale(1); }
+}
+
+@keyframes cart-pulse {
+    0%   { transform: scale(1); }
+    35%  { transform: scale(0.92); }
+    65%  { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
 
 @media (max-width: 768px) {

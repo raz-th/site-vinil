@@ -53,8 +53,7 @@ const Page = async ({ params }) => {
             .select('*')
             .eq('id', id)
             .single();
-
-        if (dbError || !dbData) {
+        if (dbError || !dbData || dbData.visible == false) {
             return (
                 <div className="not-found-container">
                     <div className="not-found-content">

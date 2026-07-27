@@ -72,6 +72,19 @@
     z-index: 0;
 }
 
+.noutati_card_stare{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: var(--accent2);
+    padding: .2rem .5rem;
+    color: #fff;
+    font-size: .8rem;
+    font-weight: 900;
+    border-radius: 7px;
+    transition: .3s opacity;
+}
+
 .noutati_card:hover {
     transform: scale(1.05);
     z-index: 100;
@@ -104,11 +117,85 @@
     align-items: center;
 }
 
+.noutati_card .diskProductInfo {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, #000000 0%, #000000 20%, transparent 100%);
+    top: 0;
+    display: flex;
+    align-items: flex-end;
+    transition: .3s opacity;
+    opacity: 0;
+}
+
+.noutati_card:hover .diskProductInfo{
+    opacity: 1;
+}
+
+.noutati_card .diskProductInfo .diskProductInfo_content{
+    padding: 1rem;
+}
+
+
+.noutati_card .diskProductInfo .diskProductInfo_content .productArtist {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #eec99d;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.noutati_card .diskProductInfo .diskProductInfo_content .productName {
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 13px;
+  color: #c8b99a;
+  line-height: 1.4;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.noutati_card .diskProductInfo .diskProductInfo_content .productMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  /* margin: 2px 0; */
+}
+
+.noutati_card .diskProductInfo .diskProductInfo_content .productMetaItem {
+  font-size: 11px;
+  color: #7a6248;
+}
+
+.noutati_card .diskProductInfo .diskProductInfo_content .productGenres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  /* margin: 2px 0; */
+}
+
+.noutati_card .diskProductInfo .diskProductInfo_content .productGenreTag {
+  font-size: 10px;
+  background: #2c1f0e;
+  color: #c8b99a;
+  border: 1px solid #5c4430;
+  padding: 2px 7px;
+  border-radius: 2px;
+  letter-spacing: 0.04em;
+}
+
+
 .noutati_card:hover .disk {
     transform: translate(12%, -50%) scale(1.1);
 }
 
-.noutati_card:hover   {
+.noutati_card:hover {
     z-index: 10;
 }
 
@@ -128,6 +215,15 @@
     color: #fff;
     font-weight: 500;
     font-family: "Lacheyard Script", cursive;
+}
+
+@media (min-width: 1024px) {
+    .noutati_card_stare{
+        opacity: 0;
+    }
+    .noutati_card:hover .noutati_card_stare{
+        opacity: 1;
+    }
 }
 
 @media (max-width: 768px) {
@@ -168,7 +264,7 @@
         width: 100% !important;
         height: 100% !important;
         aspect-ratio: 1 / 1 !important;
-        object-fit: cover !important;  
+        object-fit: cover !important;
     }
 
     .noutati_card .disk {
@@ -178,5 +274,8 @@
     .noutati_content_container {
         width: 100%;
         align-items: center;
+    }
+    .noutati_card_stare{
+        font-size: .5rem;
     }
 }

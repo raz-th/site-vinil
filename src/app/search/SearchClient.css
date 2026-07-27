@@ -24,33 +24,7 @@
   color: #2c1f0e;
   margin: 0 0 1rem;
 }
-.searchContainer .searchInputContainer{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  font-size: 20px;
-  background: #2c1f0e;
-  color: var(--accent1);
-  padding-left: 10px;
-  border-radius: 10px;
-  border: 1px solid var(--accent1);
-}
 
-.searchContainer .searchInputContainer input{
-  flex: 1;
-  padding: 15px 14px;
-  font-size: 15px;
-  border: none;
-  border-radius: 2px;
-  background: none;
-  font-family: 'Crimson Text', Georgia, serif;
-  color: var(--accent1)
-}
-
-.searchContainer .searchInputContainer input:focus {
-  outline: none;
-}
 
 
 .searchClientPageInner {

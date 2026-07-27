@@ -7,6 +7,7 @@ import { supabase } from "@/lib/supabase";
 import "./cart.css";
 import { IoMdTrash } from "react-icons/io";
 import { SlHandbag } from "react-icons/sl";
+import { IoArrowBack } from "react-icons/io5";
 
 export default function CartPage() {
     const { cart, loading, subtotal, shippingCost, total, updateQuantity, removeFromCart, clearCart } = useCart();
@@ -20,6 +21,7 @@ export default function CartPage() {
 
     const handleCheckout = async () => {
         if (!user) return router.push("/");
+
         if (cart.length === 0) return;
 
         const address = userData?.defaultAddress;
@@ -77,6 +79,8 @@ export default function CartPage() {
         if (!text) return "";
         return text.length > limit ? text.substring(0, limit) + "..." : text;
     };
+
+    console.log(cart)
 
     return (
         <div className="cartPage_page">
@@ -165,7 +169,7 @@ export default function CartPage() {
                     </button>
 
                     <button className="cartPage_continueBtn" onClick={() => router.push("/")}>
-                        ← Continuă cumpărăturile
+                        <IoArrowBack /> Continuă cumpărăturile
                     </button>
                 </div>
             </div>

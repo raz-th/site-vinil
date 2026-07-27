@@ -346,6 +346,10 @@
   color: #6b4c2a;
   cursor: pointer;
   transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .2rem;
 }
 
 .cartPage_continueBtn:hover {
