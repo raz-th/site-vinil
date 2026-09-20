@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import "./productCard.css"
 
-export const ProductCard = ({ produs }) => {
+export const ProductCard = ({ produs, priority = false }) => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const imgRef = useRef(null);
   const { addToCart } = useCart();
@@ -51,6 +51,7 @@ export const ProductCard = ({ produs }) => {
               src={produs.cover_image || produs.thumb || "/assets/image.png"}
               alt={`${produs.title} - ${artisti}`}
               fill
+              priority={priority} /* <-- AICI ESTE FIX-UL PENTRU LCP */
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
               onLoad={() => setImgLoaded(true)}
               onError={() => setImgLoaded(true)}

@@ -123,7 +123,11 @@ export default function GenereClient({ id, format, produse, infoPagina }) {
 
           <div className="productsGrid" style={mob ? { gridTemplateColumns: `repeat(${layout}, 1fr)` } : {}}>
             {produse.map((p, i) => (
-              <ProductCard key={i} produs={p} />
+              <ProductCard 
+                key={p.id || i}  
+                produs={p} 
+                priority={i < 4}
+              />
             ))}
           </div>
 

@@ -5,10 +5,16 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
+    minimumCacheTTL: 31536000,
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'i.discogs.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ndsjagxakzjuniavktgn.supabase.co', 
+        pathname: '/storage/v1/object/public/**',
       },
     ],
     localPatterns: [

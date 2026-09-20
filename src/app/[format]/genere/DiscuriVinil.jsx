@@ -118,7 +118,7 @@ export default function DiscuriVinil({ format, produse, infoPagina }) {
           <a href={`/${format}/genere`}>Genuri</a>
         </nav>
 
-  
+
 
         {/* ── SIDEBAR ── */}
         <ProduseSideBar format={format} />
@@ -147,13 +147,17 @@ export default function DiscuriVinil({ format, produse, infoPagina }) {
                   <option key={o}>{o}</option>
                 ))}
               </select>
-              <LayoutToggle onChange={(v)=>setLayout(v)} />
+              <LayoutToggle onChange={(v) => setLayout(v)} />
             </div>
           </div>
 
-          <div className="productsGrid" style={mob?{gridTemplateColumns: `repeat(${layout}, 1fr)`}:{}}>
+          <div className="productsGrid" style={mob ? { gridTemplateColumns: `repeat(${layout}, 1fr)` } : {}}>
             {produse.map((p, i) => (
-              <ProductCard key={i} produs={p} />
+              <ProductCard
+                key={p.id || i} 
+                produs={p}
+                priority={i < 4} 
+              />
             ))}
           </div>
 

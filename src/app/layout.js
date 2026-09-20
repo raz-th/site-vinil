@@ -26,7 +26,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}><head>
+      {/* Înlocuiește cu URL-ul real de storage al proiectului tău Supabase */}
+      <link rel="preconnect" href="https://ndsjagxakzjuniavktgn.supabase.co" crossOrigin="anonymous" />
+    </head>
       <body className="no-scroll">
         <AuthProvider>
           <CartProvider>
