@@ -9,6 +9,7 @@ import Pagination from '@/components/Pagination';
 import { ProductCard } from '../ProductCard';
 import LayoutToggle from '@/components/LayoutToggle/LayoutToggle';
 import useIsMobile from '@/components/useIsMobile';
+import { PageTransitionReady } from '@/components/PageTransitionReady';
 
 
 
@@ -79,7 +80,7 @@ export default function GenereClient({ id, format, produse, infoPagina }) {
   return (
     <div className="genrePage" >
       <div className="genrePageInner">
-
+<PageTransitionReady />
         {/* breadcrumb */}
         <nav className="breadcrumb">
           <a href="/">Acasă</a>

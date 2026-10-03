@@ -9,6 +9,7 @@ import Pagination from '@/components/Pagination';
 import { ProductCard } from './ProductCard';
 import LayoutToggle from '@/components/LayoutToggle/LayoutToggle';
 import useIsMobile from '@/components/useIsMobile';
+import { PageTransitionReady } from '@/components/PageTransitionReady';
 
 // ── date mock — înlocuiești cu fetch real ──
 const toateGenurile = [
@@ -109,7 +110,7 @@ export default function DiscuriVinil({ format, produse, infoPagina }) {
   return (
     <div className="genrePage">
       <div className="genrePageInner">
-
+        <PageTransitionReady />
         <nav className="breadcrumb">
           <a href="/">Acasă</a>
           <span>/</span>
@@ -154,9 +155,9 @@ export default function DiscuriVinil({ format, produse, infoPagina }) {
           <div className="productsGrid" style={mob ? { gridTemplateColumns: `repeat(${layout}, 1fr)` } : {}}>
             {produse.map((p, i) => (
               <ProductCard
-                key={p.id || i} 
+                key={p.id || i}
                 produs={p}
-                priority={i < 4} 
+                priority={i < 4}
               />
             ))}
           </div>

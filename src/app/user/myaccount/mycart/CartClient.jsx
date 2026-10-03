@@ -8,6 +8,7 @@ import "./cart.css";
 import { IoMdTrash } from "react-icons/io";
 import { SlHandbag } from "react-icons/sl";
 import { IoArrowBack } from "react-icons/io5";
+import { PageTransitionReady } from "@/components/PageTransitionReady";
 
 export default function CartPage() {
     const { cart, loading, subtotal, shippingCost, total, updateQuantity, removeFromCart, clearCart } = useCart();
@@ -59,6 +60,7 @@ export default function CartPage() {
 
     if (loading) return (
         <div className="cartPage_loadingWrap">
+        
             <div className="cartPage_spinner"></div>
             <p>Se încarcă coșul...</p>
         </div>
@@ -66,6 +68,7 @@ export default function CartPage() {
 
     if (cart.length === 0) return (
         <div className="cartPage_emptyState">
+            <PageTransitionReady />
             <SlHandbag size={52} style={{ opacity: 0.25 }} />
             <h3>Coșul tău este gol</h3>
             <p>Explorează colecția noastră și adaugă viniluri preferate.</p>
@@ -84,6 +87,7 @@ export default function CartPage() {
 
     return (
         <div className="cartPage_page">
+            <PageTransitionReady />
             <div className="mainCard_header" style={{ marginBottom: "2rem" }}>
                 <p>Coșul meu</p>
                 <div className="fadedLine" />

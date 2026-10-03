@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Reveal } from '../Reveal';
 import VinylDisk from '../Discuri/VinylDisk';
 import Image from 'next/image';
+import { TransitionLink } from '../TransitionLink';
 
 export const Card = ({ i, data }) => {
     const [rotate, setRotate] = useState(false);
@@ -12,7 +13,7 @@ export const Card = ({ i, data }) => {
     const imageUrl = data.cover_image;
 
     return (
-        <a
+        <TransitionLink
             className="noutati_card"
             onMouseEnter={() => setRotate(true)}
             onMouseLeave={() => setRotate(false)}
@@ -56,6 +57,6 @@ export const Card = ({ i, data }) => {
 
                 </div>
             </Reveal>
-        </a>
+        </TransitionLink>
     );
 };

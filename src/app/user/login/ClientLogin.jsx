@@ -10,6 +10,7 @@ import { FcGoogle } from "react-icons/fc";
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import { PageTransitionReady } from '@/components/PageTransitionReady';
 
 const AuthInput = ({
   label,
@@ -23,6 +24,7 @@ const AuthInput = ({
 }) => {
   return (
     <div className="input-group">
+      <PageTransitionReady />
       <label className="input-label">{label}</label>
       <div className="input-wrapper">
         <span className="input-icon">{icon}</span>

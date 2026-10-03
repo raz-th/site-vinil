@@ -8,6 +8,7 @@ import { AddressProvider } from "@/context/AddressContext";
 import Footer from "@/components/MainPage/Footer";
 import Loading from "./Loading";
 import FloatingCart from "@/components/FloatingCart/FloatingCart";
+import { TransitionProvider } from "@/context/TransitionContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,12 +36,14 @@ export default function RootLayout({ children }) {
           <CartProvider>
             <FavoritesProvider>
               <AddressProvider>
-                <Loading />
-                <NavBar />
-                <NavBar hiden={true} />
-                <FloatingCart />
-                {children}
-                <Footer />
+                {/* <Loading /> */}
+                <TransitionProvider>
+                  <NavBar />
+                  <NavBar hiden={true} />
+                  <FloatingCart />
+                  {children}
+                  <Footer />
+                </TransitionProvider>
               </AddressProvider>
             </FavoritesProvider>
           </CartProvider>

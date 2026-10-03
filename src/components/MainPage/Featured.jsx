@@ -5,6 +5,7 @@ import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import { TextBanner } from '../Icons';
 import { Reveal } from '../Reveal';
 import Image from 'next/image';
+import { TransitionLink } from '../TransitionLink';
 
 const items = [
     { label: 'Rock', img: '/assets/featured/rock.jpg', href: '/toate/genere/rock', color: 'rgba(45, 36, 26, 0.91)' },
@@ -112,7 +113,7 @@ const Featured = () => {
                     <div className='feat_header'>
                         <h2>COLECȚII RECOMANDATE</h2>
                         <div className='linie' />
-                        <a href='/toate/genere'>Vezi mai multe <FaChevronRight /></a>
+                        <TransitionLink href='/toate/genere'>Vezi mai multe <FaChevronRight /></TransitionLink>
                     </div>
                 </Reveal>
 
@@ -150,7 +151,7 @@ const Featured = () => {
                                         }}
                                     >
                                         <Reveal>
-                                            <a href={item.href} draggable={false}>
+                                            <TransitionLink href={item.href} draggable={false}>
                                                 <Image 
                                                     src={item.img} 
                                                     alt={item.label} 
@@ -164,7 +165,7 @@ const Featured = () => {
                                                     <TextBanner color={item.color} size={80} />
                                                     <p className='feat_card_banner_txt'>{item.label}</p>
                                                 </div>
-                                            </a>
+                                            </TransitionLink>
                                         </Reveal>
                                     </div>
                                 );

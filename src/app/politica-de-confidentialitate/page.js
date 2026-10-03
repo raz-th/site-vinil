@@ -1,9 +1,11 @@
 import { IoShieldCheckmark, IoInformationCircle, IoLockClosed, IoEye } from 'react-icons/io5'
 import '../termeni-si-conditii/styleTermeni.css' 
+import { PageTransitionReady } from '@/components/PageTransitionReady'
 
 export default function PoliticaConfidentialitate() {
     return (
         <div>
+            <PageTransitionReady />
             <div className="tc-root">
                 <div className="tc-hero">
                     <div className='tc-hero-content'>

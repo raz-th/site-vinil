@@ -7,9 +7,10 @@ import { IoClose, IoMenu } from "react-icons/io5";
 import { CgBox } from 'react-icons/cg';
 import { usePathname, useRouter } from 'next/navigation';
 import LogoutDialog from '@/components/Drawers/LogoutDrawer/LogoutDialog';
+import { TransitionLink } from '@/components/TransitionLink';
 
 const formatari = [
-    { label: "Toate", href: "toate"},
+    { label: "Toate", href: "toate" },
     { label: "Viniluri", href: "vinil" },
     { label: "CD-uri", href: "cd" },
     { label: "Casete audio", href: "casete" },
@@ -48,6 +49,7 @@ const NavDrawer = ({ user, userData, logout }) => {
 
     useEffect(() => {
         setOpenDrawerItem(getActiveIndex());
+        setDrawerOpen(false);
     }, [pathname]);
 
     const toggleDrawerItem = (i) => {
@@ -86,20 +88,26 @@ const NavDrawer = ({ user, userData, logout }) => {
                                         </div>
                                     </div>
                                     <div style={{ display: 'flex', width: '100%', gap: 10, justifyContent: 'space-between' }}>
-                                        <button
-                                            onClick={() => { nav.push("/user/myaccount"); setDrawerOpen(false); }}
+                                        {/* Replaced Profil Button */}
+                                        <TransitionLink
+                                            href="/user/myaccount"
+                                          
                                             className="heroActionBtn"
                                         >
                                             <FaRegUser color='var(--accent2)' size={20} />
                                             Profil
-                                        </button>
-                                        <button
-                                            onClick={() => { nav.push("/user/orders"); setDrawerOpen(false); }}
+                                        </TransitionLink>
+
+                                        {/* Replaced Comenzi Button */}
+                                        <TransitionLink
+                                            href="/user/myaccount/orders"
+                                           
                                             className="heroActionBtn"
                                         >
                                             <CgBox color='var(--accent2)' size={20} />
                                             Comenzi
-                                        </button>
+                                        </TransitionLink>
+
                                         <LogoutDialog className="heroActionBtn" />
                                     </div>
                                 </div>
@@ -114,9 +122,15 @@ const NavDrawer = ({ user, userData, logout }) => {
                                             <span>Autentifică-te sau creează un cont</span>
                                         </div>
                                     </div>
-                                    <button className="heroLoginBtn" onClick={() => { nav.push("/user/login"); setDrawerOpen(false); }}>
+
+                                    {/* Replaced Intră Button */}
+                                    <TransitionLink
+                                        href="/user/login"
+                                        className="heroLoginBtn"
+                                        onClick={() => setDrawerOpen(false)}
+                                    >
                                         Intră
-                                    </button>
+                                    </TransitionLink>
                                 </>
                             )}
                         </div>
@@ -136,20 +150,23 @@ const NavDrawer = ({ user, userData, logout }) => {
 
                                     {/* subgenuri */}
                                     <div className={`navDrawerSub ${openDrawerItem === i ? 'open' : ''}`}>
-                                        <a 
-                                            href={`/${v.href}/genere`} 
+
+                                        <TransitionLink
+                                            href={`/${v.href}/genere`}
+
                                             className={`navDrawerSubLink ${currentFormat === v.href && !currentGenre ? 'navDrawerSubAll' : ''}`}
                                         >
                                             Toate
-                                        </a>
+                                        </TransitionLink>
                                         {genuri_muzicale && Object.keys(genuri_muzicale).map((g, j) => (
-                                            <a 
-                                                key={j} 
-                                                href={`/${v.href}/genere/${g}`} 
+                                            <TransitionLink
+                                                key={j}
+
+                                                href={`/${v.href}/genere/${g}`}
                                                 className={`navDrawerSubLink ${currentFormat === v.href && currentGenre === g ? 'navDrawerSubAll' : ''}`}
                                             >
                                                 {genuri_muzicale[g].label}
-                                            </a>
+                                            </TransitionLink>
                                         ))}
                                     </div>
                                 </li>

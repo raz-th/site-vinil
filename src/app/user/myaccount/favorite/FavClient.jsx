@@ -5,6 +5,7 @@ import { useCart } from "@/context/CartContext";
 import "./favorite.css";
 import { IoMdTrash } from "react-icons/io";
 import { SlHandbag, SlHeart } from "react-icons/sl";
+import { PageTransitionReady } from "@/components/PageTransitionReady";
 
 export default function FavoritePage() {
     const { favorites, loading, removeFromFavorites } = useFavorites();
@@ -23,6 +24,7 @@ export default function FavoritePage() {
 
     if (favorites.length === 0) return (
         <div className="emptyState">
+            <PageTransitionReady />
             <SlHeart size={52} className="emptyIcon" />
             <h3>Lista de favorite este goală</h3>
             <p>Salvează vinilurile care îți plac pentru a le găsi mai ușor mai târziu.</p>
@@ -34,6 +36,7 @@ export default function FavoritePage() {
 
     return (
         <div className="page">
+            <PageTransitionReady />
             <div className="mainCard_header" style={{ marginBottom: "2rem" }}>
                 <p>Produse Favorite</p>
                 <div className="fadedLine" />

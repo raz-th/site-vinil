@@ -10,6 +10,7 @@ import { TbTruckDelivery } from 'react-icons/tb';
 import { MdOutlinePhotoCamera } from 'react-icons/md';
 import { FaArrowRight } from 'react-icons/fa';
 import SearchBar from '../SearchBar/SearchBar';
+import { TransitionLink } from '../TransitionLink';
 
 
 const Hero = () => {
@@ -50,8 +51,9 @@ const Hero = () => {
                         </Reveal>
                         <Reveal delay={400}>
                             <div className='hero_content_buttons'>
-                                <a className='button' href='/toate/genere'>Descopera colecția</a>
-                                <a className='button2' href='/toate/genere'>Vezi noutăți<FaArrowRight /></a>
+                                <TransitionLink className='button' href='/toate/genere'>Descopera colecția</TransitionLink>
+                              
+                                <TransitionLink className='button2' href='/toate/genere'>Vezi noutăți<FaArrowRight /></TransitionLink>
                             </div>
                         </Reveal>
                         <Reveal delay={500}>

@@ -11,6 +11,7 @@ import { BsInfoCircle } from "react-icons/bs";
 import useIsMobile from "@/components/useIsMobile";
 import InfoDrawer from "./InfoDrawer";
 import Image from "next/image";
+import { PageTransitionReady } from "@/components/PageTransitionReady";
 
 const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600);
@@ -208,6 +209,7 @@ const ProdusPage = ({ produs }) => {
 
     return (
         <div className='produsPage'>
+            <PageTransitionReady />
             <div className="produsPageInner">
                 <div className='mainInfo'>
                     <section>

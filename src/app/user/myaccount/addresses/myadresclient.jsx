@@ -26,6 +26,7 @@ export default function AdreseleMelePage() {
 
     return (
         <div className="addrPage_page">
+            <PageTransitionReady />
             <div className="mainCard_header" style={{ marginBottom: "2rem" }}>
                 <p>Adrese de livrare</p>
                 <div className="fadedLine" />

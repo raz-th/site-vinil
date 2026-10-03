@@ -5,6 +5,7 @@ import ProduseSideBar from '@/components/ProduseSideBar';
 import { useRouter } from 'next/navigation';
 import { FaSearch } from 'react-icons/fa';
 import { FaMagnifyingGlass } from 'react-icons/fa6';
+import { PageTransitionReady } from '@/components/PageTransitionReady';
 
 
 
@@ -145,6 +146,7 @@ export default function SearchClient({ id, format, produse, infoPagina, q }) {
     // console.log(produse)
     return (
         <div className="searchClientPage" >
+            <PageTransitionReady />
             <div className="searchContainer">
                 <h2>Căutare în catalog</h2>
 

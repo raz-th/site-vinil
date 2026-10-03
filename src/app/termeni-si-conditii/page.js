@@ -1,9 +1,11 @@
 import { IoWarning, IoCheckmarkCircle, IoInformationCircle } from 'react-icons/io5'
 import './styleTermeni.css'
+import { PageTransitionReady } from '@/components/PageTransitionReady'
 
 export default function Page() {
     return (
         <div>
+           <PageTransitionReady /> 
             <div className="tc-root">
                 <div className="tc-hero">
                     <div className='tc-hero-content'>

@@ -8,8 +8,9 @@ import { useAuth } from "@/context/AuthContext";
 import React, { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import VinylDisk from "../Discuri/VinylDisk";
-import Link from "next/link";
+import { TransitionLink } from '@/components/TransitionLink';
 import LogoutDialog from "../Drawers/LogoutDrawer/LogoutDialog";
+import Link from "next/link";
 
 const Aside = () => {
   const [diskHover, setDiskHover] = useState(false);

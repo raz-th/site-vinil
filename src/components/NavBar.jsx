@@ -10,6 +10,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
 import NavDrawer from '@/components/Drawers/NavDrawer/NavDrawer';
 import LogoutDialog from '@/components/Drawers/LogoutDrawer/LogoutDialog';
+import { TransitionLink } from '@/components/TransitionLink';
 
 const IconSearch = () => (
   <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><line x1="16.5" y1="16.5" x2="22" y2="22" /></svg>
@@ -118,35 +119,35 @@ const NavBar = ({ wishlistCount = 0, hiden }) => {
   return (
     <header className={`navBarContainer ${isVisible ? '' : 'nav-hidden'} ${hiden ? "vrajala" : ""}`}>
       <div className="navBarContent">
-        <h1 className="nume_logo"><a href='/'>Vinil1.ro</a></h1>
+        <h1 className="nume_logo"><TransitionLink href='/'>Vinil1.ro</TransitionLink></h1>
 
         {/* ── navigatie desktop ── */}
         <ul className="navLinks">
           {formatari.map((v, i) => (
             <li key={i}>
-              <a href={`/${v.href}/genere`} className='button'>
+              <TransitionLink href={`/${v.href}/genere`} className='button'>
                 {v.label} <span className="dropArrow">▾</span>
-              </a>
+              </TransitionLink>
               <div className="dropdown">
                 <div className='dropdown_content'>
-                  <a href={`/${v.href}/genere`}>Toate</a>
+                  <TransitionLink href={`/${v.href}/genere`}>Toate</TransitionLink>
                   {Object.keys(genuri_muzicale).map((g, j) => (
-                    <a key={j} href={`/${v.href}/genere/${g}`} className="dropdownItem">
+                    <TransitionLink key={j} href={`/${v.href}/genere/${g}`} className="dropdownItem">
                       {genuri_muzicale[g].label}
-                    </a>
+                    </TransitionLink>
                   ))}
                 </div>
               </div>
             </li>
           ))}
           <li>
-            <a href={`/mistery-box`} className='button'>
+            <TransitionLink href={`/mistery-box`} className='button'>
               Mistery box
-            </a>
+            </TransitionLink>
           </li>
-          {/* <li><a href="#">Noutăți</a></li>
-          <li><a href="#">Oferte</a></li>
-          <li><a href="#">Artiști</a></li> */}
+          {/* <li><TransitionLink href="#">Noutăți</TransitionLink></li>
+          <li><TransitionLink href="#">Oferte</TransitionLink></li>
+          <li><TransitionLink href="#">Artiști</TransitionLink></li> */}
         </ul>
 
         {/* ── actiuni dreapta ── */}
@@ -170,27 +171,27 @@ const NavBar = ({ wishlistCount = 0, hiden }) => {
             />
           </div>
 
-          <a className="navActionBtn" aria-label="Favorite" href={"/user/myaccount/favorite"}>
+          <TransitionLink className="navActionBtn" aria-label="Favorite" href={"/user/myaccount/favorite"}>
             <IconHeart />
             {wishlistCount > 0 && <span className="navBadge">{wishlistCount}</span>}
-          </a>
+          </TransitionLink>
 
-          {/* <a className="navActionBtn" aria-label="Coș" href={"/user/myaccount/mycart"}>
+          {/* <TransitionLink className="navActionBtn" aria-label="Coș" href={"/user/myaccount/mycart"}>
             <IconCart />
 
 
             {cartCount > 0 && <span className="navBadge">{cartCount}</span>}
-          </a> */}
+          </TransitionLink> */}
 
           <ul className="navLinks">
             <li className='noHover'>
-              <a href={user ? "/user/myaccount" : "/user/login"} className='button'>
+              <TransitionLink href={user ? "/user/myaccount" : "/user/login"} className='button'>
                 {user?.photoURL ? (
                   <img src={user.photoURL} alt="Profile" className="nav-avatar" />
                 ) : (
                   <FaRegUser size={20} />
                 )}
-              </a>
+              </TransitionLink>
 
               <div className="dropdown user-account-dropdown" style={{ right: '0%', left: 'unset', top: "calc(100% + 8px)" }}>
                 <div className='dropdown_content'>
@@ -206,18 +207,18 @@ const NavBar = ({ wishlistCount = 0, hiden }) => {
 
                       <div className="dropdown-divider" />
 
-                      <a href="/user/myaccount/orders" className="dropdownItem">
+                      <TransitionLink href="/user/myaccount/orders" className="dropdownItem">
                         <FaBoxOpen className="dropdown-icon" />
                         <span>Comenzile mele</span>
-                      </a>
-                      <a href="/user/myaccount/favorite" className="dropdownItem">
+                      </TransitionLink>
+                      <TransitionLink href="/user/myaccount/favorite" className="dropdownItem">
                         <FaHeart className="dropdown-icon" />
                         <span>Favorite</span>
-                      </a>
-                      <a href="/user/myaccount" className="dropdownItem">
+                      </TransitionLink>
+                      <TransitionLink href="/user/myaccount" className="dropdownItem">
                         <IoMdSettings className="dropdown-icon" />
                         <span>Setări cont</span>
-                      </a>
+                      </TransitionLink>
 
                       <div className="dropdown-divider" />
                       <LogoutDialog onLogout={()=>logout()}/>
@@ -229,12 +230,12 @@ const NavBar = ({ wishlistCount = 0, hiden }) => {
                   ) : (
                     // VARIANTA NELOGAT
                     <div className="auth-prompt-container">
-                      <a href="/user/login" className="dropdownItem auth-login-btn">
+                      <TransitionLink href="/user/login" className="dropdownItem auth-login-btn">
                         Intră în cont
-                      </a>
-                      <a href="/user/login?type=sign up" className="dropdownItem auth-register-link">
+                      </TransitionLink>
+                      <TransitionLink href="/user/login?type=sign up" className="dropdownItem auth-register-link">
                         Crează cont nou
-                      </a>
+                      </TransitionLink>
                     </div>
                   )}
                 </div>
@@ -242,9 +243,9 @@ const NavBar = ({ wishlistCount = 0, hiden }) => {
             </li>
           </ul>
 
-          {/* <a href='/user/profil' className="navActionBtn" aria-label="Cont">
+          {/* <TransitionLink href='/user/profil' className="navActionBtn" aria-label="Cont">
             <IconUser />
-          </a> */}
+          </TransitionLink> */}
 
 
           {/* <button className="navHamburger navActionBtn" onClick={() => setDrawerOpen(v => !v)} aria-label="Meniu">

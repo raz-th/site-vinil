@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import CustomInput from '@/components/Drawers/ProfileEditDrawer/CustomInput';
 import ProfileEditDrawer from '@/components/Drawers/ProfileEditDrawer/ProfileEditDrawer';
+import { PageTransitionReady } from '@/components/PageTransitionReady';
 
 
 const ClientProfile = () => {
@@ -57,7 +58,7 @@ const ClientProfile = () => {
 
     return (
         <div className="accountSetGrid">
-            {/* STATISTICI */}
+            <PageTransitionReady />
             <div className="mainCard_header">
                 <p>Statistica Colecționarului</p>
                 <div className="fadedLine" />

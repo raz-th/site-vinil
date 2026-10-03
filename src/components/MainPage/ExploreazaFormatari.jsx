@@ -9,6 +9,7 @@ import Cassette from '../Discuri/Cassette';
 import NewspaperBook from '../Discuri/NewspaperBook';
 
 import './Exploreaza.css';
+import { TransitionLink } from '../TransitionLink';
 
 const ExploreazaFormatari = () => {
     const [spin, setSpin] = useState({ vinil: false, cd: false, cas: false, nou: false })
@@ -27,7 +28,7 @@ const ExploreazaFormatari = () => {
                 <div className='explor_grid'>
                     {/* VINIL */}
                     <Reveal>
-                        <a className='explor_item'
+                        <TransitionLink className='explor_item'
                             onMouseEnter={() => setSpin((e) => ({ ...e, vinil: true }))}
                             onMouseLeave={() => setSpin((e) => ({ ...e, vinil: false }))}
                             href='/vinil/genere'
@@ -39,12 +40,12 @@ const ExploreazaFormatari = () => {
                                 <h3>Viniluri</h3>
                                 <p>DISCURI DE 12"</p>
                             </div>
-                        </a>
+                        </TransitionLink>
                     </Reveal>
 
                     {/* CD */}
                     <Reveal>
-                        <a className='explor_item'
+                        <TransitionLink className='explor_item'
                             onMouseEnter={() => setSpin((e) => ({ ...e, cd: true }))}
                             onMouseLeave={() => setSpin((e) => ({ ...e, cd: false }))}
                             href='/cd/genere'
@@ -56,12 +57,12 @@ const ExploreazaFormatari = () => {
                                 <h3>CD-uri</h3>
                                 <p>COMPACT DISCS</p>
                             </div>
-                        </a>
+                        </TransitionLink>
                     </Reveal>
 
                     {/* CASETĂ */}
                     <Reveal>
-                        <a className='explor_item'
+                        <TransitionLink className='explor_item'
                             onMouseEnter={() => setSpin((e) => ({ ...e, cas: true }))}
                             onMouseLeave={() => setSpin((e) => ({ ...e, cas: false }))}
                             href='/casete/genere'
@@ -73,12 +74,12 @@ const ExploreazaFormatari = () => {
                                 <h3>Casete</h3>
                                 <p>BENZI MAGNETICE</p>
                             </div>
-                        </a>
+                        </TransitionLink>
                     </Reveal>
 
                     {/* NOUTĂȚI */}
                     <Reveal>
-                        <a className='explor_item'
+                        <TransitionLink className='explor_item'
                             onMouseEnter={() => setSpin((e) => ({ ...e, nou: true }))}
                             onMouseLeave={() => setSpin((e) => ({ ...e, nou: false }))}
                             href='/toate/genere?sort=noutati'
@@ -90,7 +91,7 @@ const ExploreazaFormatari = () => {
                                 <h3>Noutăți</h3>
                                 <p>CRONICA ZILEI</p>
                             </div>
-                        </a>
+                        </TransitionLink>
                     </Reveal>
                 </div>
             </section>

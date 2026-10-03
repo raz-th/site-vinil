@@ -3,6 +3,7 @@ import { FaChevronRight } from "react-icons/fa";
 import { supabase } from '@/lib/supabase';
 import { Reveal } from '../Reveal';
 import { Card } from './NoutatiCard';
+import { TransitionLink } from '../TransitionLink';
 
 const Noutati = async () => {
 
@@ -32,7 +33,7 @@ const Noutati = async () => {
                     <div className='noutati_header'>
                         <h2>ADĂUGATE RECENT ÎN COLECȚIE</h2>
                         <div className='linie' />
-                        <a href='/vinil?sort=noutati'>Vezi mai multe <FaChevronRight /></a>
+                        <TransitionLink href='/vinil?sort=noutati'>Vezi mai multe <FaChevronRight /></TransitionLink>
                     </div>
                 </Reveal>
                 <div className='noutati_content_container'>

@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import "./comenzile-mele.css";
 import { SlHandbag } from "react-icons/sl";
+import { PageTransitionReady } from "@/components/PageTransitionReady";
 
 export default function ComenzileleMelePage() {
     const [comenzi, setComenzi] = useState([]);
@@ -64,6 +65,7 @@ export default function ComenzileleMelePage() {
 
     return (
         <div className="page">
+            <PageTransitionReady />
             {selectedComanda ? (
                 <OrderDetail
                     comanda={selectedComanda}

@@ -1,4 +1,5 @@
 import { an_curent, genuri_muzicale, nume } from "../../config/site";
+import { TransitionLink } from "../TransitionLink";
 import "./Footer.css";
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
@@ -102,7 +103,7 @@ const Footer = () => (
                         <ul className="footer__links">
                             {col.links.map((link, j) => (
                                 <li key={j}>
-                                    <a href={link.href}>{link.label}</a>
+                                    <TransitionLink href={link.href}>{link.label}</TransitionLink>
                                 </li>
                             ))}
                         </ul>
@@ -113,20 +114,20 @@ const Footer = () => (
                 <div>
                     {/* <h3 className="footer__col-title">Follow Us</h3> */}
                     {/* <div className="footer__social">
-                        <a href="#" className="footer__social-btn" aria-label="Facebook">
+                        <TransitionLink href="#" className="footer__social-btn" aria-label="Facebook">
                             <IconFacebook />
-                        </a>
-                        <a href="#" className="footer__social-btn" aria-label="Twitter">
+                        </TransitionLink>
+                        <TransitionLink href="#" className="footer__social-btn" aria-label="Twitter">
                             <IconTwitter />
-                        </a>
-                        <a href="#" className="footer__social-btn" aria-label="Instagram">
+                        </TransitionLink>
+                        <TransitionLink href="#" className="footer__social-btn" aria-label="Instagram">
                             <IconInstagram />
-                        </a>
+                        </TransitionLink>
                     </div> */}
 
                     {/* ANPC / SOL EU – obligatoriu pentru magazinele online românești */}
                     <div className="footer__anpc">
-                        <a
+                        <TransitionLink 
                             href={legalInfo.anpcSolUrl}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -135,8 +136,8 @@ const Footer = () => (
                         >
                             <img width={250} src="https://gomagcdn.ro/themes/fashion/gfx/sal.png"/>
                             {/* <span>SAL – ANPC</span> */}
-                        </a>
-                        <a
+                        </TransitionLink>
+                        <TransitionLink 
                             href={legalInfo.solEuUrl}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -144,7 +145,7 @@ const Footer = () => (
                             className="footer__anpc-link"
                         >
                             <img width={250} src="https://gomagcdn.ro/themes/fashion/gfx/sol.png"/>
-                        </a>
+                        </TransitionLink>
                     </div>
                 </div>
             </div>
@@ -169,16 +170,16 @@ const Footer = () => (
                     Dreptul de retragere se exercită în 14 zile calendaristice de la primirea coletului,
                     conform <abbr title="Ordonanța de Urgență nr. 34/2014 privind drepturile consumatorilor">OUG 34/2014</abbr>.
                     Litigiile pot fi soluționate prin platforma{" "}
-                    <a href={legalInfo.solEuUrl} target="_blank" rel="noopener noreferrer">SOL&nbsp;UE</a>
+                    <TransitionLink href={legalInfo.solEuUrl} target="_blank" rel="noopener noreferrer">SOL&nbsp;UE</TransitionLink>
                     {" "}sau prin{" "}
-                    <a href={legalInfo.anpcSolUrl} target="_blank" rel="noopener noreferrer">ANPC&nbsp;SAL</a>.
+                    <TransitionLink href={legalInfo.anpcSolUrl} target="_blank" rel="noopener noreferrer">ANPC&nbsp;SAL</TransitionLink>.
                 </p>
                 <p className="footer__legal-notice">
                     Datele cu caracter personal sunt prelucrate în conformitate cu{" "}
                     <abbr title="Regulamentul (UE) 2016/679 – Regulamentul General privind Protecția Datelor">RGPD</abbr>{" "}
                     și Legea nr. 190/2018. Pentru exercitarea drepturilor (acces, rectificare, ștergere, portabilitate)
                     contactați-ne la{" "}
-                    <a href="mailto:gdpr@exemplu.ro">gdpr@exemplu.ro</a>.
+                    <TransitionLink href="mailto:gdpr@exemplu.ro">gdpr@exemplu.ro</TransitionLink>.
                 </p>
             </div>
 
